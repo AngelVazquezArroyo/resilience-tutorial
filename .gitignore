@@ -1,0 +1,5 @@
+# .gitignore file for resilience tutorial git repository
+
+archives/
+.vagrant/
+.DS_Store/

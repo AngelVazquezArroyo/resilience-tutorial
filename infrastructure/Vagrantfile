@@ -1,0 +1,22 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+  config.vm.box = "ubuntu/trusty64"
+  config.vm.box_url = "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
+  config.vm.box_check_update = true
+
+  config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "private_network", ip: "192.168.8.15"
+
+  config.vm.provider "virtualbox" do |v|
+    v.name = "resilience_tutorial_red_box"
+    v.memory = 6144
+    v.cpus = 4
+  end
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "ansible/resilience_tutorial_red.yml"
+    ansible.sudo = true
+  end
+end

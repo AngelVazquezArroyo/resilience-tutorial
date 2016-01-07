@@ -1,0 +1,49 @@
+---
+# tasks file for nomad
+
+- name: Make sure unzip is installed
+  apt: >
+    name=unzip
+    update_cache=true
+    state=present
+  tags: nomad
+
+- name: Ensure Nomad archive directory exists
+  file: >
+    path="{{ nomad_archive_dir }}"
+    state=directory
+  tags: nomad
+
+- name: Download Nomad release from HashiCorp release site
+  get_url: >
+    url="{{ nomad_download_url }}"
+    dest="{{ nomad_archive_dir }}/{{ nomad_archive_name }}"
+  tags: nomad
+
+- name: Ensure Nomad installation directory exists
+  file: >
+    path="{{ nomad_install_dir }}"
+    state=directory
+  tags: nomad
+
+- name: Extract and install Nomad binary
+  unarchive: >
+    src="{{ nomad_archive_dir }}/{{ nomad_archive_name }}"
+    dest="{{ nomad_install_dir }}"
+    owner=root
+    group=root
+    copy=no
+  tags: nomad
+
+- name: Ensure Nomad binary has correct access rights
+  file: >
+    path="{{ nomad_install_dir }}/{{ nomad_binary_name }}"
+    mode="a+x"
+  tags: nomad
+
+- name: Ensure Nomad data directory exists and has the correct access rights
+  file: >
+    path="{{ nomad_data_dir }}"
+    state=directory
+    mode="a+w"
+  tags: nomad

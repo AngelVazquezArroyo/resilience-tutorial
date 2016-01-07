@@ -1,0 +1,7 @@
+---
+# vars file for nomad
+
+nomad_archive_name: nomad_{{ nomad_version }}_linux_amd64.zip
+nomad_download_url: https://releases.hashicorp.com/nomad/{{ nomad_version }}/{{ nomad_archive_name }}
+nomad_binary_name: nomad
+nomad_data_dir: /etc/nomad.d

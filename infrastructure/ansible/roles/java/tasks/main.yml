@@ -1,0 +1,33 @@
+---
+# tasks file for java
+
+- name: Add Web Upd8 Oracle Java PPA
+  apt_repository: repo='ppa:webupd8team/java' state=present
+  tags: java
+
+- name: Accept Oracle Java license
+  debconf: >
+    name=oracle-java{{ java_version }}-installer
+    question='shared/accepted-oracle-license-v1-1'
+    value='true'
+    vtype='select'
+  tags: java
+
+- name: Install Oracle Java
+  apt: >
+    name=oracle-java{{ java_version }}-installer
+    update_cache=true
+    state=present
+  tags: java
+
+- name: Install Oracle JCE Policy
+  apt: >
+    name=oracle-java{{ java_version }}-unlimited-jce-policy
+    update_cache=true
+    state=present
+  when: java_install_jce_policy
+  tags: java
+
+- name: Set Oracle JDK as default Java
+  alternatives: name=java path={{ java_path }}
+  tags: java
