@@ -23,7 +23,8 @@ As this is an extremely important topic, we touch it at least briefly in this ex
 Exercise
 --------
 
-* Read the [case study](case_study.html).
+* Read the [case study](case_study.adoc).
 * Design the system landscape for Awesome, Inc. (the company in the case study). Try to split the system landscape in services that can serve a bulkheads.
 * The design is done best in a small team (up to 4 persons). Yet, it is also perfectly fine to do it alone if that is the way you create designs best.
-* The design should only show the services and their communication paths. A piece of paper and a pen is sufficient. Alternatively, you can also use a drawing tool of your choice (UML can be used, but is not required).
+* The design should only show the services and their communication paths. Also try to reason about the type of communication to be used between the different services (request/response, messages, events).
+* A piece of paper and a pen is sufficient. Alternatively, you can also use a drawing tool of your choice (UML can be used, but is not required).
