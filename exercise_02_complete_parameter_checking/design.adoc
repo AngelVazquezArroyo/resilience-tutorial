@@ -1,24 +1,11 @@
-= Case study: Awesome, Inc.
+= System design
 Doc Writer <uwe.friedrichsen@codecentric.de>
-v0.2, 2016-02-16
+v0.1, 2016-02-16
 :homepage: https://github.com/ufried/resilience-tutorial
 
-_Awesome, Inc._ invented and successfully markets their product _Awesome_. To satisfy the different needs of their customers they offer it in three different versions:
+The initial system design for Awesome, Inc. consists of the following application/services:
 
-* _Awesome_
-* _Really Awesome!_
-* _TOTALLY AWESOME!!!_
-
-_Awesome, Inc._ also offer a free test version of their product, called _almost awesome_, for customers who are not yet sure if they really want to buy any of the full-price versions. The test version turned out to be extremely successful as most customers went for the full-price versions, once they had a taste of awesome.
-
-Of course, Awesome, Inc. also runs a _web shop_. Actually, as their products are delivered online only, the web site is the only way to buy awesome in any of its flavors.
-
-NOTE: Of course a real company would usually have more products in their web shop and more delivery channels. This simplification was done on purpose for keeping the business logic and the amounts of data to handle simple.
-
-== System landscape
-
-Besides the web shop, Awesome, Inc. runs some more services that complement the web shop:
-
+* A _web shop_ where the customer can view and order the products of Awesome, Inc.
 * A _payment service_ which takes care of the customer payments
 * A _delivery service_ which handles the delivery of bought products
 * A _recommendation service_ which recommends other products based on the products currently viewed and bought
@@ -28,10 +15,10 @@ image::awesome_services.png[caption="Figure 1: ", title="Overview of the system 
 
 The system landscape uses three different communication paradigms:
 
-* The _web shop_, the _payment service_ and the _delivery service_ communicate via events.
-* The _web shop_ communicates with the _recommendation service_ using synchronous requests.
-* The _web shop_, the _payment service_ and the _delivery service_ communicate with the _analytics service_ sending messages to the _analytics service_.
+* The _web shop_, the _payment service_ and the _delivery service_ communicate via events because it provides the best decoupling between the services. Also, these services describe a flow, i.e., they run after each other which makes a request/response communication paradigm unfeasible.
+* The _web shop_ communicates with the _recommendation service_ using the synchronous request/response paradigm. As the web shop needs to ask for the information from the recommendation service and uses the response within its own activities, a request/response paradigm is feasible.
+* The _web shop_, the _payment service_ and the _delivery service_ communicate with the _analytics service_ sending messages to the _analytics service_. It is okay if some messages are lost. Therefore a "fire-and-forget" messaging communication style will be used.
 
-NOTE: It is very unlikely to find all those communication paradigms in such a small service landscape (or at least it would be a sign of poor design). Here we used it to have a training ground for different resilience patterns.
+NOTE: It is also possible to use different communication patterns between the services and usually you will not use all three paradigms within such a small service landscape. Yet, here we used it to have a training ground for different resilience patterns.
 
-Of course there is also some centralized logging and metrics which are not shown in the image as they are not of particular interest for the resilience tutorial.
+Of course there is also some centralized logging and metrics which are not shown in the image as they are not of particular interest for the resilience tutorial. Side note: If you would log all events that happen in the system, you could use the log stream as input for the analytics service. But this optimization is out of the scope of this tutorial ... ;-)
