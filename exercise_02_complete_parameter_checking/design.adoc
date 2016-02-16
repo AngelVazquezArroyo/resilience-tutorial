@@ -1,6 +1,6 @@
-= The background story: Awesome, Inc.
+= Case study: Awesome, Inc.
 Doc Writer <uwe.friedrichsen@codecentric.de>
-v0.1, 2016-02-12
+v0.2, 2016-02-16
 :homepage: https://github.com/ufried/resilience-tutorial
 
 _Awesome, Inc._ invented and successfully markets their product _Awesome_. To satisfy the different needs of their customers they offer it in three different versions:
