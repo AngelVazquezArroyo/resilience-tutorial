@@ -1,7 +1,9 @@
-= System design
+= Sample system design
 Doc Writer <uwe.friedrichsen@codecentric.de>
-v0.1, 2016-02-16
+v0.2, 2016-02-18
 :homepage: https://github.com/ufried/resilience-tutorial
+
+== Services (Top level bulkheads)
 
 The initial system design for Awesome, Inc. consists of the following application/services:
 
@@ -13,6 +15,18 @@ The initial system design for Awesome, Inc. consists of the following applicatio
 
 image::awesome_services.png[caption="Figure 1: ", title="Overview of the system landscape of Awesome, Inc.", alt="service overview"]
 
+In a more complex scenario, where the web shop needed to manage many more products, the shop would be split in several services that would probably be implemented using the http://scs-architecture.org/[SCS approach]. As the store in this case study will be rather simple the decision was made not to split it up because it is expected that the store will remain quite small (in terms of source code).
+
+An alternative even for the small web shop would be to split it between viewing products and putting them in the shopping cart as one part and checkout as the other part.
+
+== Datastores
+
+Each service has its own database (not shown in the image). From a resilience point of view all measures on service level do provide limited value if all services are bound to a single database that acts as a single point of failure for all services (except if the services can still provide a useful - maybe degraded - service in case of a database failure).
+
+Another design consideration would be to decide if the services themselves and the databases they use should be treated as individual bulkheads. The services definitely must be capable to respond timely even in face of a database problem. Yet, it needs to be considered if the service should simply signal unavailability in such situations or if it should provide a better service. As this is a business related decision, it cannot be answered generally.
+
+== Communication paradigms
+
 The system landscape uses three different communication paradigms:
 
 * The _web shop_, the _payment service_ and the _delivery service_ communicate via events because it provides the best decoupling between the services. Also, these services describe a flow, i.e., they run after each other which makes a request/response communication paradigm unfeasible.
@@ -21,4 +35,6 @@ The system landscape uses three different communication paradigms:
 
 NOTE: It is also possible to use different communication patterns between the services and usually you will not use all three paradigms within such a small service landscape. Yet, here we used it to have a training ground for different resilience patterns.
 
-Of course there is also some centralized logging and metrics which are not shown in the image as they are not of particular interest for the resilience tutorial. Side note: If you would log all events that happen in the system, you could use the log stream as input for the analytics service. But this optimization is out of the scope of this tutorial ... ;-)
+Additionally, there will also be centralized logging and metrics which are not shown in the image as they are not of particular interest for the resilience tutorial.
+
+_Side note_: If you would log all events that happen in the system, you could use the log stream as input for the analytics service. But this optimization is out of the scope of this tutorial ... ;-)
