@@ -2,12 +2,15 @@
   "name": "resilience-tutorial",
   "homepage": "https://github.com/ufried/resilience-tutorial",
   "authors": [
-    "ansgar.fitz@codecentric.de"
+    "ansgar.fitz@codecentric.de",
+    "uwe.friedrichsen@codecentric.de"
   ],
   "description": "Resilient Software Design applied",
   "main": "",
-  "moduleType": [],
-  "license": "Apache",
+  "moduleType": [
+    "globals"
+  ],
+  "license": "Apache Common Licence",
   "private": true,
   "ignore": [
     "**/.*",
@@ -17,6 +20,16 @@
     "tests"
   ],
   "dependencies": {
-    "bootstrap": "^3.3.6"
+    "bootstrap": "^3.3.6",
+    "showdown": "^0.3.1",
+    "angular": "^1.5.0",
+    "angular-sanitize": "^1.5.0",
+    "angular-markdown-directive": "^0.3.1",
+    "angular-bootstrap": "^1.1.2",
+    "bower": "*",
+    "jquery": "^2.2.1"
+  },
+  "resolutions": {
+    "angular": "1.5.0"
   }
 }

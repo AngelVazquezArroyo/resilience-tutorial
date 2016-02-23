@@ -7,7 +7,7 @@
 
   <script src="vendors/angular/angular.js"></script>
   <script src="vendors/angular-sanitize/angular-sanitize.js"></script>
-  <script src="vendors/showdown/Showdown.js"></script>
+  <script src="vendors/showdown/compressed/Showdown.js"></script>
   <script src="vendors/angular-markdown-directive/markdown.js"></script>
   <script src="vendors/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
   <script>
@@ -16,11 +16,11 @@
       'ui.bootstrap'
     ]);
 
-    module.controller('ResilienceTutorialCtrl', function($scope, $http, $modal) {
+    module.controller('resilienceTutorial', function($scope, $http, $uibModal) {
       $scope.showReadme = function() {
         $http.get('./README.md')
         .then(function(response) {
-          $modal.open({
+          $uibModal.open({
             templateUrl: 'readme-modal.html',
             controller: 'ReadmeCtrl',
             size: 'lg',
@@ -43,21 +43,22 @@
           directory: 'exercise_01_bulkheads',
           tasks: true,
           solutions: true,
-          extra: true
+          extra: false
         }, {
-          title: 'complete Parameter Checking',
+          id : 2,
+          title: 'Complete Parameter Checking',
           directory: 'exercise_02_complete_parameter_checking',
           tasks: true,
           solutions: true,
-          extra: true
+          extra: false
         }
       ];
     });
 
-    module.controller('ReadmeCtrl', function($scope, readme, $modalInstance) {
+    module.controller('ReadmeCtrl', function($scope, readme, $uibModalInstance) {
       $scope.readme = readme;
       $scope.dismiss = function() {
-        $modalInstance.dismiss();
+        $uibModalInstance.dismiss();
       };
     });
   </script>
@@ -77,11 +78,11 @@
 <body>
 <div class="container" style="max-width: 700px">
   <div class="page-header">
-    <h1>Resilient Software Design applied <small>by codecentric AG</small></h1>
+    <h1>Resilient Software Design applied </br><small>by codecentric AG</small></h1>
 
   </div>
 
-  <div class="ng-cloak" ng-controller="TrainingCtrl">
+  <div class="ng-cloak" ng-controller="resilienceTutorial">
 
     <div class="well well-lg">
       Please make sure that you have read the
