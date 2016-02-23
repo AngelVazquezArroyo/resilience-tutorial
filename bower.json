@@ -27,9 +27,12 @@
     "angular-markdown-directive": "^0.3.1",
     "angular-bootstrap": "^1.1.2",
     "bower": "*",
-    "jquery": "^2.2.1"
+    "jquery": "^2.2.1",
+    "opal": "^0.8.1",
+    "asciidoctor.js": "^1.5.4"
   },
   "resolutions": {
-    "angular": "1.5.0"
+    "angular": "1.5.0",
+    "opal": "0.9.0.beta2"
   }
 }

@@ -1,0 +1,27 @@
+= Case study: Awesome, Inc.
+Doc Writer <uwe.friedrichsen@codecentric.de>
+v0.2, 2016-02-16
+:homepage: https://github.com/ufried/resilience-tutorial
+
+_Awesome, Inc._ invented and successfully markets their product _Awesome_. To satisfy the different needs of their customers they offer it in three different versions:
+
+* _Awesome_
+* _Really Awesome!_
+* _TOTALLY AWESOME!!!_
+
+_Awesome, Inc._ also offers a free test version of their product, called _almost awesome_, for customers who are not yet sure if they really want to buy any of the full-price versions. The test version turned out to be extremely successful as most customers went for the full-price versions, once they had a taste of awesome.
+
+Of course, Awesome, Inc. also runs a web shop. Actually, as their products are delivered online only, the web shop is the only way to buy awesome in any of its flavors.
+
+NOTE: Of course a real company would usually have more products in their web shop and more delivery channels. This simplification was done on purpose for keeping the business logic as well as the resulting system design and the amounts of data to handle manageable within the scope of a tutorial.
+
+In order to run the web shop and to meet their additional business needs, Awesome, Inc. needs the following business capabilities:
+
+* Show a customer the different products in the web shop (a search capability is currently not required as the number of products does not justify the efforts for a search capability).
+* Show a customer recommendations based on the products the customer currently views and has bought in the past. The recommendation algorithm and the data the algorithm is based on is of course subject to change in the future.
+* Let customers place orders (products and desired quantities) and provide payment and delivery information.
+* Execute the payment (before delivering the products)
+* Deliver the ordered (and paid) products to the customer.
+* The ability to analyze everything that happened in the web shop in order to create new business insights. Currently, Awesome, Inc. does not yet plan to react to business events in (near) real-time but such a requirement may come up later.
+
+As this is the case study for a resilience tutorial, where we intend to implement resilience into the solution step by step, Awesome, Inc. does not express any explicit non-functional requirements for the time being.
