@@ -1,0 +1,158 @@
+<html ng-app="resilienceTutorial">
+<head>
+  <link rel="shortcut icon" href="/favicon.ico">
+  <meta charset="UTF-8">
+  <title>Resilient Software Design applied</title>
+  <link rel="stylesheet" href="vendors/bootstrap/dist/css/bootstrap.css">
+
+  <script src="vendors/angular/angular.js"></script>
+  <script src="vendors/angular-sanitize/angular-sanitize.js"></script>
+  <script src="vendors/showdown/Showdown.js"></script>
+  <script src="vendors/angular-markdown-directive/markdown.js"></script>
+  <script src="vendors/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+  <script>
+    var module = angular.module('resilienceTutorial', [
+      'btford.markdown',
+      'ui.bootstrap'
+    ]);
+
+    module.controller('ResilienceTutorialCtrl', function($scope, $http, $modal) {
+      $scope.showReadme = function() {
+        $http.get('./README.md')
+        .then(function(response) {
+          $modal.open({
+            templateUrl: 'readme-modal.html',
+            controller: 'ReadmeCtrl',
+            size: 'lg',
+            resolve: {
+              readme: function() {
+                return response.data;
+              }
+            }
+          });
+        })
+        .catch(function() {
+          window.open('./README.md');
+        });
+      };
+
+      $scope.sections = [
+        {
+          id: 1,
+          title: 'Bulkheads',
+          directory: 'exercise_01_bulkheads',
+          tasks: true,
+          solutions: true,
+          extra: true
+        }, {
+          title: 'complete Parameter Checking',
+          directory: 'exercise_02_complete_parameter_checking',
+          tasks: true,
+          solutions: true,
+          extra: true
+        }
+      ];
+    });
+
+    module.controller('ReadmeCtrl', function($scope, readme, $modalInstance) {
+      $scope.readme = readme;
+      $scope.dismiss = function() {
+        $modalInstance.dismiss();
+      };
+    });
+  </script>
+  <style>
+    .ng-cloak {
+      display: none !important;
+    }
+
+    dl.dl-horizontal.wide dt { width: 230px; }
+    dl.dl-horizontal.wide dd { margin-left: 250px; }
+
+    .modal-backdrop {
+      height: 100% !important;
+    }
+  </style>
+</head>
+<body>
+<div class="container" style="max-width: 700px">
+  <div class="page-header">
+    <h1>Resilient Software Design applied <small>by codecentric AG</small></h1>
+
+  </div>
+
+  <div class="ng-cloak" ng-controller="TrainingCtrl">
+
+    <div class="well well-lg">
+      Please make sure that you have read the
+      <a href="" ng-click="showReadme()">README</a>
+      before diving into the training material.
+    </div>
+
+    <div class="well well-lg" ng-show="readme" btf-markdown="readme"></div>
+
+    <dl class="dl-horizontal ng-cloak wide">
+
+      <dt ng-repeat-start="section in sections">
+        <span ng-hide="section.extra">
+          {{section.id}}:
+        </span>
+        <span ng-show="section.extra">
+          Extra:
+        </span>
+        {{section.title}}
+      </dt>
+      <dd ng-repeat-end>
+        <ul>
+          <li>
+            <a href="slides/{{section.directory}}/">Slides</a>
+          </li>
+          <li ng-show="section.tasks">
+            <a href="tasks/{{section.directory}}/">Tasks</a>
+          </li>
+          <li ng-show="section.solutions">
+            <a href="solutions/{{section.directory}}/">Solutions</a>
+          </li>
+        </ul>
+      </dd>
+    </dl>
+
+    <h2>Slide Shortcuts</h2>
+    <ul>
+      <li>
+        Pressing 'b' brings you back here
+      </li>
+      <li>
+        Pressing 'h' highlights code snippets
+      </li>
+      <li>
+        Pressing 'p' toggles speaker notes (if they're on the current slide)
+      </li>
+      <li>
+        Pressing 'f' toggles fullscreen viewing
+      </li>
+      <li>
+        Pressing 'w' toggles widescreen
+      </li>
+      <li>
+        Pressing 'o' toggles overview mode
+      </li>
+      <li>
+        Pressing 'ESC' toggles off these goodies
+      </li>
+    </ul>
+  </div>
+</div>
+
+<script type="text/ng-template" id="readme-modal.html">
+  <div class="modal-header">
+    <button type="button" class="close" aria-label="Close" ng-click="dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h3 class="modal-title">Training README</h3>
+  </div>
+  <div class="modal-body" btf-markdown="readme"></div>
+</script>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "resilience-tutorial",
+  "homepage": "https://github.com/ufried/resilience-tutorial",
+  "authors": [
+    "ansgar.fitz@codecentric.de"
+  ],
+  "description": "Resilient Software Design applied",
+  "main": "",
+  "moduleType": [],
+  "license": "Apache",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6"
+  }
+}
