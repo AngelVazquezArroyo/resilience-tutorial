@@ -6,8 +6,8 @@
 
     <title>The Title of the Talk</title>
 
-    <meta name="description" content="Title - Sub Title">
-    <meta name="author" content="Your Name">
+    <meta name="description" content="Resilient Software Design applied - Bulkheads">
+    <meta name="author" content="Uwe Friedrichsen & Ansgar Fitz">
 
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -17,7 +17,7 @@
 
     <link rel="stylesheet" href="../../vendors/reveal.js/css/reveal.css">
     <link rel="stylesheet" href="../../vendors/reveal.js/css/theme/black.css" id="theme">
-    <link rel="stylesheet" href="../../vendors/codecentric-reveal-template/slides/css/deck.css">
+    <link rel="stylesheet" href="../master/css/deck.css">
 
     <!-- Code syntax highlighting -->
     <link rel="stylesheet" href="../../vendors/reveal.js/lib/css/zenburn.css">
@@ -47,49 +47,43 @@
     <!-- Any section element inside of this container is displayed as a slide -->
     <div class="slides">
 
-        <section class="whiteText" data-markdown data-background="../../vendors/codecentric-reveal-template/slides/img/background-title-16x9.png">
+        <section class="whiteText" data-markdown data-background="../master/img/background-title-16x9.png">
             <script type="text/template">
-                # Title
-                ## Sub Title
+                # Resilient Software Design applied
+                ## Bulkheads
 
-                Your Name, codecentric AG
+                Your Uwe Friedrichsen & Ansgar Fitz, codecentric AG
             </script>
         </section>
 
         <!-- You can use inline markdown -->
 
-        <section data-markdown data-background="../../vendors/codecentric-reveal-template/slides/img/background-green-16x9.png">
-### Overview
+        <section data-markdown data-background="../master/img/background-green-16x9.png">
+            ### Overview
 
-- Part 1: Intro
-  - Why are we here?
-- Part 2: The new Process
-  - Steps
-  - Results
-- Part 3: Wrapping Up
-  - Summary
-  - Future
+            - Part 1: Intro Bulkheads
+            - Part 2: Awesome Bulkheads
+            - Part 3: More Awesome Bulkheads
+
+        </section>
+
+        <section data-markdown data-background="../master/img/background-green-16x9.png">
+            ### Intro Bulkheads
+
+            - Why?
+            - Where?
+            - Who?
+            - What?
+
         </section>
 
         <!-- Or external markdown -->
         <section>
-            <section data-markdown="part_1.md" data-separator="---"></section>
-        </section>
-
-        <!-- Or HTML -->
-        <section>
-            <section data-background="../../vendors/codecentric-reveal-template/slides/img/background-orange-orig.jpg">
-                <h3>The new Process</h3>
-                <p>Very big improvement ... </p>
-            </section>
-            <section>
-                <h3>Details</h3>
-                <p>are only visible after you signed the NDA</p>
-            </section>
+            <section data-markdown="./sections/awesome_bulkheads.md" data-separator="---"></section>
         </section>
 
         <section>
-            <section data-markdown="part_last.md" data-separator="---"></section>
+            <section data-markdown="./sections/more_awesome_bulkheads.md" data-separator="---"></section>
         </section>
 
     </div>

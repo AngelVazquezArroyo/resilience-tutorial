@@ -40,17 +40,9 @@
         {
           id: 1,
           title: 'Bulkheads',
-          directory: 'exercise_01_bulkheads',
+          directory: '01_bulkheads',
           tasks: true,
-          solutions: true,
-          extra: false
-        }, {
-          id : 2,
-          title: 'Complete Parameter Checking',
-          directory: 'exercise_02_complete_parameter_checking',
-          tasks: true,
-          solutions: true,
-          extra: false
+          solutions: true
         }
       ];
     });
@@ -98,50 +90,29 @@
         <span ng-hide="section.extra">
           {{section.id}}:
         </span>
-        <span ng-show="section.extra">
-          Extra:
-        </span>
         {{section.title}}
       </dt>
       <dd ng-repeat-end>
         <ul>
           <li>
-            <a href="/{{section.directory}}/slides/">Slides</a>
+            <a href="/slides/{{section.directory}}/">Slides</a>
           </li>
           <li ng-show="section.tasks">
-            <a href="/{{section.directory}}/tasks/">Tasks</a>
+            <a href="/tasks/{{section.directory}}/">Tasks</a>
           </li>
           <li ng-show="section.solutions">
-            <a href="/{{section.directory}}/solutions/">Solutions</a>
+            <a href="/solutions/{{section.directory}}/">Solutions</a>
           </li>
         </ul>
       </dd>
     </dl>
 
-    <h2>Slide Shortcuts</h2>
-    <ul>
+    <h2>Shortcuts</h2>
+    <!-- <ul>
       <li>
         Pressing 'b' brings you back here
       </li>
-      <li>
-        Pressing 'h' highlights code snippets
-      </li>
-      <li>
-        Pressing 'p' toggles speaker notes (if they're on the current slide)
-      </li>
-      <li>
-        Pressing 'f' toggles fullscreen viewing
-      </li>
-      <li>
-        Pressing 'w' toggles widescreen
-      </li>
-      <li>
-        Pressing 'o' toggles overview mode
-      </li>
-      <li>
-        Pressing 'ESC' toggles off these goodies
-      </li>
-    </ul>
+    </ul> -->
   </div>
 </div>
 

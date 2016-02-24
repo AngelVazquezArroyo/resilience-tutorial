@@ -1,7 +1,7 @@
 
 ### Intro
 
-<!-- .slide: data-background="../../vendors/codecentric-reveal-template/slides/img/background-orange-orig.jpg" -->
+<!-- .slide: data-background="../../vendors/codecentric-reveal-template/slides/img/background-title-orig.jpg" -->
 
 1. *What is the problem?*
 1. What other solutions are there?
@@ -57,7 +57,7 @@
 
 ### Intro
 
-<!-- .slide: data-background="../../vendors/codecentric-reveal-template/slides/img/background-orange-orig.jpg" -->
+<!-- .slide: data-background="../../vendors/codecentric-reveal-template/slides/img/background-title-orig.jpg" -->
 
 1. What is the problem?
 1. *What other solutions are there?*
