@@ -1,5 +1,4 @@
-Resilience Tutorial
-===================
+## Resilience Tutorial
 
 This is the GitHub repository supporting a resilience tutorial that provides a step-by-step introduction to several basic resilience patterns.
 
@@ -11,3 +10,21 @@ The folder infrastructure contains everything needed to set up the required infr
 
 Prerequisites:
 * to be defined ...
+
+## Getting The Tutorial Material
+
+```
+git clone https://github.com/ufried/resilience-tutorial.git
+cd resilience-tutorial
+```
+
+## Working With The Training Material
+In order to work with the tutorial material, you need to serve all files via an HTTP server. This can be any HTTP server which is capable of serving static assets. If you happen to have Python installed (which is installed by default on OS X and Linux), you can execute the following command to start an HTTP server in the current directory.
+
+```
+# with Python 2.x
+python -m SimpleHTTPServer
+
+# with Python 3.x
+python -m http.server
+```
