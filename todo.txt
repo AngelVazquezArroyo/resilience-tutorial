@@ -1,0 +1,15 @@
+02 - complete parameter checking
+
+- recommendation service implementieren
+- Sprint bootstrap oder Drop Wizzard
+- als jar aufrufen
+
+
+
+.controller('ReadmeCtrl', function($scope, readme, $uibModalInstance) {
+  $scope.readme = readme;
+  $scope.dismiss = function() {
+    $uibModalInstance.dismiss();
+  };
+});
+ 

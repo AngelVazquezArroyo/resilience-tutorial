@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+	<title>Demo directive AsciiDoc</title>
+	<link rel="stylesheet" href="asciidoctor.css" />
+	<style type="text/css">
+		.ace_editor { 
+			position: fixed !important;
+			width: 50%;
+			top:0; 
+			bottom:0;
+			left: 0;
+		}
+
+		.viewer {
+			position: fixed !important;
+			width: 50%;
+			top: 0; 
+			bottom: 0;	
+			right: 0;
+			padding: 15px;		
+			overflow-y: auto;
+		}
+
+		#toc {
+			position: relative !important;
+		}
+	</style>
+</head>
+<body data-ng-app="demo">
+
+	<div  data-ng-controller="demo as demo" data-ng-init="demo.readonly=false">
+
+		<section ui-ace="demo.aceOption" data-ng-model="demo.ascii" dropfile ></section>
+		<div asciidoc="demo.ascii" asciidoc-opts="demo.asciidocOpts" asciidoc-no-watch="demo.readonly" asciidoc-post-processor="demo.asciiPostProcessor" class="viewer" ></div>
+	</div>
+
+	<script src="../bower_components/ace-builds/src-min-noconflict/ace.js"></script>
+	<script src="../bower_components/sizzle/dist/sizzle.min.js"></script>
+	<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="../bower_components/angular/angular.js"></script>
+	<script src="../bower_components/angular-ui-ace/ui-ace.js"></script>
+	<script src="../bower_components/angular-dropfile-directive/dist/dropfile.all.js"></script>
+	<script src="../dist/asciidoc.all.js"></script>
+	<script src="demo.js"></script>
+</body>
+</html>
