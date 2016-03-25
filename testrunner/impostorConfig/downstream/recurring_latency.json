@@ -1,0 +1,41 @@
+{
+  "mode" : "downstream",
+  "failuremode" : "latency",
+  "protocol" : "http",
+  "latency" : [3000, 0, 500],
+  "latencymode" : "cycle",
+  "responses" : [
+    {
+      "verb" : "GET",
+      "url" : "/recommendation-db?product=P00T",
+      "headers" : [
+        { "name" : "Content-Type", "value" : "application/json"}
+      ],
+      "body" : "{ \"products\" : [\"P001\"] }"
+    },
+    {
+      "verb" : "GET",
+      "url" : "/recommendation-db?product=P001",
+      "headers" : [
+        { "name" : "Content-Type", "value" : "application/json"}
+      ],
+      "body" : "{ \"products\" : [\"P002\"] }"
+    },
+    {
+      "verb" : "GET",
+      "url" : "/recommendation-db?product=P002",
+      "headers" : [
+        { "name" : "Content-Type", "value" : "application/json"}
+      ],
+      "body" : "{ \"products\" : [\"P003\"] }"
+    },
+    {
+      "verb" : "GET",
+      "url" : "/recommendation-db?product=P003",
+      "headers" : [
+        { "name" : "Content-Type", "value" : "application/json"}
+      ],
+      "body" : "{ \"products\" : [\"P003\"] }"
+    }
+  ]
+}

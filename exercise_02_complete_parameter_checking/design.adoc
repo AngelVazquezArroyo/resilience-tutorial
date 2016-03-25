@@ -7,17 +7,17 @@ v0.2, 2016-02-18
 
 The initial system design for Awesome, Inc. consists of the following application/services:
 
-* A _web shop_ where the customer can view and order the products of Awesome, Inc.
+* A _web shop_ where the customer can view and order the entries of Awesome, Inc.
 * A _payment service_ which takes care of the customer payments
-* A _delivery service_ which handles the delivery of bought products
-* A _recommendation service_ which recommends other products based on the products currently viewed and bought
+* A _delivery service_ which handles the delivery of bought entries
+* A _recommendation service_ which recommends other entries based on the entries currently viewed and bought
 * An _analytics service_ which captures information from all other services in order to gain new insights
 
 image::awesome_services.png[caption="Figure 1: ", title="Overview of the system landscape of Awesome, Inc.", alt="service overview"]
 
-In a more complex scenario, where the web shop needed to manage many more products, the shop would be split in several services that would probably be implemented using the http://scs-architecture.org/[SCS approach]. As the store in this case study will be rather simple the decision was made not to split it up because it is expected that the store will remain quite small (in terms of source code).
+In a more complex scenario, where the web shop needed to manage many more entries, the shop would be split in several services that would probably be implemented using the http://scs-architecture.org/[SCS approach]. As the store in this case study will be rather simple the decision was made not to split it up because it is expected that the store will remain quite small (in terms of source code).
 
-An alternative even for the small web shop would be to split it between viewing products and putting them in the shopping cart as one part and checkout as the other part.
+An alternative even for the small web shop would be to split it between viewing entries and putting them in the shopping cart as one part and checkout as the other part.
 
 == Datastores
 
