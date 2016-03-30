@@ -23614,9 +23614,9 @@ Opal.modules["asciidoctor/converter/html5"] = function(Opal) {
           }};
         if ((($a = node['$attr?']("icons", "font")) !== nil && (!$a.$$is_boolean || $a == true))) {
           if ((($a = node['$attr?']("iconfont-remote")) !== nil && (!$a.$$is_boolean || $a == true))) {
-            result['$<<']("<link rel=\"stylesheet\" href=\"" + (node.$attr("iconfont-cdn", "" + (cdn_base) + "/font-awesome/4.5.0/css/font-awesome.min.css")) + "\"" + (slash) + ">")
+            result['$<<']("<link rel=\"stylesheet\" href=\"" + (node.$attr("iconfont-cdn", "" + (cdn_base) + "/font-recommendationService/4.5.0/css/font-recommendationService.min.css")) + "\"" + (slash) + ">")
             } else {
-            iconfont_stylesheet = "" + (node.$attr("iconfont-name", "font-awesome")) + ".css";
+            iconfont_stylesheet = "" + (node.$attr("iconfont-name", "font-recommendationService")) + ".css";
             result['$<<']("<link rel=\"stylesheet\" href=\"" + (node.$normalize_web_path(iconfont_stylesheet, (node.$attr("stylesdir", "")), false)) + "\"" + (slash) + ">");
           }};
         $case = (highlighter = node.$attr("source-highlighter"));if ("coderay"['$===']($case)) {if ((node.$attr("coderay-css", "class"))['$==']("class")) {

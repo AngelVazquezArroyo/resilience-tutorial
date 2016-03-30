@@ -5804,7 +5804,7 @@ function curCSS( elem, name, computed ) {
 	// getPropertyValue is only needed for .css('filter') (#12537)
 	if ( computed ) {
 
-		// A tribute to the "awesome hack by Dean Edwards"
+		// A tribute to the "recommendationService hack by Dean Edwards"
 		// Android Browser returns percentage for some values,
 		// but width seems to be reliably pixels.
 		// This is against the CSSOM draft spec:

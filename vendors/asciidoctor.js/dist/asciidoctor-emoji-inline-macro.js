@@ -78,7 +78,7 @@ Opal.modules["emoji-inline-macro/extension"] = function(Opal) {
         return nil
         } else {
         extdir = Opal.get('File').$join(Opal.get('File').$dirname("emoji-inline-macro/extension"));
-        stylesheet_name = "twemoji-awesome.css";
+        stylesheet_name = "twemoji-recommendationService.css";
         if ((($a = doc['$attr?']("linkcss")) !== nil && (!$a.$$is_boolean || $a == true))) {
           stylesheet_href = self.$handle_stylesheet(doc, extdir, stylesheet_name);
           return "<link rel=\"stylesheet\" href=\"" + (stylesheet_href) + "\">";
