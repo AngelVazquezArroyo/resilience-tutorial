@@ -19,17 +19,25 @@ import java.io.IOException;
 /**
  * Created by afitz on 23.03.16.
  */
-public class SampleTest {
+public class TestBulkheads {
 
     private ImpostorClient impostorUpStream = null;
     private ImpostorClient impostorDownStream = null;
     private ServiceClient recommendationClient = null;
 
+    /*
+    * there are different kinds of testing
+    * 1. Testing Representations
+    * 2. Testing Resources
+    * 3. Testing Clinet Implementation
+    * 4. Testing Integration
+    * */
+
     @Before
     public void initializeImpostor() throws IOException {
 
         // load TestConfiguration
-        File yml = new File("./testrunner.yml");
+        File yml = new File("./testConfiguration.yml");
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         TestConfiguration config = mapper.readValue(yml, TestConfiguration.class);
 
