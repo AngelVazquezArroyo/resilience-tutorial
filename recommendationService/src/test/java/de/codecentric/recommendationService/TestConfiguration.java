@@ -1,8 +1,8 @@
 package de.codecentric.recommendationService;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.codecentric.recommendationService.downstream.ImpostorClientDownStreamFactory;
-import de.codecentric.recommendationService.upstream.ImpostorClientUpStreamFactory;
+import de.codecentric.recommendationService.clients.downstream.ImpostorClientDownStreamFactory;
+import de.codecentric.recommendationService.clients.upstream.ImpostorClientUpStreamFactory;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -18,10 +18,6 @@ public class TestConfiguration {
     @Valid
     @NotNull
     private ImpostorClientDownStreamFactory downStreamImpostorFactory = new ImpostorClientDownStreamFactory();
-
-//    @Valid
-//    @NotNull
-//    private ServiceClientRecommendationFactory awesomeRecommendationFactory = new ServiceClientRecommendationFactory();
 
     @JsonProperty("upStreamImpostor")
     public ImpostorClientUpStreamFactory getUpStreamFactory(){
@@ -42,14 +38,4 @@ public class TestConfiguration {
     public void setDownStreamImpostorFactory(ImpostorClientDownStreamFactory downStreamImpostorFactory) {
         this.downStreamImpostorFactory = downStreamImpostorFactory;
     }
-
-//    @JsonProperty("awesomeRecommendationService")
-//    public ServiceClientRecommendationFactory getAwesomeRecommendationFactory() {
-//        return awesomeRecommendationFactory;
-//    }
-//
-//    @JsonProperty("awesomeRecommendationService")
-//    public void setAwesomeRecommendationFactory(ServiceClientRecommendationFactory awesomeRecommendationFactory) {
-//        this.awesomeRecommendationFactory = awesomeRecommendationFactory;
-//    }
 }

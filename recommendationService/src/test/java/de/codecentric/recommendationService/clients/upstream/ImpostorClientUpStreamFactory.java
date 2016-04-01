@@ -1,4 +1,4 @@
-package de.codecentric.recommendationService.upstream;
+package de.codecentric.recommendationService.clients.upstream;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;

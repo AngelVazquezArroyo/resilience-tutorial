@@ -1,4 +1,4 @@
-package de.codecentric.recommendationService.service;
+package de.codecentric.recommendationService.clients.service;
 
 import de.codecentric.recommendationService.RecommendationConfiguration;
 import de.codecentric.recommendationService.clients.ServiceClient;

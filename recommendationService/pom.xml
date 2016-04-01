@@ -20,9 +20,6 @@
 
         <mavenShadePlugin.version>2.4</mavenShadePlugin.version>
         <mavenCompilerPlugin.version>3.5.1</mavenCompilerPlugin.version>
-
-        <jerseyClient.version>2.22.2</jerseyClient.version>
-        <javaxWsRsApi.version>2.0.1</javaxWsRsApi.version>
     </properties>
 
 
@@ -62,17 +59,6 @@
             <artifactId>validation-api</artifactId>
             <version>${validation.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.glassfish.jersey.core</groupId>
-            <artifactId>jersey-client</artifactId>
-            <version>${jerseyClient.version}</version>
-        </dependency>
-        <!--<dependency>-->
-            <!--<groupId>javax.ws.rs</groupId>-->
-            <!--<artifactId>javax.ws.rs-api</artifactId>-->
-            <!--<version>javaxWsRsApi.version</version>-->
-        <!--</dependency>-->
-
 
         <dependency>
             <groupId>io.dropwizard</groupId>

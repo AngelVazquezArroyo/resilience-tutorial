@@ -1,8 +1,8 @@
 package de.codecentric.recommendationService.clients;
 
 import de.codecentric.recommendationService.api.Recommendation;
-import de.codecentric.recommendationService.service.ServiceHealthResult;
-import de.codecentric.recommendationService.service.ServiceHealthStatusCode;
+import de.codecentric.recommendationService.clients.service.ServiceHealthResult;
+import de.codecentric.recommendationService.clients.service.ServiceHealthStatusCode;
 
 /**
  * Created by afitz on 24.03.16.

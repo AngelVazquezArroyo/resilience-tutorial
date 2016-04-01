@@ -11,17 +11,18 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({TestBulkheads.class, TestCompleteParamterChecking.class})
-public class RecommendationServiceTests {
+public class RecommendationServiceTestSuite {
 
     @BeforeClass
     public static void setUp() {
 
-        System.out.println("setting up RecommendationServiceTests");
+        System.out.println("setting up RecommendationServiceTestSuite");
     }
 
     @AfterClass
-    public static void tearDown() {
-        System.out.println("tearing downStream RecommendationServiceTests");
+    public static void tearDown()
+    {
+        System.out.println("tearing downStream RecommendationServiceTestSuite");
     }
 
 }

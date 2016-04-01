@@ -1,4 +1,4 @@
-package de.codecentric.recommendationService.downstream;
+package de.codecentric.recommendationService.clients.downstream;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import de.codecentric.recommendationService.clients.ImpostorConfig;

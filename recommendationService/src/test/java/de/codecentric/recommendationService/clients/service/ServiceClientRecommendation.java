@@ -1,4 +1,4 @@
-package de.codecentric.recommendationService.service;
+package de.codecentric.recommendationService.clients.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.codecentric.recommendationService.api.Recommendation;
@@ -35,7 +35,6 @@ public class ServiceClientRecommendation implements ServiceClient {
     private HttpClient client;
 
     private URI healthCheckUri = null;
-//    private URI serviceUri = null;
 
     private HttpGet getHealthy;
 
@@ -96,14 +95,22 @@ public class ServiceClientRecommendation implements ServiceClient {
                     entityString = (response.getEntity() != null ? EntityUtils.toString(response.getEntity()) : "no products");
 
                     if (status == HttpStatus.SC_OK) {
+                        // 200 OK
                         return new ServiceHealthResult(status, "service seems to be healthy", entityString);
+                    } else if (status == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
+                        // 500 Internal Server Error
+                        return new ServiceHealthResult(status, "service seems to be unhealthy", entityString);
                     } else {
                         return new ServiceHealthResult(status, "Unexpected response status: " + status, entityString);
                     }
                 }
             };
 
-        } catch (Exception e) {
+        } catch (
+                Exception e
+                )
+
+        {
             throw new ServiceClientException("ServiceClient UnknownException in Constructor: " + e.getMessage());
         }
 

@@ -1,7 +1,7 @@
-package de.codecentric.recommendationService.upstream;
+package de.codecentric.recommendationService.clients.upstream;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.codecentric.recommendationService.json.ImpostorRequest;
+import de.codecentric.recommendationService.clients.json.ImpostorRequest;
 
 import java.util.List;
 

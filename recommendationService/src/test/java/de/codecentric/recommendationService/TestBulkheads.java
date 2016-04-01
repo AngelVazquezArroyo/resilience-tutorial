@@ -7,11 +7,11 @@ import de.codecentric.recommendationService.api.Recommendation;
 import de.codecentric.recommendationService.clients.ImpostorClient;
 import de.codecentric.recommendationService.clients.ServiceClient;
 import de.codecentric.recommendationService.clients.ServiceClientException;
-import de.codecentric.recommendationService.downstream.ImpostorClientDownStreamConfig;
-import de.codecentric.recommendationService.service.ServiceClientRecommendationFactory;
-import de.codecentric.recommendationService.service.ServiceHealthResult;
-import de.codecentric.recommendationService.upstream.ImpostorClientUpStreamCommands;
-import de.codecentric.recommendationService.upstream.ImpostorClientUpStreamConfig;
+import de.codecentric.recommendationService.clients.downstream.ImpostorClientDownStreamConfig;
+import de.codecentric.recommendationService.clients.service.ServiceClientRecommendationFactory;
+import de.codecentric.recommendationService.clients.service.ServiceHealthResult;
+import de.codecentric.recommendationService.clients.upstream.ImpostorClientUpStreamCommands;
+import de.codecentric.recommendationService.clients.upstream.ImpostorClientUpStreamConfig;
 
 import static org.junit.Assert.assertEquals;
 
@@ -100,7 +100,7 @@ public class TestBulkheads {
 
     }
 
-    @Test
+    @Test // test RecurringLatency
     public void testRecurringLatency() {
 
         logger.info("-----------------------------------------------------------");
@@ -131,7 +131,6 @@ public class TestBulkheads {
         } catch (Exception e) {
             logger.error("Message: " + e.getMessage());
         }
-        logger.debug("Status: " + health.getStatusCode());
 
         assertEquals("Status must be: ", 200, health.getStatusCode());
 
