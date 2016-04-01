@@ -28,3 +28,14 @@ python -m SimpleHTTPServer
 # with Python 3.x
 python -m http.server
 ```
+
+## Testing
+
+First start impostor engines:
+
+* Upstream impostor
+  $GOPATH/bin/impostor localhost:8100
+
+* Downstream impostor
+  $GOPATH/bin/impostor localhost:8102
+

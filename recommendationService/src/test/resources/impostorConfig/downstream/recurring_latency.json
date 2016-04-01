@@ -1,0 +1,6 @@
+{
+  "mode" : "downstream",
+  "failuremode" : "latency",
+  "protocol" : "http",
+  "latency" : [50000, 0, 500],
+  "latencymode" : "cycle",

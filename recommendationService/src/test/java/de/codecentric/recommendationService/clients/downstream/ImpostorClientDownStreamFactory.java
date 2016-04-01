@@ -2,8 +2,11 @@ package de.codecentric.recommendationService.clients.downstream;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.codecentric.recommendationService.clients.ImpostorClient;
+import de.codecentric.recommendationService.clients.ServiceClientException;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -12,6 +15,8 @@ import javax.validation.constraints.Min;
  * Created by afitz on 24.03.16.
  */
 public class ImpostorClientDownStreamFactory {
+
+    private static final Logger logger = LoggerFactory.getLogger(ImpostorClientDownStreamFactory.class);
 
     //    @NotEmpty
     private String host = "localhost";
@@ -24,26 +29,36 @@ public class ImpostorClientDownStreamFactory {
     private String path = "/";
 
     @JsonProperty
-    public String getHost() {return host;}
+    public String getHost() {
+        return host;
+    }
 
     @JsonProperty
-    public void setHost(String host) {this.host = host;}
+    public void setHost(String host) {
+        this.host = host;
+    }
 
     @JsonProperty
-    public int getPort() {return port;}
+    public int getPort() {
+        return port;
+    }
 
     @JsonProperty
-    public void setPort(int port) {this.port = port;}
+    public void setPort(int port) {
+        this.port = port;
+    }
 
     @JsonProperty
-    public String getPath() {return path;}
+    public String getPath() {
+        return path;
+    }
 
     @JsonProperty
     public void setPath(String path) {
         this.path = path;
     }
 
-    public ImpostorClient build (ImpostorClientDownStreamConfig config){
+    public ImpostorClient build(ImpostorClientDownStreamConfig config) throws ServiceClientException{
 
         ImpostorClient donwStreamClient = this.build();
 
@@ -52,17 +67,15 @@ public class ImpostorClientDownStreamFactory {
         return donwStreamClient;
     }
 
-    public ImpostorClient build(){
+    public ImpostorClient build() throws ServiceClientException{
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
         ImpostorClient downStream = new ImpostorClientDownStream(this.getHost(), this.getPort(), httpClient);
 
-        System.out.println("ImpostorClient build: DownStreamStream");
+        logger.info("ImpostorClient build: DownStreamStream");
 
         downStream.setConfig(ImpostorClientDownStreamConfig.NORMAL);
-
-        System.out.println("ImpostorClient config: NORMAL");
 
         return downStream;
     }

@@ -3,8 +3,11 @@ package de.codecentric.recommendationService.clients.upstream;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.codecentric.recommendationService.clients.ImpostorClient;
+import de.codecentric.recommendationService.clients.ServiceClientException;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -14,6 +17,7 @@ import javax.validation.constraints.Min;
  */
 public class ImpostorClientUpStreamFactory {
 
+    private static final Logger logger = LoggerFactory.getLogger(ImpostorClientUpStreamFactory.class);
 
 //    @NotEmpty
     private String host = "localhost";
@@ -45,17 +49,15 @@ public class ImpostorClientUpStreamFactory {
         this.path = path;
     }
 
-    public ImpostorClient build(){
+    public ImpostorClient build() throws ServiceClientException {
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
         ImpostorClient upStream = new ImpostorClientUpStream(this.getHost(), this.getPort(), httpClient);
 
-        System.out.println("ImpostorClient build: UpStream");
+        logger.info("ImpostorClient build: UpStream");
 
         upStream.setConfig(ImpostorClientUpStreamConfig.NORMAL);
-
-        System.out.println("ImpostorClient config: NORMAL");
 
         return upStream;
     }

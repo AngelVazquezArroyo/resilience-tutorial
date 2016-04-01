@@ -2,6 +2,8 @@ package de.codecentric.recommendationService.clients.upstream;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import de.codecentric.recommendationService.clients.ImpostorConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -16,6 +18,7 @@ public enum ImpostorClientUpStreamConfig implements ImpostorConfig {
     NORMAL("normal"),
     PRESSURE("pressure");
 
+    private final Logger logger = LoggerFactory.getLogger(ImpostorClientUpStreamConfig.class);
 
     private String configString;
     private String file;
@@ -26,7 +29,7 @@ public enum ImpostorClientUpStreamConfig implements ImpostorConfig {
 
         config = i;
 
-        String dir = "./impostorConfig/UpStream/";
+        String dir = "src/test/resources/impostorConfig/UpStream/";
 
         switch (i) {
             case "normal":
@@ -39,7 +42,7 @@ public enum ImpostorClientUpStreamConfig implements ImpostorConfig {
 
         try {
             configString = new String(java.nio.file.Files.readAllBytes(Paths.get(file)));
-            System.out.println("Loading config : " + file);
+            logger.info("Loading config : " + file);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }catch (IOException e) {

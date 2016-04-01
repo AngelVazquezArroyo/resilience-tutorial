@@ -9,6 +9,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -17,6 +19,8 @@ import java.net.URISyntaxException;
  * Created by afitz on 24.03.16.
  */
 public class ImpostorClientUpStream implements ImpostorClient {
+
+    private static final Logger logger = LoggerFactory.getLogger(ImpostorClientUpStream.class);
 
     private String host;
     private int port;
@@ -47,7 +51,7 @@ public class ImpostorClientUpStream implements ImpostorClient {
         try {
             upStreamConfigRequest = new HttpPost(upStreamConfigURI);
 
-            System.out.println("UpStreamConfig: " + config.toString());
+            logger.info("UpStreamConfig: " + config.toString());
 
             StringEntity requestJson = new StringEntity(config.getJSon(), ContentType.APPLICATION_JSON);
             upStreamConfigRequest.setEntity(requestJson);

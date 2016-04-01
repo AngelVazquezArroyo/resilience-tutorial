@@ -48,6 +48,7 @@ public class AnalysisServiceClientAdapter implements AnalysisServiceClient {
                     .build();
         } catch (URISyntaxException e) {
             logger.error(e.toString());
+            throw new AnalysisServiceException("Unknown Exception in Cosntructor: " + e.getMessage());
         }
 
         HttpGet get = new HttpGet(uri);
@@ -71,11 +72,9 @@ public class AnalysisServiceClientAdapter implements AnalysisServiceClient {
 
         String responseBody = null;
         try {
-            logger.info("----------------------------------------");
             logger.info("get = " + uri.toString());
             responseBody = httpAnalysisService.execute(get, responseHandler);
             logger.info("response = " + responseBody);
-            logger.info("----------------------------------------");
         } catch (ClientProtocolException e){
             logger.error("ClientProtocolException"  + e.getMessage());
             throw new AnalysisServiceException("AnalysisServiceException: " + e.getMessage());
@@ -107,7 +106,7 @@ public class AnalysisServiceClientAdapter implements AnalysisServiceClient {
             logger.error("ping get no response: " + e.getMessage());
             available = false;
         } catch (Exception e){
-            System.out.println("oh no, more exceptions" + e.getStackTrace());
+            logger.error("oh no, more exceptions" + e.getMessage());
         }
         return available;
     }

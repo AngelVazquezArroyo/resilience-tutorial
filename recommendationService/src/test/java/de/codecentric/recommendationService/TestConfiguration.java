@@ -2,7 +2,7 @@ package de.codecentric.recommendationService;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.codecentric.recommendationService.clients.downstream.ImpostorClientDownStreamFactory;
-import de.codecentric.recommendationService.clients.service.ServiceClientAwesomeRecommendationFactory;
+import de.codecentric.recommendationService.clients.service.ServiceClientRecommendationFactory;
 import de.codecentric.recommendationService.clients.upstream.ImpostorClientUpStreamFactory;
 
 import javax.validation.Valid;
@@ -20,9 +20,9 @@ public class TestConfiguration {
     @NotNull
     private ImpostorClientDownStreamFactory downStreamImpostorFactory = new ImpostorClientDownStreamFactory();
 
-    @Valid
-    @NotNull
-    private ServiceClientAwesomeRecommendationFactory awesomeRecommendationFactory = new ServiceClientAwesomeRecommendationFactory();
+//    @Valid
+//    @NotNull
+//    private ServiceClientRecommendationFactory awesomeRecommendationFactory = new ServiceClientRecommendationFactory();
 
     @JsonProperty("upStreamImpostor")
     public ImpostorClientUpStreamFactory getUpStreamFactory(){
@@ -44,13 +44,13 @@ public class TestConfiguration {
         this.downStreamImpostorFactory = downStreamImpostorFactory;
     }
 
-    @JsonProperty("awesomeRecommendationService")
-    public ServiceClientAwesomeRecommendationFactory getAwesomeRecommendationFactory() {
-        return awesomeRecommendationFactory;
-    }
-
-    @JsonProperty("awesomeRecommendationService")
-    public void setAwesomeRecommendationFactory(ServiceClientAwesomeRecommendationFactory awesomeRecommendationFactory) {
-        this.awesomeRecommendationFactory = awesomeRecommendationFactory;
-    }
+//    @JsonProperty("awesomeRecommendationService")
+//    public ServiceClientRecommendationFactory getAwesomeRecommendationFactory() {
+//        return awesomeRecommendationFactory;
+//    }
+//
+//    @JsonProperty("awesomeRecommendationService")
+//    public void setAwesomeRecommendationFactory(ServiceClientRecommendationFactory awesomeRecommendationFactory) {
+//        this.awesomeRecommendationFactory = awesomeRecommendationFactory;
+//    }
 }

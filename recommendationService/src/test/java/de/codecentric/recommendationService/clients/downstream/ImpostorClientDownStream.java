@@ -3,19 +3,27 @@ package de.codecentric.recommendationService.clients.downstream;
 import de.codecentric.recommendationService.clients.ImpostorClient;
 import de.codecentric.recommendationService.clients.ImpostorCommand;
 import de.codecentric.recommendationService.clients.ImpostorConfig;
+import de.codecentric.recommendationService.clients.ServiceClientException;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * Created by afitz on 24.03.16.
  */
 public class ImpostorClientDownStream implements ImpostorClient {
+
+    private static final Logger logger = LoggerFactory.getLogger(ImpostorClientDownStream.class);
 
     private String host;
     private int port;
@@ -28,24 +36,24 @@ public class ImpostorClientDownStream implements ImpostorClient {
     }
 
     @Override
-    public void setConfig(ImpostorConfig config) {
+    public void setConfig(ImpostorConfig config) throws ServiceClientException{
 
         HttpPost downStreamConfigRequest = null;
         URI downStreamConfigURI;
 
-        try {
-
 //            System.out.println("setconfig to " + config.getJSon());
 
+        try {
             downStreamConfigURI = new URIBuilder()
                     .setScheme("http")
                     .setHost(this.host)
                     .setPort(this.port)
                     .setPath("/config")
                     .build();
-            downStreamConfigRequest = new HttpPost(downStreamConfigURI);
 
-            System.out.println("DownStreamConfig: " + config.toString());
+        downStreamConfigRequest = new HttpPost(downStreamConfigURI);
+
+            logger.info("DownStreamConfig: " + config.toString());
 
             StringEntity requestJson = new StringEntity(config.getJSon(), ContentType.APPLICATION_JSON);
             downStreamConfigRequest.setEntity(requestJson);
@@ -53,7 +61,18 @@ public class ImpostorClientDownStream implements ImpostorClient {
             HttpResponse response = null;
             response = client.execute(downStreamConfigRequest);
 
-        } catch (Exception e) {
+            int status = response.getStatusLine().getStatusCode();
+
+            if (status >= 200 && status < 300) {
+                logger.info("set config to: " + config.toString() + " was successfull");
+            } else {
+                throw new ServiceClientException("set config to :" + config.toString() + " was not successfull. Status: " + status + " " + response.getEntity().toString());
+            }
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
