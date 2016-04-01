@@ -21,7 +21,7 @@ public class RecommendationServiceTests {
 
     @AfterClass
     public static void tearDown() {
-        System.out.println("tearing down RecommendationServiceTests");
+        System.out.println("tearing downStream RecommendationServiceTests");
     }
 
 }

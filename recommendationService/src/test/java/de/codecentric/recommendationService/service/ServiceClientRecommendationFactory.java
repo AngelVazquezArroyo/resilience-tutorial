@@ -1,4 +1,4 @@
-package de.codecentric.recommendationService.clients.service;
+package de.codecentric.recommendationService.service;
 
 import de.codecentric.recommendationService.RecommendationConfiguration;
 import de.codecentric.recommendationService.clients.ServiceClient;
@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.ws.rs.client.Client;
 
 /**
  * Created by afitz on 24.03.16.

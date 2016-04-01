@@ -1,4 +1,4 @@
-package de.codecentric.recommendationService.clients.service;
+package de.codecentric.recommendationService.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.codecentric.recommendationService.api.Recommendation;
@@ -70,17 +70,14 @@ public class ServiceClientRecommendation implements ServiceClient {
                 public Recommendation handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
 
                     int status = response.getStatusLine().getStatusCode();
-                    String message;
                     String entityString;
                     Recommendation recommendation = null;
 
                     entityString = (response.getEntity() != null ? EntityUtils.toString(response.getEntity()) : "no health checks");
 
-//                    if (status >= 200 && status < 300) {
                     if (status == HttpStatus.SC_OK) {
                         recommendation = mapper.readValue(entityString, Recommendation.class);
                     } else {
-//                            throw new ServiceClientException("Unexpected response status: " + status + "-" + entityString);
                         new ClientProtocolException("Unexpected response status: " + status + " - " + entityString);
                     }
                     return recommendation;
@@ -95,11 +92,9 @@ public class ServiceClientRecommendation implements ServiceClient {
                     int status = response.getStatusLine().getStatusCode();
                     String message;
                     String entityString;
-                    Recommendation recommendation;
 
                     entityString = (response.getEntity() != null ? EntityUtils.toString(response.getEntity()) : "no products");
 
-//                    if (status >= 200 && status < 300) {
                     if (status == HttpStatus.SC_OK) {
                         return new ServiceHealthResult(status, "service seems to be healthy", entityString);
                     } else {

@@ -1,11 +1,8 @@
 package de.codecentric.recommendationService.clients;
 
 import de.codecentric.recommendationService.api.Recommendation;
-import de.codecentric.recommendationService.clients.service.ServiceHealthResult;
-import de.codecentric.recommendationService.clients.service.ServiceHealthStatusStructure;
-import de.codecentric.recommendationService.clients.service.ServiceHealthStatusCode;
-
-import javax.ws.rs.client.Client;
+import de.codecentric.recommendationService.service.ServiceHealthResult;
+import de.codecentric.recommendationService.service.ServiceHealthStatusCode;
 
 /**
  * Created by afitz on 24.03.16.

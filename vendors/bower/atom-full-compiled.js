@@ -3165,7 +3165,7 @@ declare( 'atom.Color', {
 		}
 
 		if (!isFloat) value = Math.round(value);
-		// We don't want application down, if user script (e.g. animation)
+		// We don't want application downStream, if user script (e.g. animation)
 		// generates such wrong array: [150, 125, -1]
 		// `noLimits` switch off this check
 		this[prop] = this.noLimits ? value :

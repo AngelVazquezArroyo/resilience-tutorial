@@ -1,9 +1,8 @@
 package de.codecentric.recommendationService;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.codecentric.recommendationService.clients.downstream.ImpostorClientDownStreamFactory;
-import de.codecentric.recommendationService.clients.service.ServiceClientRecommendationFactory;
-import de.codecentric.recommendationService.clients.upstream.ImpostorClientUpStreamFactory;
+import de.codecentric.recommendationService.downstream.ImpostorClientDownStreamFactory;
+import de.codecentric.recommendationService.upstream.ImpostorClientUpStreamFactory;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;

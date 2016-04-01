@@ -1,7 +1,7 @@
-package de.codecentric.recommendationService.clients.upstream;
+package de.codecentric.recommendationService.upstream;
 
 import de.codecentric.recommendationService.clients.ImpostorClient;
-import de.codecentric.recommendationService.clients.ImpostorCommand;
+import de.codecentric.recommendationService.clients.ImpostorCommands;
 import de.codecentric.recommendationService.clients.ImpostorConfig;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -46,26 +46,31 @@ public class ImpostorClientUpStream implements ImpostorClient {
     @Override
     public void setConfig(ImpostorConfig config) {
 
-        HttpPost upStreamConfigRequest = null;
+        logger.info("UpStreamConfig: " + config.toString());
 
+        this.sendToImpostor(new StringEntity(config.getJSon(), ContentType.APPLICATION_JSON));
+
+    }
+
+    @Override
+    public void executeCommand(ImpostorCommands command) {
+
+        logger.info("UpStreamCommand: " + command.toString());
+
+        this.sendToImpostor(new StringEntity(command.getJSon(), ContentType.APPLICATION_JSON));
+
+    }
+
+    private void sendToImpostor(StringEntity requestJson) {
         try {
-            upStreamConfigRequest = new HttpPost(upStreamConfigURI);
+            HttpPost upStreamConfigRequest = new HttpPost(upStreamConfigURI);
 
-            logger.info("UpStreamConfig: " + config.toString());
-
-            StringEntity requestJson = new StringEntity(config.getJSon(), ContentType.APPLICATION_JSON);
             upStreamConfigRequest.setEntity(requestJson);
 
-            HttpResponse response = null;
-            response = client.execute(upStreamConfigRequest);
+            HttpResponse response = client.execute(upStreamConfigRequest);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void executeCommand(ImpostorCommand command) {
-// tbd!
     }
 }

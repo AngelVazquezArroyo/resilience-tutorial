@@ -7,17 +7,16 @@ import de.codecentric.recommendationService.api.Recommendation;
 import de.codecentric.recommendationService.clients.ImpostorClient;
 import de.codecentric.recommendationService.clients.ServiceClient;
 import de.codecentric.recommendationService.clients.ServiceClientException;
-import de.codecentric.recommendationService.clients.downstream.ImpostorClientDownStreamConfig;
-import de.codecentric.recommendationService.clients.service.ServiceClientRecommendationFactory;
-import de.codecentric.recommendationService.clients.service.ServiceHealthResult;
-import de.codecentric.recommendationService.clients.upstream.ImpostorClientUpStreamConfig;
+import de.codecentric.recommendationService.downstream.ImpostorClientDownStreamConfig;
+import de.codecentric.recommendationService.service.ServiceClientRecommendationFactory;
+import de.codecentric.recommendationService.service.ServiceHealthResult;
+import de.codecentric.recommendationService.upstream.ImpostorClientUpStreamCommands;
+import de.codecentric.recommendationService.upstream.ImpostorClientUpStreamConfig;
 
 import static org.junit.Assert.assertEquals;
 
-import io.dropwizard.testing.DropwizardTestSupport;
 import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
-import junit.framework.TestCase;
 import org.junit.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +59,6 @@ public class TestBulkheads {
             impostorUpStream = config.getUpStreamFactory().build(); //with config.normal
             impostorDownStream = config.getDownStreamFactory().build(); //with config.normal
 
-//            RULE.before();
             // build clients to recommendation service
             recommendationService = new ServiceClientRecommendationFactory(RULE).build("recommendationService client");
 
@@ -115,6 +113,8 @@ public class TestBulkheads {
         try {
             impostorDownStream.setConfig(ImpostorClientDownStreamConfig.RECURRINGLATENCY);
 
+            impostorUpStream.executeCommand(ImpostorClientUpStreamCommands.PRESSURE_ON);
+
             health = recommendationService.getHealthy();
 
             logger.info("Status: " + health.getStatusCode());
@@ -122,6 +122,8 @@ public class TestBulkheads {
             logger.info("Entity: " + health.getEntity());
 
             impostorDownStream.setConfig(ImpostorClientDownStreamConfig.NORMAL);
+
+            impostorUpStream.executeCommand(ImpostorClientUpStreamCommands.PRESSURE_OFF);
 
         } catch (ServiceClientException e) {
             logger.error(e.getMessage());
@@ -145,7 +147,6 @@ public class TestBulkheads {
         try {
             impostorDownStream.setConfig(ImpostorClientDownStreamConfig.NORMAL);
             impostorUpStream.setConfig(ImpostorClientUpStreamConfig.NORMAL);
-//            RULE.after();
         } catch (ServiceClientException e) {
             logger.error(e.getMessage());
             //tbd!: abort execution

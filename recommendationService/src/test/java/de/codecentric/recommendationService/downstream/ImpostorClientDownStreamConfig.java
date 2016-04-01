@@ -1,4 +1,4 @@
-package de.codecentric.recommendationService.clients.upstream;
+package de.codecentric.recommendationService.downstream;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import de.codecentric.recommendationService.clients.ImpostorConfig;
@@ -9,41 +9,40 @@ import java.io.IOException;
 import java.nio.file.Paths;
 
 /**
- * Created by afitz on 23.03.16.
+ * Created by afitz on 24.03.16.
  */
-public enum ImpostorClientUpStreamConfig implements ImpostorConfig {
-
-//    tbd! : genrally is to reflect: is the marshalling json<->class meaningful?
+public enum ImpostorClientDownStreamConfig implements ImpostorConfig {
+    //    tbd! : genrally is to reflect: is the marshalling json<->class meaningful?
 
     NORMAL("normal"),
-    PRESSURE("pressure");
+    ONETIMELATENCY("one_time_latency"),
+    RECURRINGLATENCY("recurring_latency");
 
-    private final Logger logger = LoggerFactory.getLogger(ImpostorClientUpStreamConfig.class);
+    private final Logger logger = LoggerFactory.getLogger(ImpostorClientDownStreamConfig.class);
 
     private String configString;
     private String file;
 
     private final String config;
 
-    ImpostorClientUpStreamConfig (String i) {
+    private String dir = "src/test/resources/downStream/config/";
+
+    ImpostorClientDownStreamConfig(String i) {
 
         config = i;
 
-        String dir = "src/test/resources/impostorConfig/UpStream/";
-
-        switch (i) {
-            case "normal":
-                file = dir + "normal.json";
-                break;
-            case "pressure":
-                file = dir + "pressure.json";
-                break;
-        }
+        file = dir + i + ".json";
 
         try {
             configString = new String(java.nio.file.Files.readAllBytes(Paths.get(file)));
+            configString = configString.concat(new String(java.nio.file.Files.readAllBytes(Paths.get(dir + "responses.json"))));
+            configString = configString.concat("}");
+
+            logger.debug("JSON: " + configString);
+
             logger.info("Loading config : " + file);
-        } catch (JsonProcessingException e) {
+
+         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }catch (IOException e) {
             e.printStackTrace();
@@ -52,6 +51,7 @@ public enum ImpostorClientUpStreamConfig implements ImpostorConfig {
     }
 
     public String getFileName(){return file;}
+
     @Override
     public String getJSon() {
         return configString;

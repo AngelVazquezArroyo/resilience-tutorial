@@ -998,7 +998,7 @@ QUnit.equiv = function () {
                     loop = false;
                     for(j=0;j<parents.length;j++){
                         if(parents[j] === a[i])
-                            loop = true; //don't go down the same path twice
+                            loop = true; //don't go downStream the same path twice
                     }
                     aProperties.push(i); // collect a's properties
 

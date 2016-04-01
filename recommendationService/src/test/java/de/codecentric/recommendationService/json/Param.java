@@ -1,4 +1,4 @@
-package de.codecentric.recommendationService.clients.json;
+package de.codecentric.recommendationService.json;
 
 /**
  * Created by afitz on 23.03.16.

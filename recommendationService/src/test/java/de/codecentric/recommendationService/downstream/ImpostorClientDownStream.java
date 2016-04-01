@@ -1,7 +1,7 @@
-package de.codecentric.recommendationService.clients.downstream;
+package de.codecentric.recommendationService.downstream;
 
 import de.codecentric.recommendationService.clients.ImpostorClient;
-import de.codecentric.recommendationService.clients.ImpostorCommand;
+import de.codecentric.recommendationService.clients.ImpostorCommands;
 import de.codecentric.recommendationService.clients.ImpostorConfig;
 import de.codecentric.recommendationService.clients.ServiceClientException;
 import org.apache.http.HttpResponse;
@@ -78,8 +78,8 @@ public class ImpostorClientDownStream implements ImpostorClient {
     }
 
     @Override
-    public void executeCommand(ImpostorCommand command) {
-
+    public void executeCommand(ImpostorCommands command) {
+        // no commands at the moment
     }
 }
 

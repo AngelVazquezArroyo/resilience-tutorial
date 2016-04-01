@@ -5,5 +5,5 @@ package de.codecentric.recommendationService.clients;
  */
 public interface ImpostorClient {
     public void setConfig(ImpostorConfig config) throws ServiceClientException;
-    public void executeCommand(ImpostorCommand command) throws ServiceClientException;
+    public void executeCommand(ImpostorCommands command) throws ServiceClientException;
 }

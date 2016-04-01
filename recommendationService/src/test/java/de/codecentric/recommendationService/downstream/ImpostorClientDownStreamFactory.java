@@ -1,4 +1,4 @@
-package de.codecentric.recommendationService.clients.downstream;
+package de.codecentric.recommendationService.downstream;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.codecentric.recommendationService.clients.ImpostorClient;

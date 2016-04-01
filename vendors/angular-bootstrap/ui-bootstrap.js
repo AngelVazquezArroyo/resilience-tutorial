@@ -5689,7 +5689,7 @@ angular.module('ui.bootstrap.timepicker', [])
     });
   };
 
-  // Respond on up/down arrowkeys
+  // Respond on up/downStream arrowkeys
   this.setupArrowkeyEvents = function(hoursInputEl, minutesInputEl, secondsInputEl) {
     hoursInputEl.bind('keydown', function(e) {
       if (!disabled) {
@@ -5697,7 +5697,7 @@ angular.module('ui.bootstrap.timepicker', [])
           e.preventDefault();
           $scope.incrementHours();
           $scope.$apply();
-        } else if (e.which === 40) { // down
+        } else if (e.which === 40) { // downStream
           e.preventDefault();
           $scope.decrementHours();
           $scope.$apply();
@@ -5711,7 +5711,7 @@ angular.module('ui.bootstrap.timepicker', [])
           e.preventDefault();
           $scope.incrementMinutes();
           $scope.$apply();
-        } else if (e.which === 40) { // down
+        } else if (e.which === 40) { // downStream
           e.preventDefault();
           $scope.decrementMinutes();
           $scope.$apply();
@@ -5725,7 +5725,7 @@ angular.module('ui.bootstrap.timepicker', [])
           e.preventDefault();
           $scope.incrementSeconds();
           $scope.$apply();
-        } else if (e.which === 40) { // down
+        } else if (e.which === 40) { // downStream
           e.preventDefault();
           $scope.decrementSeconds();
           $scope.$apply();
@@ -6364,7 +6364,7 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.debounce', 'ui.bootstrap
       }
     };
 
-    //bind keyboard events: arrows up(38) / down(40), enter(13) and tab(9), esc(27)
+    //bind keyboard events: arrows up(38) / downStream(40), enter(13) and tab(9), esc(27)
     element.on('keydown', function(evt) {
       //typeahead is open and an "interesting" key was pressed
       if (scope.matches.length === 0 || HOT_KEYS.indexOf(evt.which) === -1) {

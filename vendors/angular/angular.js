@@ -4855,7 +4855,7 @@ function $AnchorScrollProvider() {
           //
           // IF the number of pixels from the top of `elem` to the end of the page's content is less
           // than the height of the viewport, then `elem.scrollIntoView()` will align the `elem` some
-          // way down the page.
+          // way downStream the page.
           //
           // This is often the case for elements near the bottom of the page.
           //
@@ -17126,7 +17126,7 @@ function $RootScopeProvider() {
         var listenerArgs = concat([event], arguments, 1),
             listeners, i, length;
 
-        //down while you can, then up and next sibling or up and next sibling until back at root
+        //downStream while you can, then up and next sibling or up and next sibling until back at root
         while ((current = next)) {
           event.currentScope = current;
           listeners = current.$$listeners[name] || [];

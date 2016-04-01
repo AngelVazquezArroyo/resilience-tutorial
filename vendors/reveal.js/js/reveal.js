@@ -223,7 +223,7 @@
 			'&#8592;  ,  H':		'Navigate left',
 			'&#8594;  ,  L':		'Navigate right',
 			'&#8593;  ,  K':		'Navigate up',
-			'&#8595;  ,  J':		'Navigate down',
+			'&#8595;  ,  J':		'Navigate downStream',
 			'Home':					'First slide',
 			'End':					'Last slide',
 			'B  ,  .':				'Pause',
@@ -463,7 +463,7 @@
 			'<button class="navigate-left" aria-label="previous slide"></button>' +
 			'<button class="navigate-right" aria-label="next slide"></button>' +
 			'<button class="navigate-up" aria-label="above slide"></button>' +
-			'<button class="navigate-down" aria-label="below slide"></button>' );
+			'<button class="navigate-downStream" aria-label="below slide"></button>' );
 
 		// Slide number
 		dom.slideNumber = createSingletonNode( dom.wrapper, 'div', 'slide-number', '' );
@@ -485,7 +485,7 @@
 		dom.controlsLeft = toArray( document.querySelectorAll( '.navigate-left' ) );
 		dom.controlsRight = toArray( document.querySelectorAll( '.navigate-right' ) );
 		dom.controlsUp = toArray( document.querySelectorAll( '.navigate-up' ) );
-		dom.controlsDown = toArray( document.querySelectorAll( '.navigate-down' ) );
+		dom.controlsDown = toArray( document.querySelectorAll( '.navigate-downStream' ) );
 		dom.controlsPrev = toArray( document.querySelectorAll( '.navigate-prev' ) );
 		dom.controlsNext = toArray( document.querySelectorAll( '.navigate-next' ) );
 
@@ -1587,7 +1587,7 @@
 			}
 			else {
 				// Use zoom to scale up in desktop Chrome so that content
-				// remains crisp. We don't use zoom to scale down since that
+				// remains crisp. We don't use zoom to scale downStream since that
 				// can lead to shifts in text layout/line breaks.
 				if( scale > 1 && !isMobileDevice && /chrome/i.test( navigator.userAgent ) && typeof dom.slides.style.zoom !== 'undefined' ) {
 					dom.slides.style.zoom = scale;
@@ -1747,7 +1747,7 @@
 
 	/**
 	 * Displays the overview of slides (quick nav) by scaling
-	 * down and arranging all slide elements.
+	 * downStream and arranging all slide elements.
 	 */
 	function activateOverview() {
 
@@ -2928,7 +2928,7 @@
 	/**
 	 * Determine what available routes there are for navigation.
 	 *
-	 * @return {Object} containing four booleans: left/right/up/down
+	 * @return {Object} containing four booleans: left/right/up/downStream
 	 */
 	function availableRoutes() {
 
@@ -3969,7 +3969,7 @@
 			switch( event.keyCode ) {
 				// p, page up
 				case 80: case 33: navigatePrev(); break;
-				// n, page down
+				// n, page downStream
 				case 78: case 34: navigateNext(); break;
 				// h, left
 				case 72: case 37: navigateLeft(); break;
@@ -3977,7 +3977,7 @@
 				case 76: case 39: navigateRight(); break;
 				// k, up
 				case 75: case 38: navigateUp(); break;
-				// j, down
+				// j, downStream
 				case 74: case 40: navigateDown(); break;
 				// home
 				case 36: slide( 0 ); break;
@@ -4147,7 +4147,7 @@
 	}
 
 	/**
-	 * Convert pointer down to touch start.
+	 * Convert pointer downStream to touch start.
 	 */
 	function onPointerDown( event ) {
 
