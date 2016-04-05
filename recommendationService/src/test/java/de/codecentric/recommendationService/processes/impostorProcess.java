@@ -15,10 +15,10 @@ public class impostorProcess {
 
         String dir = "./../impostor/";
 
-//        String[] command = {"/Users/afitz/Dropbox/resilience-tutorial/impostor/impostor", "localhost:8102"};
         String[] command = {dir + "impostor", host +":" + port};
         probuilder = new ProcessBuilder(command);
-        //You can set up your work directory
+
+        // set working directory to bin/impostor
         probuilder.directory(new File(dir));
 
         try {

@@ -10,7 +10,7 @@ import org.junit.runners.Suite;
  */
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({TestBulkheads.class, TestCompleteParamterChecking.class})
+@Suite.SuiteClasses({TestBulkheads.class, TestNormal.class})
 public class RecommendationServiceTestSuite {
 
     @BeforeClass

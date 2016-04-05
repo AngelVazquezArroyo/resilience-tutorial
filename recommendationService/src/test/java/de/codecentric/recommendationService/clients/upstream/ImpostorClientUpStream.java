@@ -40,7 +40,7 @@ public class ImpostorClientUpStream extends ImpostorClient {
         if (status == HttpStatus.SC_OK || status == HttpStatus.SC_NO_CONTENT) {
             logger.info("set config to: " + config.toString() + " was successfull");
         } else {
-            throw new ServiceClientException("set config " + config.toString() + " to UpStreamImpostor was not successfull. Status: " + status);
+            throw new ServiceClientException("set config " + config.toString() + " to ImpostorRule was not successfull. Status: " + status);
         }
 
     }

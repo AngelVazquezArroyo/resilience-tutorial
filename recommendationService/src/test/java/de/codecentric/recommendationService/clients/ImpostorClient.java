@@ -1,5 +1,6 @@
 package de.codecentric.recommendationService.clients;
 
+import de.codecentric.recommendationService.clients.downstream.ImpostorClientDownStreamConfig;
 import de.codecentric.recommendationService.clients.upstream.ImpostorClientUpStream;
 import org.apache.http.HttpResponse;
 import org.apache.http.NoHttpResponseException;
@@ -8,17 +9,19 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
+import org.junit.rules.ExternalResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 /**
  * Created by afitz on 24.03.16.
  */
-public abstract class ImpostorClient {
+public abstract class ImpostorClient{
 
     private static final Logger logger = LoggerFactory.getLogger(ImpostorClient.class);
 
@@ -50,7 +53,7 @@ public abstract class ImpostorClient {
     protected int sendToImpostor(StringEntity requestJson) {
 
         HttpPost impostorConfigRequest = null;
-        int status = 999;
+        int status = 999; // error!
 
         try {
 
@@ -71,5 +74,9 @@ public abstract class ImpostorClient {
         }
         return status;
 
+    }
+
+    protected Boolean ping(StringEntity requestJson) {
+        return (this.sendToImpostor(requestJson) != 999 ? true: false);
     }
 }
