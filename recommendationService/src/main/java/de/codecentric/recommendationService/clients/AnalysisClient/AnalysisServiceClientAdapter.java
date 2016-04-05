@@ -1,6 +1,7 @@
 package de.codecentric.recommendationService.clients.AnalysisClient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.codecentric.recommendationService.core.Products;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;

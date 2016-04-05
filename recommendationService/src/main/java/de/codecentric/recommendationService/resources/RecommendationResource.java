@@ -5,7 +5,7 @@ import com.google.common.base.Optional;
 import de.codecentric.recommendationService.api.Recommendation;
 import de.codecentric.recommendationService.clients.AnalysisClient.AnalysisServiceClient;
 import de.codecentric.recommendationService.clients.AnalysisClient.AnalysisServiceException;
-import de.codecentric.recommendationService.clients.AnalysisClient.Products;
+import de.codecentric.recommendationService.core.Products;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,17 +31,10 @@ public class RecommendationResource {
 	}
 
 	@GET
-//	@Timed // measures the duration of requests to a resource
 	@Metered // measures the rate at which the resource is accessed
-//	@ExceptionMetered //measures how often exceptions occur processing the resource
 	public Recommendation getRecommendation(@QueryParam("user") Optional<String> user, @QueryParam("product") Optional<String> product) {
 
 		String recommedUser = (user.isPresent() ? user.get() : defaultUser);
-
-//		local access
-//		Product recommedProduct = RecommendationLookup.getInstance().getRecommendation(
-//				(product.isPresent() ? product.get() : defaultProduct)
-//				);
 
 		Products recommendProducts = null;
 		try {

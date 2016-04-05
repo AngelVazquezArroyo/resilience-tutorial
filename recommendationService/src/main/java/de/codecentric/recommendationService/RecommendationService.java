@@ -37,7 +37,7 @@ public class RecommendationService extends Application<RecommendationConfigurati
 					Environment recommendationEnvironment) {
 
 		// create & register client(s):
-		//*** AnalysisServce ***
+		//*** AnalysisService ***
 		//*** factory will automatically tie our AnalysisServiceClient connection to the lifecycle of our recommendation’s Environment.
 		AnalysisServiceClient analysisService = recommendationConfiguration.getAnalysisServiceFactory().build(recommendationEnvironment);
 		final RecommendationResource recommendationResource = new RecommendationResource(
@@ -51,12 +51,8 @@ public class RecommendationService extends Application<RecommendationConfigurati
 		recommendationEnvironment.metrics().register("requets", requestsMeter);
 		requestsMeter.mark();
 
-//		ConsoleReporter reporter = ConsoleReporter.forRegistry(requestMetrics).build();
-//		reporter.start(1, TimeUnit.SECONDS); // should expose values every minute
-
 
 		// register HeatlChecks
-//		recommendationEnvironment.healthChecks().register("request", new RequestHealthCheck(requestsMeter));
 		recommendationEnvironment.healthChecks().register("AnalyseService", new AnalysisServiceHealthCheck(analysisService));
 
 		//register resources

@@ -58,13 +58,10 @@ public class AnalysisServiceFactory {
     public AnalysisServiceClient build(Environment environment) {
 
         final HttpClientConfiguration httpConfig = new HttpClientConfiguration();
-        // set httpConfig?
-        // at the moment no.
+        // set httpConfig? at the moment no. Required?
 
         final HttpClient httpClient = new HttpClientBuilder(environment).using(httpConfig)
                 .build("analysis-http-client");
-        // register the httpClient
-//        environment.jersey().register(httpClient);
 
         AnalysisServiceClient client = new AnalysisServiceClientAdapter(getHost(), getPort(), getPath(), httpClient);
 
