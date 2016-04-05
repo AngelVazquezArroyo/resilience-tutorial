@@ -1,0 +1,15 @@
+/Users/afitz/Dropbox/resilience-tutorial/recommendationService/src/main/java/de/codecentric/recommendationService/api/Purchase.java
+/Users/afitz/Dropbox/resilience-tutorial/recommendationService/src/main/java/de/codecentric/recommendationService/health/RequestHealthCheck.java
+/Users/afitz/Dropbox/resilience-tutorial/recommendationService/src/main/java/de/codecentric/recommendationService/clients/AnalysisClient/AnalysisServiceClientAdapter.java
+/Users/afitz/Dropbox/resilience-tutorial/recommendationService/src/main/java/de/codecentric/recommendationService/RecommendationService.java
+/Users/afitz/Dropbox/resilience-tutorial/recommendationService/src/main/java/de/codecentric/recommendationService/core/Product.java
+/Users/afitz/Dropbox/resilience-tutorial/recommendationService/src/main/java/de/codecentric/recommendationService/clients/AnalysisClient/AnalysisServiceFactory.java
+/Users/afitz/Dropbox/resilience-tutorial/recommendationService/src/main/java/de/codecentric/recommendationService/clients/AnalysisClient/AnalysisServiceClient.java
+/Users/afitz/Dropbox/resilience-tutorial/recommendationService/src/main/java/de/codecentric/recommendationService/core/RecommendationLookup.java
+/Users/afitz/Dropbox/resilience-tutorial/recommendationService/src/main/java/de/codecentric/recommendationService/resources/RecommendationResource.java
+/Users/afitz/Dropbox/resilience-tutorial/recommendationService/src/main/java/de/codecentric/recommendationService/RecommendationConfiguration.java
+/Users/afitz/Dropbox/resilience-tutorial/recommendationService/src/main/java/de/codecentric/recommendationService/core/User.java
+/Users/afitz/Dropbox/resilience-tutorial/recommendationService/src/main/java/de/codecentric/recommendationService/health/AnalysisServiceHealthCheck.java
+/Users/afitz/Dropbox/resilience-tutorial/recommendationService/src/main/java/de/codecentric/recommendationService/clients/AnalysisClient/AnalysisServiceException.java
+/Users/afitz/Dropbox/resilience-tutorial/recommendationService/src/main/java/de/codecentric/recommendationService/api/Recommendation.java
+/Users/afitz/Dropbox/resilience-tutorial/recommendationService/src/main/java/de/codecentric/recommendationService/clients/AnalysisClient/Products.java

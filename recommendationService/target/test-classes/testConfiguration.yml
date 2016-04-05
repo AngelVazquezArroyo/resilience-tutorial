@@ -1,0 +1,18 @@
+# My Server Config
+
+# Impostor Config
+upStreamImpostor:
+    host: localhost
+    port: 8103
+
+downStreamImpostor:
+    host: localhost
+    port: 8102
+
+# Service Config: recommendation
+#awesomeRecommendationService:
+#    host: localhost
+#    port: 8101
+#    portAdmin: 8201
+#    path: /recommendation
+

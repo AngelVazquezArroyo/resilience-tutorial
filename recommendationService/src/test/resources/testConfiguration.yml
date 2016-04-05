@@ -3,7 +3,7 @@
 # Impostor Config
 upStreamImpostor:
     host: localhost
-    port: 8100
+    port: 8103
 
 downStreamImpostor:
     host: localhost

@@ -15,6 +15,7 @@ import de.codecentric.recommendationService.clients.upstream.ImpostorClientUpStr
 
 import static org.junit.Assert.assertEquals;
 
+import de.codecentric.recommendationService.processes.impostorProcess;
 import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.junit.*;
@@ -36,6 +37,8 @@ public class TestBulkheads {
     private static ImpostorClient impostorDownStream = null;
     private static ServiceClient recommendationService = null;
 
+    private static impostorProcess downStreamProcess = null;
+    private static impostorProcess upStreamProcess = null;
 
     //    start the recommendationService prior to any tests running and stop it again when they have completed
     @ClassRule
@@ -53,6 +56,12 @@ public class TestBulkheads {
         File yml = new File("./src/test/resources/testConfiguration.yml");
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         TestConfiguration config = mapper.readValue(yml, TestConfiguration.class);
+
+        downStreamProcess = new impostorProcess();
+        downStreamProcess.startImpostorProcess(config.getDownStreamFactory().getHost(), config.getDownStreamFactory().getPort());
+
+        upStreamProcess = new impostorProcess();
+        upStreamProcess.startImpostorProcess(config.getUpStreamFactory().getHost(), config.getUpStreamFactory().getPort());
 
         try {
             // build clients to all impostors
@@ -132,7 +141,7 @@ public class TestBulkheads {
             logger.error("Message: " + e.getMessage());
         }
 
-        assertEquals("Status must be: ", 200, health.getStatusCode());
+        assertEquals("Status must be: ", 500, health.getStatusCode());
 
     }
 
@@ -146,6 +155,11 @@ public class TestBulkheads {
         try {
             impostorDownStream.setConfig(ImpostorClientDownStreamConfig.NORMAL);
             impostorUpStream.setConfig(ImpostorClientUpStreamConfig.NORMAL);
+
+            downStreamProcess.stopImpostorProcess();
+            upStreamProcess.stopImpostorProcess();
+
+            logger.info("Process: " + downStreamProcess.getProcessId());
         } catch (ServiceClientException e) {
             logger.error(e.getMessage());
             //tbd!: abort execution

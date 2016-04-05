@@ -2,6 +2,7 @@ package de.codecentric.recommendationService.clients;
 
 import de.codecentric.recommendationService.clients.upstream.ImpostorClientUpStream;
 import org.apache.http.HttpResponse;
+import org.apache.http.NoHttpResponseException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -49,7 +50,7 @@ public abstract class ImpostorClient {
     protected int sendToImpostor(StringEntity requestJson) {
 
         HttpPost impostorConfigRequest = null;
-        int status = 0;
+        int status = 999;
 
         try {
 
@@ -62,9 +63,11 @@ public abstract class ImpostorClient {
             status = response.getStatusLine().getStatusCode();
 
         } catch (ClientProtocolException e) {
-            e.printStackTrace();
+            logger.error("ClientProtocolException in sendToImpostor: " + e.getMessage());
+        } catch (NoHttpResponseException e){
+            logger.error("NoHttpResponseException in sendToImpostor: " + e.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("IOException in sendToImpostor: " + e.getMessage());
         }
         return status;
 

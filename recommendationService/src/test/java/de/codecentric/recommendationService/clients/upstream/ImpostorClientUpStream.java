@@ -6,6 +6,7 @@ import de.codecentric.recommendationService.clients.ImpostorConfig;
 import de.codecentric.recommendationService.clients.ServiceClientException;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.NoHttpResponseException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
@@ -30,7 +31,7 @@ public class ImpostorClientUpStream extends ImpostorClient {
     }
 
     @Override
-    public void setConfig(ImpostorConfig config) throws ServiceClientException{
+    public void setConfig(ImpostorConfig config) throws ServiceClientException {
 
         logger.info("UpStreamConfig: " + config.toString());
 
@@ -41,10 +42,11 @@ public class ImpostorClientUpStream extends ImpostorClient {
         } else {
             throw new ServiceClientException("set config " + config.toString() + " to UpStreamImpostor was not successfull. Status: " + status);
         }
+
     }
 
     @Override
-    public void executeCommand(ImpostorCommands command) throws ServiceClientException{
+    public void executeCommand(ImpostorCommands command) throws ServiceClientException {
 
         logger.info("UpStreamCommand: " + command.toString());
 
