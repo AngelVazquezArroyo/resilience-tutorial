@@ -38,7 +38,7 @@ public class RecommendationResource {
 
 		Products recommendProducts = null;
 		try {
-			recommendProducts = this.analysisService.executeGetProducts((product.isPresent() ? product.get() : this.defaultProduct));
+			recommendProducts = this.analysisService.getCrossUpSellingProducts((product.isPresent() ? product.get() : this.defaultProduct));
 		} catch (AnalysisServiceException e) {
 			logger.error(e.getMessage());
 			ArrayList<String> defaultProducts = new ArrayList<String>();

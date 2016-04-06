@@ -56,10 +56,7 @@ public class AnalysisServiceFactory {
     }
 
     public AnalysisServiceClient build(Environment environment) {
-
         final HttpClientConfiguration httpConfig = new HttpClientConfiguration();
-        // set httpConfig? at the moment no. Required?
-
         final HttpClient httpClient = new HttpClientBuilder(environment).using(httpConfig)
                 .build("analysis-http-client");
 
@@ -74,7 +71,7 @@ public class AnalysisServiceFactory {
             public void stop() {
             }
         });
+
         return client;
     }
-
 }

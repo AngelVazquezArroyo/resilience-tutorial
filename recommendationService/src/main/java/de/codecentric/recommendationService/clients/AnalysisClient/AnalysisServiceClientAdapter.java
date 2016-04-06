@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.codecentric.recommendationService.core.Products;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -18,7 +19,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 /**
- * Created by afitz on 22.03.16.
+ * Concrete implementation of a product analysis client using a HTTP based analysis service.
+ *
+ * @author afitz
  */
 public class AnalysisServiceClientAdapter implements AnalysisServiceClient {
 
@@ -37,8 +40,8 @@ public class AnalysisServiceClientAdapter implements AnalysisServiceClient {
     }
 
     @Override
-    public Products executeGetProducts(String product) throws AnalysisServiceException{
-        URI uri = null;
+    public Products getCrossUpSellingProducts(String product) throws AnalysisServiceException {
+        URI uri;
         try {
             uri = new URIBuilder()
                     .setScheme("http")
@@ -48,66 +51,55 @@ public class AnalysisServiceClientAdapter implements AnalysisServiceClient {
                     .setParameter("product", product)
                     .build();
         } catch (URISyntaxException e) {
-            logger.error(e.toString());
-            throw new AnalysisServiceException("Unknown Exception in Cosntructor: " + e.getMessage());
+            throw new AnalysisServiceException("Unexpected Exception while creating URI to access" +
+                    " analysis service", e);
         }
 
         HttpGet get = new HttpGet(uri);
         get.addHeader("accept", "application/json");
 
-        // Create a custom response handler
         ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
-
-            public String handleResponse(
-                    final HttpResponse response) throws ClientProtocolException, IOException {
+            public String handleResponse(final HttpResponse response) throws IOException {
                 int status = response.getStatusLine().getStatusCode();
-                if (status >= 200 && status < 300) {
+                if (status == HttpStatus.SC_OK) {
                     HttpEntity entity = response.getEntity();
-                    return entity != null ? EntityUtils.toString(entity) : null;
+                    return entity != null ? EntityUtils.toString(entity) : "";
                 } else {
                     throw new ClientProtocolException("Unexpected response status: " + status);
                 }
             }
-
         };
 
-        String responseBody = null;
+        String responseBody;
         try {
             logger.info("get = " + uri.toString());
             responseBody = httpAnalysisService.execute(get, responseHandler);
             logger.info("response = " + responseBody);
-        } catch (ClientProtocolException e){
-            logger.error("ClientProtocolException"  + e.getMessage());
-            throw new AnalysisServiceException("AnalysisServiceException: " + e.getMessage());
         } catch (IOException e) {
-            logger.error("IOException response AnaylisisClientAdapter: " + e.getMessage());
-            throw new AnalysisServiceException("AnalysisService is not available: " + e.getMessage());
+            throw new AnalysisServiceException("Unexpected problem encountered while accessing " +
+                    "analysis service", e);
         }
 
-        Products recommendProducts = null;
+        Products cuProducts;
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            recommendProducts = objectMapper.readValue(responseBody, Products.class);
+            cuProducts = objectMapper.readValue(responseBody, Products.class);
         } catch (IOException e) {
-            logger.error("IOException Mapper: " + e.getMessage());
-            throw new AnalysisServiceException("AnalysisService is not available: " + e.getMessage());
+            throw new AnalysisServiceException("Unexpected problem while parsing JSON response " +
+                    "from analysis service", e);
         }
 
-        return recommendProducts;
+        return cuProducts;
     }
 
     @Override
-    public Boolean ping() {
-
-        Boolean available = true;
-
+    public boolean ping() {
+        boolean available = true;
         try {
-            this.executeGetProducts("P00T");
+            this.getCrossUpSellingProducts("P00T");
         } catch (AnalysisServiceException e) {
-            logger.error("ping get no response: " + e.getMessage());
+            logger.info("Analysis service is not accessible. Error message: " + e.getMessage());
             available = false;
-        } catch (Exception e){
-            logger.error("oh no, more exceptions" + e.getMessage());
         }
         return available;
     }
