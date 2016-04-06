@@ -10,7 +10,7 @@
         </encoder>
     </appender>
 
-    <logger name="de.codecentric.recommendationService" level="INFO"/>
+    <logger name="de.codecentric.recommendationService" level="DEBUG"/>
 
 
     <root level="DEBUG">

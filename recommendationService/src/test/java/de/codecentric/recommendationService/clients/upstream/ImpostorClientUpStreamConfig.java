@@ -13,8 +13,6 @@ import java.nio.file.Paths;
  */
 public enum ImpostorClientUpStreamConfig implements ImpostorConfig {
 
-//    tbd! : genrally is to reflect: is the marshalling json<->class meaningful?
-
     NORMAL("normal"),
     PRESSURE("pressure");
 
@@ -44,10 +42,6 @@ public enum ImpostorClientUpStreamConfig implements ImpostorConfig {
 
     }
 
-    public String getFileName() {
-        return file;
-    }
-
     @Override
     public String getJSon() {
         return configString;
@@ -56,6 +50,6 @@ public enum ImpostorClientUpStreamConfig implements ImpostorConfig {
 
     @Override
     public String toString() {
-        return config;
+        return this.getJSon();
     }
 }

@@ -13,8 +13,6 @@ import java.nio.file.Paths;
  */
 public enum ImpostorClientUpStreamCommands implements ImpostorCommands{
 
-    //    tbd! : genrally is to reflect: is the marshalling json<->class meaningful?
-
     PRESSURE_OFF("pressure_off"),
     PRESSURE_ON("pressure_on"),
     PRESSURE_STATUS("pressure_status"),
@@ -49,9 +47,8 @@ public enum ImpostorClientUpStreamCommands implements ImpostorCommands{
 
     @Override
     public String toString() {
-        return config;
+        return this.getJSon();
     }
-
 
     @Override
     public String getJSon() {

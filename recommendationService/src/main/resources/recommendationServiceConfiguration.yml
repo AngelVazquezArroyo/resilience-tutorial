@@ -50,10 +50,10 @@ server:
 logging:
 
   # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
-  level: ERROR
+  level: DEBUG
 
   # Logger-specific levels.
   loggers:
 
     # Sets the level for 'com.example.app' to DEBUG.
-    de.codecentric.awesome.recommendation: ERROR
+    de.codecentric.awesome.recommendation: DEBUG

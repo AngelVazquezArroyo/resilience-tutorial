@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.codecentric.recommendationService.api.Recommendation;
 import de.codecentric.recommendationService.clients.ServiceClient;
 import de.codecentric.recommendationService.clients.ServiceClientException;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;

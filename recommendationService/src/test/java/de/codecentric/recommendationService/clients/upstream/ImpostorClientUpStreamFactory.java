@@ -19,10 +19,8 @@ public class ImpostorClientUpStreamFactory {
 
     private static final Logger logger = LoggerFactory.getLogger(ImpostorClientUpStreamFactory.class);
 
-//    @NotEmpty
     private String host = "localhost";
 
-//    @NotEmpty
     @Min(1)
     @Max(65535)
     private int port = 8080;

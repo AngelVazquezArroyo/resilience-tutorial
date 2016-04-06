@@ -1,7 +1,5 @@
 package de.codecentric.recommendationService.config;
 
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.core.util.StatusPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.slf4j.Logger;
@@ -22,16 +20,6 @@ public class LoadTestConfiguration {
 
         File configYml = new File("./src/test/resources/testConfiguration.yml");
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-
-//        // assume SLF4J is bound to logback in the current environment
-//        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
-//        // print logback's internal status
-//        StatusPrinter.print(lc);
-
-
-        logger.debug("-----------------------------------------------------------");
-        logger.debug("load configuration");
-        logger.debug("-----------------------------------------------------------");
 
         try {
             config = mapper.readValue(configYml, TestConfiguration.class);

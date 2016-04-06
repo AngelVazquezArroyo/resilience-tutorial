@@ -36,6 +36,5 @@ public class ImpostorRule extends ExternalResource {
         super.after();
         downStreamProcess.stopImpostorProcess();
         upStreamProcess.stopImpostorProcess();
-
     }
 }
