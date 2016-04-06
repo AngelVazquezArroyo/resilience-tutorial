@@ -26,7 +26,7 @@ public class TestConfiguration {
     }
 
     @JsonProperty("upStreamImpostor")
-    public void setUpStreamImppostorFactory(ImpostorClientUpStreamFactory upStreamImpostorFactory) {
+    public void setUpStreamImpostorFactory(ImpostorClientUpStreamFactory upStreamImpostorFactory) {
         this.upStreamImpostorFactory = upStreamImpostorFactory;
     }
 

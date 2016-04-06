@@ -19,24 +19,24 @@ public class TestNormal extends RecommendationTestCase {
 
     private static final Logger logger = LoggerFactory.getLogger(RecommendationTestCase.class);
 
-    @Test //deilver an existing recommendation
+    @Test // deliver an existing recommendation
     public void testNormal() {
 
         try {
 
             getImpostorDownStreamClient().setConfig(ImpostorClientDownStreamConfig.NORMAL);
 
-            //return existing product
+            // return existing product
             Recommendation recommendation = getRecommendationServiceClient().getRecommendation("U001", "P001");
             ArrayList<String> expectedProducts = new ArrayList<String>();
             expectedProducts.add("P002");
-            assertArrayEquals("expected produt(s)", expectedProducts.toArray(), recommendation.getProducts().toArray());
+            assertArrayEquals("expected product(s)", expectedProducts.toArray(), recommendation.getProducts().toArray());
 
-            // return dedault product
+            // return default product
             recommendation = getRecommendationServiceClient().getRecommendation("U001", "P00T");
             expectedProducts = new ArrayList<String>();
             expectedProducts.add("P001");
-            assertArrayEquals("expected produt(s)", expectedProducts.toArray(), recommendation.getProducts().toArray());
+            assertArrayEquals("expected product(s)", expectedProducts.toArray(), recommendation.getProducts().toArray());
 
         } catch (ServiceClientException e) {
             logger.error(e.getMessage());

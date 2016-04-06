@@ -36,7 +36,7 @@ public class RecommendationResource {
 
 		String recommedUser = (user.isPresent() ? user.get() : defaultUser);
 
-		Products recommendProducts = null;
+		Products recommendProducts;
 		try {
 			recommendProducts = this.analysisService.getCrossUpSellingProducts((product.isPresent() ? product.get() : this.defaultProduct));
 		} catch (AnalysisServiceException e) {

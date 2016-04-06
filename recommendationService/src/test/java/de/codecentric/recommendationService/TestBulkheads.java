@@ -22,11 +22,11 @@ public class TestBulkheads extends RecommendationTestCase{
     @Test // test RecurringLatency
     public void testRecurringLatency() {
 
-        ServiceHealthResult health = null;
+        ServiceHealthResult health;
 
         try {
             // configure the impostors tor test behavior
-            getImpostorDownStreamClient().setConfig(ImpostorClientDownStreamConfig.RECURRINGLATENCY);
+            getImpostorDownStreamClient().setConfig(ImpostorClientDownStreamConfig.RECURRING_LATENCY);
             getImpostorUpStreamClient().executeCommand(ImpostorClientUpStreamCommands.PRESSURE_ON);
 
             health = getRecommendationServiceClient().getHealthy();

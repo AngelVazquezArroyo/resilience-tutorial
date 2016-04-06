@@ -44,11 +44,7 @@ public class ServiceClientRecommendationFactory {
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
-        logger.debug("get Service Client to access recommendationService");
-
         ServiceClient awesomeRecommendation = new ServiceClientRecommendation(host, port, portAdmin, path, httpClient);
-
-        logger.debug("get is " + awesomeRecommendation == null ? "error" : "success");
 
         return awesomeRecommendation;
     }

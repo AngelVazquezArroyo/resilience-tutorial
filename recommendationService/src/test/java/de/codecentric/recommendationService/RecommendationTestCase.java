@@ -73,7 +73,7 @@ public class RecommendationTestCase{
         // nothing to do at the moment!
     }
 
-    //getter and setter methods
+    // getter and setter methods
 
     public static ImpostorClient getImpostorUpStreamClient() {
         return impostorUpStreamClient;

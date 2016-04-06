@@ -88,7 +88,6 @@ public class ServiceClientRecommendation implements ServiceClient {
                 public ServiceHealthResult handleResponse(final HttpResponse response) throws IOException {
 
                     int status = response.getStatusLine().getStatusCode();
-                    String message;
                     String entityString;
 
                     entityString = (response.getEntity() != null ? EntityUtils.toString(response.getEntity()) : "no products");
@@ -138,8 +137,8 @@ public class ServiceClientRecommendation implements ServiceClient {
     @Override
     public Recommendation getRecommendation(String user, String product) throws ServiceClientException {
 
-        URI serviceUri = null;
-        HttpGet getRecommendation = null;
+        URI serviceUri;
+        HttpGet getRecommendation;
         Recommendation recommendation = null;
 
         try {

@@ -60,11 +60,11 @@ public class ImpostorClientDownStreamFactory {
 
     public ImpostorClient build(ImpostorClientDownStreamConfig config) throws ServiceClientException{
 
-        ImpostorClient donwStreamClient = this.build();
+        ImpostorClient downStreamClient = this.build();
 
-        donwStreamClient.setConfig(config);
+        downStreamClient.setConfig(config);
 
-        return donwStreamClient;
+        return downStreamClient;
     }
 
     public ImpostorClient build() throws ServiceClientException{

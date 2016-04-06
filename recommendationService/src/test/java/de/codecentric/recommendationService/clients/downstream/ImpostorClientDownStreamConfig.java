@@ -12,11 +12,10 @@ import java.nio.file.Paths;
  * Created by afitz on 24.03.16.
  */
 public enum ImpostorClientDownStreamConfig implements ImpostorConfig {
-    //    tbd! : genrally is to reflect: is the marshalling json<->class meaningful?
 
     NORMAL("normal"),
-    ONETIMELATENCY("one_time_latency"),
-    RECURRINGLATENCY("recurring_latency");
+    ONE_TIME_LATENCY("one_time_latency"),
+    RECURRING_LATENCY("recurring_latency");
 
     private final Logger logger = LoggerFactory.getLogger(ImpostorClientDownStreamConfig.class);
 

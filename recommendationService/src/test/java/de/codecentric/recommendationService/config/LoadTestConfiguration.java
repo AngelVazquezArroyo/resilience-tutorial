@@ -24,7 +24,7 @@ public class LoadTestConfiguration {
         try {
             config = mapper.readValue(configYml, TestConfiguration.class);
         } catch (IOException e) {
-            logger.error("IOException in LoadTestConfiguratoin: " + e.getMessage());
+            logger.error("IOException in LoadTestConfiguration: " + e.getMessage());
             e.printStackTrace();
         }
 

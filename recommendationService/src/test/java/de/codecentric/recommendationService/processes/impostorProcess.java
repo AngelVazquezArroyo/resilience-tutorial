@@ -14,20 +14,20 @@ public class ImpostorProcess {
     private static final Logger logger = LoggerFactory.getLogger(ImpostorProcess.class);
 
     private Process process;
-    private ProcessBuilder probuilder;
+    private ProcessBuilder proBuilder;
 
     public void startImpostorProcess(String host, int port) {
 
         String dir = "./../impostor/";
 
         String[] command = {dir + "impostor", host +":" + port};
-        probuilder = new ProcessBuilder(command);
+        proBuilder = new ProcessBuilder(command);
 
         // set working directory to bin/impostor
-        probuilder.directory(new File(dir));
+        proBuilder.directory(new File(dir));
 
         try {
-            process = probuilder.start();
+            process = proBuilder.start();
             logger.debug("start Process: " + process.toString() + " with " + host + ":" + port);
         } catch (IOException e) {
             e.printStackTrace();

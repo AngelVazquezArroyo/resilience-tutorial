@@ -48,8 +48,8 @@ public abstract class ImpostorClient{
 
     protected int sendToImpostor(StringEntity requestJson) throws ServiceClientException{
 
-        HttpPost impostorConfigRequest = null;
-        int status = 999; // error!
+        HttpPost impostorConfigRequest;
+        int status;
 
         try {
 
