@@ -1,9 +1,5 @@
 package de.codecentric.recommendationService;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import de.codecentric.recommendationService.api.Recommendation;
 import de.codecentric.recommendationService.clients.ImpostorClient;
 import de.codecentric.recommendationService.clients.ServiceClient;
 import de.codecentric.recommendationService.clients.ServiceClientException;
@@ -11,20 +7,18 @@ import de.codecentric.recommendationService.clients.downstream.ImpostorClientDow
 import de.codecentric.recommendationService.clients.service.ServiceClientRecommendationFactory;
 import de.codecentric.recommendationService.clients.service.ServiceHealthResult;
 import de.codecentric.recommendationService.clients.upstream.ImpostorClientUpStreamCommands;
-import de.codecentric.recommendationService.clients.upstream.ImpostorClientUpStreamConfig;
 
 import static org.junit.Assert.assertEquals;
 
-import de.codecentric.recommendationService.rules.TestConfiguration;
-import de.codecentric.recommendationService.processes.impostorProcess;
+import de.codecentric.recommendationService.config.LoadTestConfiguration;
+import de.codecentric.recommendationService.config.TestConfiguration;
+import de.codecentric.recommendationService.rules.ImpostorRule;
 import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.junit.*;
+import org.junit.rules.TestName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.IOException;
 
 
 /**
@@ -32,117 +26,80 @@ import java.io.IOException;
  */
 public class TestBulkheads {
 
-    private static final Logger logger = LoggerFactory.getLogger(TestBulkheads.class);
+    private static final Logger logger = LoggerFactory.getLogger(TestNormal.class);
 
-    private static ImpostorClient impostorUpStream = null;
-    private static ImpostorClient impostorDownStream = null;
-    private static ServiceClient recommendationService = null;
+    private static TestConfiguration config = new LoadTestConfiguration().get();
 
-    private static impostorProcess downStreamProcess = null;
-    private static impostorProcess upStreamProcess = null;
+    private static ImpostorClient impostorUpStreamClient = null;
+    private static ImpostorClient impostorDownStreamClient = null;
+    private static ServiceClient recommendationServiceClient = null;
 
-    //    start the recommendationService prior to any tests running and stop it again when they have completed
+    @Rule
+    public TestName name = new TestName();
+
+    // start and teardown the recommendationServiceClient prior to any tests running and stop it again when they have completed
     @ClassRule
-    public static final DropwizardAppRule<RecommendationConfiguration> RULE =
+    public static final DropwizardAppRule<RecommendationConfiguration> SERVICE_RULE =
             new DropwizardAppRule<RecommendationConfiguration>(RecommendationService.class, ResourceHelpers.resourceFilePath("recommendationServiceConfiguration.yml"));
 
+    // start and teardown the upStreamImpostor and the downStreamImpostor
+    @ClassRule
+    public static final ImpostorRule IMPOSTOR_RULE = new ImpostorRule(config);
+
+    @Ignore
     @BeforeClass
-    @Ignore
-    public static void initializeImpostor() throws IOException {
+    public static void initialize() {
 
-        logger.info("-----------------------------------------------------------");
-        logger.info("initializeImpostor");
-        logger.info("-----------------------------------------------------------");
-
-        // load TestConfiguration
-        File yml = new File("./src/test/resources/testConfiguration.yml");
-        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        TestConfiguration config = mapper.readValue(yml, TestConfiguration.class);
-
-        downStreamProcess = new impostorProcess();
-        downStreamProcess.startImpostorProcess(config.getDownStreamFactory().getHost(), config.getDownStreamFactory().getPort());
-
-        upStreamProcess = new impostorProcess();
-        upStreamProcess.startImpostorProcess(config.getUpStreamFactory().getHost(), config.getUpStreamFactory().getPort());
-
-        try {
-            // build clients to all impostors
-            impostorUpStream = config.getUpStreamFactory().build(); //with config.normal
-            impostorDownStream = config.getDownStreamFactory().build(); //with config.normal
-
-            // build clients to recommendation service
-            recommendationService = new ServiceClientRecommendationFactory(RULE).build("recommendationService client");
-
-        } catch (ServiceClientException e) {
-            logger.error(e.getMessage());
-            //tbd!: abort execution
-        }
-    }
-
-    @Test //deilver an exsiting recommendation
-    @Ignore
-    public void testNormal() {
-
-        logger.info("-----------------------------------------------------------");
-        logger.info("testNormal");
-        logger.info("-----------------------------------------------------------");
+        logger.debug("-----------------------------------------------------------");
+        logger.debug("initialize Clients");
+        logger.debug("-----------------------------------------------------------");
 
         try {
 
-            impostorDownStream.setConfig(ImpostorClientDownStreamConfig.NORMAL);
+            // get clients to all impostors
+            impostorUpStreamClient = config.getUpStreamFactory().build(); //with config.normal
+            impostorDownStreamClient = config.getDownStreamFactory().build(); //with config.normal
 
-            Recommendation recommendation = recommendationService.getRecommendation("U001", "P001");
-
-            ObjectMapper mapper = new ObjectMapper();
-            String productsJson = null;
-
-            //tbd!: check ArrayList not the String.
-            productsJson = mapper.writeValueAsString(recommendation.getProducts());
-
-            logger.debug(productsJson);
-
-            assertEquals("recommendation product(s) must be: ", "[\"P002\"]", productsJson);
+            // get clients to recommendation service
+            recommendationServiceClient = new ServiceClientRecommendationFactory(SERVICE_RULE).build("recommendationServiceClient client");
 
         } catch (ServiceClientException e) {
-            logger.error(e.getMessage());
-            //tbd!: abort execution
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            logger.error("Unexpected ServiceClientException: " + e.getMessage());
         }
 
     }
+
 
     @Test // test RecurringLatency
-    @Ignore
     public void testRecurringLatency() {
 
-        logger.info("-----------------------------------------------------------");
-        logger.info("testRecurringLatency");
-        logger.info("-----------------------------------------------------------");
+        logger.debug("-----------------------------------------------------------");
+        logger.debug("testRecurringLatency");
+        logger.debug("-----------------------------------------------------------");
 
 
         ServiceHealthResult health = null;
 
         try {
-            impostorDownStream.setConfig(ImpostorClientDownStreamConfig.RECURRINGLATENCY);
+//            impostorDownStreamClient.setConfig(ImpostorClientDownStreamConfig.RECURRINGLATENCY);
 
-            impostorUpStream.executeCommand(ImpostorClientUpStreamCommands.PRESSURE_ON);
+//            impostorUpStreamClient.executeCommand(ImpostorClientUpStreamCommands.PRESSURE_ON);
 
-            health = recommendationService.getHealthy();
+            health = recommendationServiceClient.getHealthy();
 
-            logger.info("Status: " + health.getStatusCode());
-            logger.info("Message: " + health.getMessage());
-            logger.info("Entity: " + health.getEntity());
+            logger.debug("Status: " + health.getStatusCode());
+            logger.debug("Message: " + health.getMessage());
+            logger.debug("Entity: " + health.getEntity());
 
-            impostorDownStream.setConfig(ImpostorClientDownStreamConfig.NORMAL);
+            impostorDownStreamClient.setConfig(ImpostorClientDownStreamConfig.NORMAL);
 
-            impostorUpStream.executeCommand(ImpostorClientUpStreamCommands.PRESSURE_OFF);
+            impostorUpStreamClient.executeCommand(ImpostorClientUpStreamCommands.PRESSURE_OFF);
 
         } catch (ServiceClientException e) {
-            logger.error(e.getMessage());
+            logger.error("ServiceClientException in " + name.getMethodName() + ": " + e.getMessage());
             //tbd!: abort execution
         } catch (Exception e) {
-            logger.error("Message: " + e.getMessage());
+            logger.error(" Unknown Exception in " + name.getMethodName() + ": " + e.getMessage());
         }
 
         assertEquals("Status must be: ", 200, health.getStatusCode());
@@ -151,23 +108,10 @@ public class TestBulkheads {
 
     @AfterClass
     public static void resetImpostor() {
-        logger.info("-----------------------------------------------------------");
-        logger.info("resetImpostor");
-        logger.info("-----------------------------------------------------------");
-
-        // set for all Impostor' the config to NORMAL
-        try {
-            impostorDownStream.setConfig(ImpostorClientDownStreamConfig.NORMAL);
-            impostorUpStream.setConfig(ImpostorClientUpStreamConfig.NORMAL);
-
-            downStreamProcess.stopImpostorProcess();
-            upStreamProcess.stopImpostorProcess();
-
-            logger.info("Process: " + downStreamProcess.getProcessId());
-        } catch (ServiceClientException e) {
-            logger.error(e.getMessage());
-            //tbd!: abort execution
-        }
+        logger.debug("-----------------------------------------------------------");
+        logger.debug("resetImpostor");
+        logger.debug("-----------------------------------------------------------");
+        logger.debug("nothing to do at the moment!");
     }
 
 }

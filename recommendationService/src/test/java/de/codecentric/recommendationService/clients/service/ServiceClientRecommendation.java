@@ -59,7 +59,7 @@ public class ServiceClientRecommendation implements ServiceClient {
                     .setPath("/healthcheck")
                     .build();
 
-            logger.info("healthCheckUri: " + healthCheckUri.toString());
+            logger.debug("healthCheckUri: " + healthCheckUri.toString());
 
             getHealthy = new HttpGet(healthCheckUri);
 

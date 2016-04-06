@@ -1,12 +1,17 @@
 package de.codecentric.recommendationService.processes;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.IOException;
 
 /**
  * Created by afitz on 05.04.16.
  */
-public class impostorProcess {
+public class ImpostorProcess {
+
+    private static final Logger logger = LoggerFactory.getLogger(ImpostorProcess.class);
 
     private Process process;
     private ProcessBuilder probuilder;
@@ -23,7 +28,7 @@ public class impostorProcess {
 
         try {
             process = probuilder.start();
-            System.out.println("start Process: " + process.toString() + " with " + host + ":" + port);
+            logger.debug("start Process: " + process.toString() + " with " + host + ":" + port);
         } catch (IOException e) {
             e.printStackTrace();
         }

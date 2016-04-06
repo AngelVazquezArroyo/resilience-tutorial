@@ -40,7 +40,7 @@ public enum ImpostorClientDownStreamConfig implements ImpostorConfig {
 
             logger.debug("JSON: " + configString);
 
-            logger.info("Loading config : " + file);
+            logger.debug("Loading config : " + file);
 
          } catch (JsonProcessingException e) {
             e.printStackTrace();

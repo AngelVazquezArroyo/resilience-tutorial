@@ -33,12 +33,12 @@ public class ImpostorClientUpStream extends ImpostorClient {
     @Override
     public void setConfig(ImpostorConfig config) throws ServiceClientException {
 
-        logger.info("UpStreamConfig: " + config.toString());
+        logger.debug("UpStreamConfig: " + config.toString());
 
         int status = this.sendToImpostor(new StringEntity(config.getJSon(), ContentType.APPLICATION_JSON));
 
         if (status == HttpStatus.SC_OK || status == HttpStatus.SC_NO_CONTENT) {
-            logger.info("set config to: " + config.toString() + " was successfull");
+            logger.debug("set config to: " + config.toString() + " was successfull");
         } else {
             throw new ServiceClientException("set config " + config.toString() + " to ImpostorRule was not successfull. Status: " + status);
         }
@@ -48,12 +48,12 @@ public class ImpostorClientUpStream extends ImpostorClient {
     @Override
     public void executeCommand(ImpostorCommands command) throws ServiceClientException {
 
-        logger.info("UpStreamCommand: " + command.toString());
+        logger.debug("UpStreamCommand: " + command.toString());
 
         int status = sendToImpostor(new StringEntity(command.getJSon(), ContentType.APPLICATION_JSON));
 
         if (status == HttpStatus.SC_OK || status == HttpStatus.SC_NO_CONTENT) {
-            logger.info("set config to " + command.toString() + " was successfull");
+            logger.debug("set config to " + command.toString() + " was successfull");
         } else {
             throw new ServiceClientException("send command " + command.toString() + " to DownStreamImpostor was not successfull. Status: " + status);
         }

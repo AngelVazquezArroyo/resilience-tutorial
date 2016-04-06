@@ -55,7 +55,7 @@ public class ImpostorClientUpStreamFactory {
 
         ImpostorClient upStream = new ImpostorClientUpStream(this.getHost(), this.getPort(), httpClient);
 
-        logger.info("ImpostorClient build: UpStream");
+        logger.debug("ImpostorClient get: UpStream");
 
         upStream.setConfig(ImpostorClientUpStreamConfig.NORMAL);
 

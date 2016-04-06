@@ -20,6 +20,8 @@
 
         <mavenShadePlugin.version>2.4</mavenShadePlugin.version>
         <mavenCompilerPlugin.version>3.5.1</mavenCompilerPlugin.version>
+
+        <slf4j-api.version>1.7.21</slf4j-api.version>
     </properties>
 
 
@@ -80,6 +82,18 @@
             <artifactId>metrics-core</artifactId>
             <version>${metrics.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j-api.version}</version>
+        </dependency>
+
+        <!--<dependency>-->
+            <!--<groupId>org.slf4j</groupId>-->
+            <!--<artifactId>slf4j-simple</artifactId>-->
+            <!--<version>${slf4j-api.version}</version>-->
+        <!--</dependency>-->
 
     </dependencies>
 

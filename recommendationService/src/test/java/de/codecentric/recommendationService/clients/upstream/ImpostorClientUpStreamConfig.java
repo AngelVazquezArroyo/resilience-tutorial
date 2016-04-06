@@ -35,7 +35,7 @@ public enum ImpostorClientUpStreamConfig implements ImpostorConfig {
 
         try {
             configString = new String(java.nio.file.Files.readAllBytes(Paths.get(file)));
-            logger.info("Loading config : " + file);
+            logger.debug("Loading config : " + file);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         } catch (IOException e) {

@@ -73,7 +73,7 @@ public class ImpostorClientDownStreamFactory {
 
         ImpostorClient downStream = new ImpostorClientDownStream(this.getHost(), this.getPort(), httpClient);
 
-        logger.info("ImpostorClient build: DownStreamStream");
+        logger.debug("ImpostorClient get: DownStreamStream");
 
         downStream.setConfig(ImpostorClientDownStreamConfig.NORMAL);
 

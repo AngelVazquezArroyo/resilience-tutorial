@@ -38,7 +38,7 @@ public enum ImpostorClientUpStreamCommands implements ImpostorCommands{
 
         try {
             configString = new String(java.nio.file.Files.readAllBytes(Paths.get(file)));
-            logger.info("Loading command : " + i);
+            logger.debug("Loading command : " + i);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }catch (IOException e) {

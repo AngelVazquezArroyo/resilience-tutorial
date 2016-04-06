@@ -34,12 +34,12 @@ public class ImpostorClientDownStream extends ImpostorClient {
     @Override
     public void setConfig(ImpostorConfig config) throws ServiceClientException{
 
-        logger.info("DownStreamConfig: " + config.toString());
+        logger.debug("DownStreamConfig: " + config.toString());
 
         int status = this.sendToImpostor(new StringEntity(config.getJSon(), ContentType.APPLICATION_JSON));
 
         if (status == HttpStatus.SC_OK || status == HttpStatus.SC_NO_CONTENT) {
-            logger.info("set config to " + config.toString() + " was successfull");
+            logger.debug("set config to " + config.toString() + " was successfull");
         } else {
             throw new ServiceClientException("set config " + config.toString() + " to DownStreamImpostor was not successfull. Status: " + status);
         }
@@ -48,7 +48,7 @@ public class ImpostorClientDownStream extends ImpostorClient {
     @Override
     public void executeCommand(ImpostorCommands command) {
         // no commands at the moment
-        logger.warn("At the moment, there are no commands fpr Impostor DownStream!");
+        logger.info("At the moment, there are no commands fpr Impostor DownStream!");
     }
 }
 
