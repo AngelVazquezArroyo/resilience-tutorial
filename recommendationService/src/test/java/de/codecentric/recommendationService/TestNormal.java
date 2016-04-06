@@ -21,7 +21,7 @@ public class TestNormal extends RecommendationTestCase {
 
     @Test //deilver an existing recommendation
     public void testNormal() {
-        
+
         try {
 
             getImpostorDownStreamClient().setConfig(ImpostorClientDownStreamConfig.NORMAL);
