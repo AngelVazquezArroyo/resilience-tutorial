@@ -8,7 +8,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-
 public class RecommendationConfiguration extends Configuration{
 
     @NotEmpty
@@ -20,7 +19,6 @@ public class RecommendationConfiguration extends Configuration{
 	@Valid
     @NotNull
     private AnalysisServiceFactory analysisService = new AnalysisServiceFactory();
-
 	
 	@JsonProperty("analysisService")
     public AnalysisServiceFactory getAnalysisServiceFactory(){

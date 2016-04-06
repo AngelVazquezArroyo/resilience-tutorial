@@ -9,15 +9,23 @@ import de.codecentric.recommendationService.core.Products;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 
+/**
+ * Implementation of the recommendation service HTTP API.
+ *
+ * @author afitz
+ */
 @Path("/recommendation")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class RecommendationResource {
-
 	private static final Logger logger = LoggerFactory.getLogger(RecommendationResource.class);
 
 	private final String defaultProduct;
@@ -31,22 +39,22 @@ public class RecommendationResource {
 	}
 
 	@GET
-	@Metered // measures the rate at which the resource is accessed
+	@Metered(name = "getRecommendation")
 	public Recommendation getRecommendation(@QueryParam("user") Optional<String> user, @QueryParam("product") Optional<String> product) {
-
-		String recommedUser = (user.isPresent() ? user.get() : defaultUser);
-
-		Products recommendProducts;
+		Products products;
 		try {
-			recommendProducts = this.analysisService.getCrossUpSellingProducts((product.isPresent() ? product.get() : this.defaultProduct));
+			products = analysisService.getCrossUpSellingProducts(product.or
+                    (defaultProduct));
 		} catch (AnalysisServiceException e) {
-			logger.error(e.getMessage());
-			ArrayList<String> defaultProducts = new ArrayList<String>();
-			defaultProducts.add(defaultProduct);
-			recommendProducts = new Products(defaultProducts);
+			logger.info("Accessing analysis service failed.", e);
+			products = defaultProducts();
 		}
-
-		return new Recommendation(recommedUser, recommendProducts.getProducts());
+		return new Recommendation(user.or(defaultUser), products.getProducts());
 	}
 
+    private Products defaultProducts() {
+        ArrayList<String> defaultProducts = new ArrayList<>();
+        defaultProducts.add(defaultProduct);
+        return new Products(defaultProducts);
+    }
 }

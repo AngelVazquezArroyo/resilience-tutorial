@@ -1,63 +1,47 @@
 package de.codecentric.recommendationService;
 
-import com.codahale.metrics.*;
+import com.codahale.metrics.Meter;
+import com.codahale.metrics.MetricRegistry;
 import de.codecentric.recommendationService.clients.AnalysisClient.AnalysisServiceClient;
 import de.codecentric.recommendationService.health.AnalysisServiceHealthCheck;
 import de.codecentric.recommendationService.resources.RecommendationResource;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+/**
+ * The core recommendation service class (or the application class in terms of DropWizard). All
+ * basic setup, configuration and wiring is done in this class.
+ *
+ * @author afitz
+ */
+public class RecommendationService extends Application<RecommendationConfiguration> {
+    public static void main(String[] args) throws Exception {
+        new RecommendationService().run(args);
+    }
 
-public class RecommendationService extends Application<RecommendationConfiguration>{
+    @Override
+    public String getName() {
+        return "Awesome Recommendation Service";
+    }
 
-//	tbd! integrate this into the application’s lifecycle?
-	private static final Logger logger = LoggerFactory.getLogger(RecommendationService.class);
+    @Override
+    public void initialize(Bootstrap<RecommendationConfiguration> bootstrap) {
+        // nothing to do at the moment
+    }
 
-	private static final MetricRegistry requestMetrics = new MetricRegistry();
+    @Override
+    public void run(RecommendationConfiguration conf, Environment env) {
+        final AnalysisServiceClient analysisService = conf.getAnalysisServiceFactory().build(env);
+        final RecommendationResource recommendationResource = new RecommendationResource(
+                conf.getDefaultProduct(), conf.getDefaultUser(), analysisService);
 
-	public static void main(String[] args) throws Exception {
-		new RecommendationService().run(args);
-	}
+        Meter requestMeter = env.metrics().meter(MetricRegistry.name(RecommendationResource.class,
+                "requests"));
+        env.metrics().register("requests", requestMeter);
 
-	@Override
-	public String getName() {
-		return "Awesome Recommendation Service";
-	}
-
-	@Override
-	public void initialize(Bootstrap<RecommendationConfiguration> bootstrap) {
-     	// nothing to do at the moment
-	}
-
-	@Override
-	public void run(RecommendationConfiguration recommendationConfiguration,
-					Environment recommendationEnvironment) {
-
-		// create & register client(s):
-		//*** AnalysisService ***
-		//*** factory will automatically tie our AnalysisServiceClient connection to the lifecycle of our recommendation’s Environment.
-		AnalysisServiceClient analysisService = recommendationConfiguration.getAnalysisServiceFactory().build(recommendationEnvironment);
-		final RecommendationResource recommendationResource = new RecommendationResource(
-				recommendationConfiguration.getDefaultProduct(),
-				recommendationConfiguration.getDefaultUser(),
-				analysisService
-				);
-
-		// register Metrics for service
-		Meter requestsMeter = requestMetrics.meter(MetricRegistry.name(RecommendationResource.class, "requests"));
-		recommendationEnvironment.metrics().register("requets", requestsMeter);
-		requestsMeter.mark();
-
-
-		// register HeatlChecks
-		recommendationEnvironment.healthChecks().register("AnalyseService", new AnalysisServiceHealthCheck(analysisService));
-
-		//register resources
-		recommendationEnvironment.jersey().register(recommendationResource);
-
-	}
-
+        env.healthChecks().register("AnalysisService", new AnalysisServiceHealthCheck
+                (analysisService));
+        env.jersey().register(recommendationResource);
+    }
 }
