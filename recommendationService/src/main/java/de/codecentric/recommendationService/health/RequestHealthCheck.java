@@ -4,12 +4,14 @@ import com.codahale.metrics.Meter;
 import com.codahale.metrics.health.HealthCheck;
 
 /**
- * Created by afitz on 21.03.16.
+ * Health check for number of requests received.
+ *
+ * @author afitz
  */
 public class RequestHealthCheck extends HealthCheck {
 
     private Meter meter;
-    private long maxRequest = 10;
+    private long maxRequests = 10;
 
     public RequestHealthCheck(Meter meter) {
         this.meter = meter;
@@ -17,13 +19,13 @@ public class RequestHealthCheck extends HealthCheck {
 
     @Override
     protected Result check() throws Exception {
-
         long count = meter.getCount();
 
-        if (count <= maxRequest){
-            return Result.healthy("count = " + count + " and lower then " + maxRequest);
-        }else {
-            return Result.unhealthy("count = " + count + " and higher then " + maxRequest);
+        if (count <= maxRequests) {
+            return Result.healthy("#request is " + count + ", lower than maximum of " + maxRequests);
+        } else {
+            return Result.unhealthy("#request is " + count + ", higher than maximum of " +
+                    maxRequests);
         }
     }
 }

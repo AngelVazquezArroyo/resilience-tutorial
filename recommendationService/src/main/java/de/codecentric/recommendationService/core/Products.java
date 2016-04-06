@@ -4,14 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-/**
- * Created by afitz on 18.03.16.
- */
 public class Products {
-
         @JsonProperty("products")
         private List<String> products;
-
 
         @JsonProperty
         public List<String> getProducts() {
@@ -30,5 +25,4 @@ public class Products {
         public Products(List<String> products){
             this.products = products;
         }
-
 }
