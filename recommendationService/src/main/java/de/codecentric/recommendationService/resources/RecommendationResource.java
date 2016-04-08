@@ -4,7 +4,6 @@ import com.codahale.metrics.annotation.Metered;
 import com.google.common.base.Optional;
 import de.codecentric.recommendationService.api.Recommendation;
 import de.codecentric.recommendationService.clients.AnalysisClient.AnalysisServiceClient;
-import de.codecentric.recommendationService.clients.AnalysisClient.AnalysisServiceException;
 import de.codecentric.recommendationService.core.Products;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +14,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
 
 /**
  * Implementation of the recommendation service HTTP API.
@@ -38,23 +36,18 @@ public class RecommendationResource {
 		this.analysisService = analysisService;
 	}
 
+    // ************************************************************************************
+    //
+    // This method is one of the places where you should implement your changes.
+    //
+    // Usually, this method would not be factored out this way. It was just done for the
+    // purpose of the resilience tutorial to better isolate the points of change.
+    //
+    // ************************************************************************************
 	@GET
 	@Metered(name = "getRecommendation")
 	public Recommendation getRecommendation(@QueryParam("user") Optional<String> user, @QueryParam("product") Optional<String> product) {
-		Products products;
-		try {
-			products = analysisService.getCrossUpSellingProducts(product.or
-                    (defaultProduct));
-		} catch (AnalysisServiceException e) {
-			logger.info("Accessing analysis service failed.", e);
-			products = defaultProducts();
-		}
-		return new Recommendation(user.or(defaultUser), products.getProducts());
+        Products products = analysisService.getCrossUpSellingProducts(product.get());
+        return new Recommendation(user.get(), products.getProducts());
 	}
-
-    private Products defaultProducts() {
-        ArrayList<String> defaultProducts = new ArrayList<>();
-        defaultProducts.add(defaultProduct);
-        return new Products(defaultProducts);
-    }
 }

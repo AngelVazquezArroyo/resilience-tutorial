@@ -18,16 +18,16 @@ public class RecommendationConfiguration extends Configuration{
 
 	@Valid
     @NotNull
-    private AnalysisServiceFactory analysisService = new AnalysisServiceFactory();
+    private AnalysisServiceFactory analysisServiceFactory = new AnalysisServiceFactory();
 	
 	@JsonProperty("analysisService")
-    public AnalysisServiceFactory getAnalysisServiceFactory(){
-        return analysisService;
+    public AnalysisServiceFactory getAnalysisService(){
+        return analysisServiceFactory;
     }
 
     @JsonProperty("analysisService")
     public void setAnalysisService(AnalysisServiceFactory factory){
-        this.analysisService = factory;
+        this.analysisServiceFactory = factory;
     }
 
     @JsonProperty

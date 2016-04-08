@@ -32,7 +32,7 @@ public class RecommendationService extends Application<RecommendationConfigurati
 
     @Override
     public void run(RecommendationConfiguration conf, Environment env) {
-        final AnalysisServiceClient analysisService = conf.getAnalysisServiceFactory().build(env);
+        final AnalysisServiceClient analysisService = conf.getAnalysisService().build(env);
         final RecommendationResource recommendationResource = new RecommendationResource(
                 conf.getDefaultProduct(), conf.getDefaultUser(), analysisService);
 

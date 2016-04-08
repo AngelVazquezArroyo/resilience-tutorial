@@ -39,8 +39,40 @@ public class AnalysisServiceClientAdapter implements AnalysisServiceClient {
         this.httpAnalysisService = httpClient;
     }
 
+    // ************************************************************************************
+    //
+    // This method is one of the places where you should implement your changes.
+    //
+    // Usually, this method would not be factored out this way. It was just done for the
+    // purpose of the resilience tutorial to better isolate the points of change.
+    //
+    // ************************************************************************************
     @Override
-    public Products getCrossUpSellingProducts(String product) throws AnalysisServiceException {
+    public Products getCrossUpSellingProducts(String product) {
+        String responseBody;
+
+        try {
+            responseBody = accessAnalysisService(product);
+        } catch (IOException e) {
+            // Turn into runtime exception for handling by exception mapper
+            throw new RuntimeException(e);
+        }
+
+        Products cuProducts;
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            cuProducts = objectMapper.readValue(responseBody, Products.class);
+        } catch (IOException e) {
+            throw new AnalysisServiceException("Unexpected problem while parsing JSON response " +
+                    "from analysis service", e);
+        }
+
+        return cuProducts;
+    }
+
+    private String accessAnalysisService(String product) throws
+            IOException {
+
         URI uri;
         try {
             uri = new URIBuilder()
@@ -51,7 +83,8 @@ public class AnalysisServiceClientAdapter implements AnalysisServiceClient {
                     .setParameter("product", product)
                     .build();
         } catch (URISyntaxException e) {
-            throw new AnalysisServiceException("Unexpected Exception while creating URI to access" +
+            // Turn into RuntimeException for appropriate handling via exception mapper
+            throw new RuntimeException("Unexpected Exception while creating URI to access" +
                     " analysis service", e);
         }
 
@@ -71,25 +104,10 @@ public class AnalysisServiceClientAdapter implements AnalysisServiceClient {
         };
 
         String responseBody;
-        try {
-            logger.info("get = " + uri.toString());
-            responseBody = httpAnalysisService.execute(get, responseHandler);
-            logger.info("response = " + responseBody);
-        } catch (IOException e) {
-            throw new AnalysisServiceException("Unexpected problem encountered while accessing " +
-                    "analysis service", e);
-        }
-
-        Products cuProducts;
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            cuProducts = objectMapper.readValue(responseBody, Products.class);
-        } catch (IOException e) {
-            throw new AnalysisServiceException("Unexpected problem while parsing JSON response " +
-                    "from analysis service", e);
-        }
-
-        return cuProducts;
+        logger.debug("GET request to analysis service: " + uri.toString());
+        responseBody = httpAnalysisService.execute(get, responseHandler);
+        logger.debug("GET response from analysis service: " + responseBody);
+        return responseBody;
     }
 
     @Override
