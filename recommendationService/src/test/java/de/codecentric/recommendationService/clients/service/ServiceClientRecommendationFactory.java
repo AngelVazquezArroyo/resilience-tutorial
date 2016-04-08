@@ -1,32 +1,17 @@
 package de.codecentric.recommendationService.clients.service;
 
 import de.codecentric.recommendationService.RecommendationConfiguration;
+import de.codecentric.recommendationService.clients.ClientException;
 import de.codecentric.recommendationService.clients.ServiceClient;
-import de.codecentric.recommendationService.clients.ServiceClientException;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
-/**
- * Created by afitz on 24.03.16.
- */
 public class ServiceClientRecommendationFactory {
-
-    private static final Logger logger = LoggerFactory.getLogger(ServiceClientRecommendationFactory.class);
-
-    private DropwizardAppRule<RecommendationConfiguration> rule;
-
-    public ServiceClientRecommendationFactory(DropwizardAppRule<RecommendationConfiguration> rule) {
-        this.port = rule.getLocalPort();
-        this.host = "localhost";
-        this.portAdmin = rule.getAdminPort();
-        this.rule = rule;
-    }
+    private static final String path = "/recommendation";
 
     private String host;
 
@@ -38,14 +23,16 @@ public class ServiceClientRecommendationFactory {
     @Max(65535)
     private int portAdmin;
 
-    private String path = "/recommendation";
+    public ServiceClientRecommendationFactory(DropwizardAppRule<RecommendationConfiguration> rule) {
+        this.port = rule.getLocalPort();
+        this.host = "localhost";
+        this.portAdmin = rule.getAdminPort();
+    }
 
-    public ServiceClient build(String name) throws ServiceClientException{
-
+    public ServiceClient build(String name) throws ClientException {
         CloseableHttpClient httpClient = HttpClients.createDefault();
-
-        ServiceClient awesomeRecommendation = new ServiceClientRecommendation(host, port, portAdmin, path, httpClient);
-
+        ServiceClient awesomeRecommendation = new ServiceClientRecommendation(host, port,
+                portAdmin, path, httpClient);
         return awesomeRecommendation;
     }
 }

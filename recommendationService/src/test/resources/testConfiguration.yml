@@ -2,9 +2,11 @@
 
 # Impostor Config
 upStreamImpostor:
+    path: ../impostor/impostor
     host: localhost
     port: 8103
 
 downStreamImpostor:
+    path: ../impostor/impostor
     host: localhost
     port: 8102

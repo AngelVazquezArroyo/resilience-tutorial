@@ -5,24 +5,17 @@ import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-/**
- * Created by afitz on 31.03.16.
- */
-
 @RunWith(Suite.class)
-@Suite.SuiteClasses({TestNormal.class, TestBulkheads.class})
+@Suite.SuiteClasses({TestNormal.class, TestCompleteParameterChecking.class})
 public class RecommendationServiceTestSuite {
-
     @BeforeClass
     public static void setUp() {
-
-        System.out.println("setting up RecommendationServiceTestSuite");
+        // Nothing to do
     }
 
     @AfterClass
     public static void tearDown()
     {
-        System.out.println("tearing downStream RecommendationServiceTestSuite");
+        // Nothing to do
     }
-
 }

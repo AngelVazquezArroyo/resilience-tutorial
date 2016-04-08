@@ -2,8 +2,8 @@ package de.codecentric.recommendationService.clients.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.codecentric.recommendationService.api.Recommendation;
+import de.codecentric.recommendationService.clients.ClientException;
 import de.codecentric.recommendationService.clients.ServiceClient;
-import de.codecentric.recommendationService.clients.ServiceClientException;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
@@ -12,8 +12,6 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.util.EntityUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
@@ -21,12 +19,11 @@ import java.net.URISyntaxException;
 
 
 /**
- * Created by afitz on 24.03.16.
+ * A client wrapping the actual access to the recommendation service.
+ *
+ * @author afitz
  */
 public class ServiceClientRecommendation implements ServiceClient {
-
-    private static final Logger logger = LoggerFactory.getLogger(ServiceClientRecommendation.class);
-
     private String host;
     private int port;
     private int portAdmin;
@@ -34,21 +31,18 @@ public class ServiceClientRecommendation implements ServiceClient {
     private HttpClient client;
 
     private URI healthCheckUri = null;
-
-    private HttpGet getHealthy;
-
+    private HttpGet getHealth;
     private ObjectMapper mapper = new ObjectMapper();
 
-    private ResponseHandler<ServiceHealthResult> responseHandlerHeathCheck;
+    private ResponseHandler<ServiceHealthResult> responseHandlerHealthCheck;
     private ResponseHandler<Recommendation> responseHandlerGetRecommendation;
 
-    public ServiceClientRecommendation(String host, int port, int portAdmin, String path, HttpClient client) throws ServiceClientException {
-
+    public ServiceClientRecommendation(String host, int port, int portAdmin, String path,
+                                       HttpClient client) throws ClientException {
         this.host = host;
         this.port = port;
         this.portAdmin = portAdmin;
         this.path = path;
-
         this.client = client;
 
         try {
@@ -57,86 +51,73 @@ public class ServiceClientRecommendation implements ServiceClient {
                     .setPort(portAdmin)
                     .setPath("/healthcheck")
                     .build();
+            getHealth = new HttpGet(healthCheckUri);
 
-            logger.debug("healthCheckUri: " + healthCheckUri.toString());
-
-            getHealthy = new HttpGet(healthCheckUri);
-
-            // Create a custom response handler for HealthChecks
             responseHandlerGetRecommendation = new ResponseHandler<Recommendation>() {
-
-                public Recommendation handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
-
+                public Recommendation handleResponse(final HttpResponse response) throws IOException {
                     int status = response.getStatusLine().getStatusCode();
-                    String entityString;
-                    Recommendation recommendation = null;
-
-                    entityString = (response.getEntity() != null ? EntityUtils.toString(response.getEntity()) : "no health checks");
-
-                    if (status == HttpStatus.SC_OK) {
-                        recommendation = mapper.readValue(entityString, Recommendation.class);
-                    } else {
-                        new ClientProtocolException("Unexpected response status: " + status + " - " + entityString);
+                    String entity = null;
+                    if (response.getEntity() != null) {
+                        entity = EntityUtils.toString(response.getEntity());
                     }
-                    return recommendation;
+
+                    if (status != HttpStatus.SC_OK) {
+                        throw new ClientProtocolException("Unexpected response status " + status);
+                    }
+                    if (entity == null) {
+                        throw new ClientProtocolException("Empty response entity");
+                    }
+
+                    return mapper.readValue(entity, Recommendation.class);
                 }
             };
 
-            // Create a custom response handler for HealthChecks
-            responseHandlerHeathCheck = new ResponseHandler<ServiceHealthResult>() {
-
-                public ServiceHealthResult handleResponse(final HttpResponse response) throws IOException {
-
+            responseHandlerHealthCheck = new ResponseHandler<ServiceHealthResult>() {
+                public ServiceHealthResult handleResponse(final HttpResponse response) throws
+                        IOException {
                     int status = response.getStatusLine().getStatusCode();
-                    String entityString;
+                    String entity = null;
+                    if (response.getEntity() != null) {
+                        entity = EntityUtils.toString(response.getEntity());
+                    }
 
-                    entityString = (response.getEntity() != null ? EntityUtils.toString(response.getEntity()) : "no products");
-
+                    ServiceHealthResult health = null;
                     if (status == HttpStatus.SC_OK) {
-                        // 200 OK
-                        return new ServiceHealthResult(status, "service seems to be healthy", entityString);
+                        health = new ServiceHealthResult(status, "Service is healthy", entity);
                     } else if (status == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
-                        // 500 Internal Server Error
-                        return new ServiceHealthResult(status, "service seems to be unhealthy", entityString);
+                        return new ServiceHealthResult(status, "Service is unhealthy", entity);
                     } else {
-                        return new ServiceHealthResult(status, "Unexpected response status: " + status, entityString);
+                        return new ServiceHealthResult(status, "Service is in unknown state",
+                                entity);
                     }
+                    return health;
                 }
             };
-
-        } catch (
-                Exception e
-                )
-
-        {
-            throw new ServiceClientException("ServiceClient UnknownException in Constructor: " + e.getMessage());
-        }
-
-    }
-
-    @Override
-    public ServiceHealthResult getHealthy(ServiceHealthStatusCode check) throws ServiceClientException {
-        // tbd!: extract the requestet health status
-        return this.getHealthy();
-    }
-
-    @Override
-    public ServiceHealthResult getHealthy() throws ServiceClientException {
-
-        try {
-            return client.execute(getHealthy, responseHandlerHeathCheck);
-        } catch (ClientProtocolException e) {
-            throw new ServiceClientException("ServiceClient ProtocolException: " + e.getMessage());
-        } catch (IOException e) {
-            throw new ServiceClientException("ServiceClient IOException: " + e.getMessage());
         } catch (Exception e) {
-            throw new ServiceClientException("ServiceClient UnknownException: " + e.getMessage());
+            throw new ClientException("Unexpected problem in recommendation service client " +
+                    "constructor (see embedded exception)", e);
         }
     }
 
     @Override
-    public Recommendation getRecommendation(String user, String product) throws ServiceClientException {
+    public ServiceHealthResult getServiceHealth(ServiceHealthStatusCode check) throws
+            ClientException {
+        // Todo extract the requested health status
+        return this.getServiceHealth();
+    }
 
+    @Override
+    public ServiceHealthResult getServiceHealth() throws ClientException {
+        try {
+            return client.execute(getHealth, responseHandlerHealthCheck);
+        } catch (IOException e) {
+            throw new ClientException("Retrieving service health failed (see embedded exception)",
+                    e);
+        }
+    }
+
+    @Override
+    public Recommendation getRecommendation(String user, String product) throws ClientException {
         URI serviceUri;
         HttpGet getRecommendation;
         Recommendation recommendation = null;
@@ -149,19 +130,15 @@ public class ServiceClientRecommendation implements ServiceClient {
                     .setParameter("product", product)
                     .setParameter("user", user)
                     .build();
-
-            logger.debug("serviceUri: " + serviceUri.toString());
-
             getRecommendation = new HttpGet(serviceUri);
-
             recommendation = client.execute(getRecommendation, responseHandlerGetRecommendation);
-
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Creating URI to retrieve recommendation failed (see " +
+                    "embedded exception)", e);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ClientException("Retrieving recommendation failed (see embedded exception)",
+                    e);
         }
-
         return recommendation;
     }
 }

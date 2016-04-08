@@ -1,62 +1,44 @@
 package de.codecentric.recommendationService.clients.upstream;
 
+import de.codecentric.recommendationService.clients.ClientException;
 import de.codecentric.recommendationService.clients.ImpostorClient;
 import de.codecentric.recommendationService.clients.ImpostorCommands;
 import de.codecentric.recommendationService.clients.ImpostorConfig;
-import de.codecentric.recommendationService.clients.ServiceClientException;
+import de.codecentric.recommendationService.clients.ImpostorResult;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
- * Created by afitz on 24.03.16.
+ * A client wrapping the actual access to the upstream impostor.
+ *
+ * @author afitz
  */
-public class ImpostorClientUpStream extends ImpostorClient {
-
-    private static final Logger logger = LoggerFactory.getLogger(ImpostorClientUpStream.class);
-
-
-    public ImpostorClientUpStream(String host, int port, HttpClient client) {
+public class ImpostorClientUpstream extends ImpostorClient {
+    public ImpostorClientUpstream(String host, int port, HttpClient client) {
         super(host, port, client);
     }
 
     @Override
-    public void setConfig(ImpostorConfig config) throws ServiceClientException {
-
-        logger.debug("UpStreamConfig: " + config.toString());
-
-        try {
-            int status = this.sendToImpostor(new StringEntity(config.getJSon(), ContentType.APPLICATION_JSON));
-
-            if (status == HttpStatus.SC_OK || status == HttpStatus.SC_NO_CONTENT) {
-                logger.debug("set config to: " + config.toString() + " was successful");
-            } else {
-                throw new ServiceClientException("set config " + config.toString() + " to ImpostorRule was not successful. Status: " + status);
-            }
-        } catch (ServiceClientException e) {
-            throw e;
+    public void setConfig(ImpostorConfig config) {
+        ImpostorResult result = this.sendToImpostor(new StringEntity(config.getJSon(),
+                ContentType.APPLICATION_JSON));
+        if (result.getStatus() != HttpStatus.SC_NO_CONTENT) {
+            throw new ClientException("Setting configuration at upstream impostor failed with " +
+                    "status " + result.getStatus() + ". Configuration was: " + config.getJSon());
         }
     }
 
     @Override
-    public void executeCommand(ImpostorCommands command) throws ServiceClientException {
-
-        logger.debug("UpStreamCommand: " + command.toString());
-
-        try {
-            int status = sendToImpostor(new StringEntity(command.getJSon(), ContentType.APPLICATION_JSON));
-
-            if (status == HttpStatus.SC_OK || status == HttpStatus.SC_NO_CONTENT) {
-                logger.debug("set config to " + command.toString() + " was successful‚");
-            } else {
-                throw new ServiceClientException("send command " + command.toString() + " to DownStreamImpostor was not successful. Status: " + status);
-            }
-        } catch (ServiceClientException e) {
-            throw e;
+    public String executeCommand(ImpostorCommands command) throws ClientException {
+        ImpostorResult result = sendToImpostor(new StringEntity(command.getJSon(),
+                ContentType.APPLICATION_JSON));
+        if ((result.getStatus() != HttpStatus.SC_OK) &&
+                (result.getStatus() != HttpStatus.SC_NO_CONTENT)) {
+            throw new ClientException("Executing command at upstream impostor failed with status " +
+                    "" + result.getStatus() + ". Command was: " + command.getJSon());
         }
-
+        return result.getBody();
     }
 }

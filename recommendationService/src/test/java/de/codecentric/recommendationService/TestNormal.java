@@ -1,11 +1,9 @@
 package de.codecentric.recommendationService;
 
 import de.codecentric.recommendationService.api.Recommendation;
-import de.codecentric.recommendationService.clients.ServiceClientException;
-import de.codecentric.recommendationService.clients.downstream.ImpostorClientDownStreamConfig;
+import de.codecentric.recommendationService.clients.ClientException;
+import de.codecentric.recommendationService.clients.downstream.ImpostorClientDownstreamConfig;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
@@ -13,35 +11,23 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.fail;
 
 /**
- * Created by afitz on 05.04.16.
+ * Test suite with "good cases" that should succeed with the initial recommendation service
+ * implementation.
+ *
+ * @author afitz
  */
 public class TestNormal extends RecommendationTestCase {
 
-    private static final Logger logger = LoggerFactory.getLogger(RecommendationTestCase.class);
-
-    @Test // deliver an existing recommendation
-    public void testNormal() {
-
+    @Test
+    public void shouldDeliverAnExistingRecommendation() {
         try {
-
-            getImpostorDownStreamClient().setConfig(ImpostorClientDownStreamConfig.NORMAL);
-
-            // return existing product
+            getImpostorDownstreamClient().setConfig(ImpostorClientDownstreamConfig.NORMAL);
             Recommendation recommendation = getRecommendationServiceClient().getRecommendation("U001", "P001");
-            ArrayList<String> expectedProducts = new ArrayList<String>();
+            ArrayList<String> expectedProducts = new ArrayList<>();
             expectedProducts.add("P002");
             assertArrayEquals("expected product(s)", expectedProducts.toArray(), recommendation.getProducts().toArray());
-
-            // return default product
-            recommendation = getRecommendationServiceClient().getRecommendation("U001", "P00T");
-            expectedProducts = new ArrayList<String>();
-            expectedProducts.add("P001");
-            assertArrayEquals("expected product(s)", expectedProducts.toArray(), recommendation.getProducts().toArray());
-
-        } catch (ServiceClientException e) {
-            logger.error(e.getMessage());
-            fail();
+        } catch (ClientException e) {
+            fail(e.getMessage());
         }
-
     }
 }

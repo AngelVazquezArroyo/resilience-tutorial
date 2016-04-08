@@ -1,42 +1,40 @@
 package de.codecentric.recommendationService.config;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.codecentric.recommendationService.clients.downstream.ImpostorClientDownStreamFactory;
-import de.codecentric.recommendationService.clients.upstream.ImpostorClientUpStreamFactory;
+import de.codecentric.recommendationService.clients.downstream.ImpostorClientDownstreamFactory;
+import de.codecentric.recommendationService.clients.upstream.ImpostorClientUpstreamFactory;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-/**
- * Created by afitz on 24.03.16.
- */
 public class TestConfiguration {
+    @Valid
+    @NotNull
+    private ImpostorClientUpstreamFactory upstreamImpostorFactory =
+            new ImpostorClientUpstreamFactory();
 
     @Valid
     @NotNull
-    private ImpostorClientUpStreamFactory upStreamImpostorFactory = new ImpostorClientUpStreamFactory();
-
-    @Valid
-    @NotNull
-    private ImpostorClientDownStreamFactory downStreamImpostorFactory = new ImpostorClientDownStreamFactory();
+    private ImpostorClientDownstreamFactory downstreamImpostorFactory =
+            new ImpostorClientDownstreamFactory();
 
     @JsonProperty("upStreamImpostor")
-    public ImpostorClientUpStreamFactory getUpStreamFactory(){
-        return upStreamImpostorFactory;
+    public ImpostorClientUpstreamFactory getUpstreamFactory() {
+        return upstreamImpostorFactory;
     }
 
     @JsonProperty("upStreamImpostor")
-    public void setUpStreamImpostorFactory(ImpostorClientUpStreamFactory upStreamImpostorFactory) {
-        this.upStreamImpostorFactory = upStreamImpostorFactory;
+    public void setUpstreamImpostorFactory(ImpostorClientUpstreamFactory upstreamImpostorFactory) {
+        this.upstreamImpostorFactory = upstreamImpostorFactory;
     }
 
     @JsonProperty("downStreamImpostor")
-    public ImpostorClientDownStreamFactory getDownStreamFactory(){
-        return downStreamImpostorFactory;
+    public ImpostorClientDownstreamFactory getDownstreamFactory() {
+        return downstreamImpostorFactory;
     }
 
     @JsonProperty("downStreamImpostor")
-    public void setDownStreamImpostorFactory(ImpostorClientDownStreamFactory downStreamImpostorFactory) {
-        this.downStreamImpostorFactory = downStreamImpostorFactory;
+    public void setDownstreamImpostorFactory(ImpostorClientDownstreamFactory downstreamImpostorFactory) {
+        this.downstreamImpostorFactory = downstreamImpostorFactory;
     }
 }

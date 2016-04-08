@@ -1,61 +1,46 @@
 package de.codecentric.recommendationService.clients.downstream;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import de.codecentric.recommendationService.clients.ClientException;
 import de.codecentric.recommendationService.clients.ImpostorConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Paths;
 
 /**
- * Created by afitz on 24.03.16.
+ * Abstraction of the various configurations for the downstream impostor.
+ *
+ * @author afitz
  */
-public enum ImpostorClientDownStreamConfig implements ImpostorConfig {
-
+public enum ImpostorClientDownstreamConfig implements ImpostorConfig {
     NORMAL("normal"),
     ONE_TIME_LATENCY("one_time_latency"),
     RECURRING_LATENCY("recurring_latency");
 
-    private final Logger logger = LoggerFactory.getLogger(ImpostorClientDownStreamConfig.class);
+    private static final String DIR = "src/test/resources/downstream/config/";
 
-    private String configString;
-    private String file;
-
+    private final String file;
     private final String config;
+    private String configString;
 
-    private String dir = "src/test/resources/downStream/config/";
-
-    ImpostorClientDownStreamConfig(String i) {
-
-        config = i;
-
-        file = dir + i + ".json";
+    ImpostorClientDownstreamConfig(String c) {
+        config = c;
+        file = DIR + config + ".json";
 
         try {
             configString = new String(java.nio.file.Files.readAllBytes(Paths.get(file)));
-            configString = configString.concat(new String(java.nio.file.Files.readAllBytes(Paths.get(dir + "responses.json"))));
+            configString = configString.concat(new String(java.nio.file.Files.readAllBytes(Paths
+                    .get(DIR + "responses.json"))));
             configString = configString.concat("}");
-
-            logger.debug("JSON: " + configString);
-
-            logger.debug("Loading config : " + file);
-
-         } catch (JsonProcessingException e) {
-            e.printStackTrace();
         }catch (IOException e) {
-            e.printStackTrace();
+            throw new ClientException("Reading downstream impostor configuration \"" + config +
+                    "\" from file failed (see embedded exception)", e);
         }
-
     }
-
-    public String getFileName(){return file;}
 
     @Override
     public String getJSon() {
         return configString;
     }
-
 
     @Override
     public String toString() {

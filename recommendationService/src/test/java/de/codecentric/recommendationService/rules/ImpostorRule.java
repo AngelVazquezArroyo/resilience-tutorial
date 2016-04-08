@@ -3,38 +3,38 @@ package de.codecentric.recommendationService.rules;
 import de.codecentric.recommendationService.config.TestConfiguration;
 import de.codecentric.recommendationService.processes.ImpostorProcess;
 import org.junit.rules.ExternalResource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
- * Created by afitz on 05.04.16.
+ * JUnit test rule that provides an upstream and downstream impostor.
+ *
+ * @author afitz
  */
 public class ImpostorRule extends ExternalResource {
-
-    private static final Logger logger = LoggerFactory.getLogger(ImpostorRule.class);
-
-    private ImpostorProcess downStreamProcess = null;
-    private ImpostorProcess upStreamProcess = null;
+    private ImpostorProcess downstreamProcess = null;
+    private ImpostorProcess upstreamProcess = null;
     private TestConfiguration config;
 
     public ImpostorRule(TestConfiguration config) {
-
-        downStreamProcess = new ImpostorProcess();
-        upStreamProcess = new ImpostorProcess();
+        downstreamProcess = new ImpostorProcess();
+        upstreamProcess = new ImpostorProcess();
         this.config = config;
     }
 
     @Override
     protected void before() throws Throwable {
-        downStreamProcess.startImpostorProcess(config.getDownStreamFactory().getHost(), config.getDownStreamFactory().getPort());
-        upStreamProcess.startImpostorProcess(config.getUpStreamFactory().getHost(), config.getUpStreamFactory().getPort());
+        super.before();
+        downstreamProcess.startImpostorProcess(config.getDownstreamFactory().getPath(),
+                config.getDownstreamFactory().getHost(),
+                config.getDownstreamFactory().getPort());
+        upstreamProcess.startImpostorProcess(config.getDownstreamFactory().getPath(),
+                config.getUpstreamFactory().getHost(),
+                config.getUpstreamFactory().getPort());
     }
 
     @Override
     protected void after() {
-
+        downstreamProcess.stopImpostorProcess();
+        upstreamProcess.stopImpostorProcess();
         super.after();
-        downStreamProcess.stopImpostorProcess();
-        upStreamProcess.stopImpostorProcess();
     }
 }

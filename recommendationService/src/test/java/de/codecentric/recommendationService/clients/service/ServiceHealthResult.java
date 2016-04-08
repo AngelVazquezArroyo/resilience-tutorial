@@ -1,8 +1,5 @@
 package de.codecentric.recommendationService.clients.service;
 
-/**
- * Created by afitz on 24.03.16.
- */
 public class ServiceHealthResult {
     private int statusCode;
     private String message;

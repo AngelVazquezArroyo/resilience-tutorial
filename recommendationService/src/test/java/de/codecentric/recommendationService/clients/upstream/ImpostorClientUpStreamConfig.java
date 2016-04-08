@@ -1,45 +1,36 @@
 package de.codecentric.recommendationService.clients.upstream;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import de.codecentric.recommendationService.clients.ClientException;
 import de.codecentric.recommendationService.clients.ImpostorConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Paths;
 
 /**
- * Created by afitz on 23.03.16.
+ * Abstraction of the various configurations for the upstream impostor.
+ *
+ * @author afitz
  */
-public enum ImpostorClientUpStreamConfig implements ImpostorConfig {
-
+public enum ImpostorClientUpstreamConfig implements ImpostorConfig {
     NORMAL("normal"),
     PRESSURE("pressure");
 
-    private final Logger logger = LoggerFactory.getLogger(ImpostorClientUpStreamConfig.class);
+    private static final String DIR = "src/test/resources/upstream/config/";
 
-    private String configString;
-    private String file;
-
+    private final String file;
     private final String config;
+    private String configString;
 
-    private String dir = "src/test/resources/upStream/config/";
-
-    ImpostorClientUpStreamConfig(String i) {
-
-        config = i;
-
-        file = dir + i + ".json";
+    ImpostorClientUpstreamConfig(String c) {
+        config = c;
+        file = DIR + config + ".json";
 
         try {
             configString = new String(java.nio.file.Files.readAllBytes(Paths.get(file)));
-            logger.debug("Loading config : " + file);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        }catch (IOException e) {
+            throw new ClientException("Reading upstream impostor configuration \"" + config +
+                    "\" from file failed (see embedded exception)", e);
         }
-
     }
 
     @Override
@@ -47,9 +38,8 @@ public enum ImpostorClientUpStreamConfig implements ImpostorConfig {
         return configString;
     }
 
-
     @Override
     public String toString() {
-        return this.getJSon();
+        return config;
     }
 }

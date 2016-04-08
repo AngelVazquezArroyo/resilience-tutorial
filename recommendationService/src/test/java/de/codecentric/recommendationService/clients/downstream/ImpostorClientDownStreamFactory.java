@@ -1,27 +1,17 @@
 package de.codecentric.recommendationService.clients.downstream;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import de.codecentric.recommendationService.clients.ClientException;
 import de.codecentric.recommendationService.clients.ImpostorClient;
-import de.codecentric.recommendationService.clients.ServiceClientException;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
-/**
- * Created by afitz on 24.03.16.
- */
-public class ImpostorClientDownStreamFactory {
-
-    private static final Logger logger = LoggerFactory.getLogger(ImpostorClientDownStreamFactory.class);
-
-    //    @NotEmpty
+public class ImpostorClientDownstreamFactory {
     private String host = "localhost";
 
-    //    @NotEmpty
     @Min(1)
     @Max(65535)
     private int port = 8080;
@@ -58,25 +48,10 @@ public class ImpostorClientDownStreamFactory {
         this.path = path;
     }
 
-    public ImpostorClient build(ImpostorClientDownStreamConfig config) throws ServiceClientException{
-
-        ImpostorClient downStreamClient = this.build();
-
-        downStreamClient.setConfig(config);
-
-        return downStreamClient;
-    }
-
-    public ImpostorClient build() throws ServiceClientException{
-
+    public ImpostorClient build() throws ClientException {
         CloseableHttpClient httpClient = HttpClients.createDefault();
-
-        ImpostorClient downStream = new ImpostorClientDownStream(this.getHost(), this.getPort(), httpClient);
-
-        logger.debug("ImpostorClient get: DownStreamStream");
-
-        downStream.setConfig(ImpostorClientDownStreamConfig.NORMAL);
-
-        return downStream;
+        ImpostorClient client = new ImpostorClientDownstream(host, port, httpClient);
+        client.setConfig(ImpostorClientDownstreamConfig.NORMAL);
+        return client;
     }
 }

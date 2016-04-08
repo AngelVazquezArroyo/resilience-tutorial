@@ -1,13 +1,8 @@
 package de.codecentric.recommendationService.clients.service;
 
-/**
- * Created by afitz on 24.03.16.
- */
 public enum ServiceHealthStatusCode {
-
-    ANALYSESERVICE("AnalyseService"),
-    DEADLOCKS("deadlocks")
-    ;
+    ANALYSIS_SERVICE("AnalysisService"),
+    DEADLOCKS("Deadlocks");
 
     private final String check;
 
