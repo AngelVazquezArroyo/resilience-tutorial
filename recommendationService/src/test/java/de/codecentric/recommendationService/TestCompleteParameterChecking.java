@@ -1,5 +1,6 @@
 package de.codecentric.recommendationService;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -11,6 +12,7 @@ import org.junit.Test;
  */
 public class TestCompleteParameterChecking extends RecommendationTestCase{
 
+    @Ignore
     @Test
     public void testRecurringLatency() {
         // Todo Next test to be implemented
