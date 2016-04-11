@@ -3,8 +3,8 @@ package de.codecentric.recommendationService;
 import de.codecentric.recommendationService.api.Recommendation;
 import de.codecentric.recommendationService.impostor.Impostor;
 import de.codecentric.recommendationService.impostor.ImpostorConfiguration;
-import de.codecentric.recommendationService.impostor.ImpostorException;
 import de.codecentric.recommendationService.service.Service;
+import de.codecentric.recommendationService.service.ServiceException;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -61,7 +61,7 @@ public class TestNormal {
             ArrayList<String> expectedProducts = new ArrayList<>();
             expectedProducts.add("P002");
             assertArrayEquals("expected product(s)", expectedProducts.toArray(), recommendation.getProducts().toArray());
-        } catch (ImpostorException e) {
+        } catch (ServiceException e) {
             fail(e.getMessage());
         }
     }

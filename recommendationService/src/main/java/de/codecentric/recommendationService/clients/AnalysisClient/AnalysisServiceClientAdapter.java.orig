@@ -17,7 +17,6 @@ import javax.ws.rs.WebApplicationException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collections;
 
 /**
  * Concrete implementation of a product analysis client using a HTTP based analysis service.
@@ -64,7 +63,8 @@ public class AnalysisServiceClientAdapter implements AnalysisServiceClient {
         try {
             cuProducts = objectMapper.readValue(responseBody, Products.class);
         } catch (IOException e) {
-            cuProducts = new Products(Collections.<String>emptyList());
+            throw new AnalysisServiceException("Unexpected problem while parsing JSON response " +
+                    "from analysis service", e);
         }
 
         return cuProducts;

@@ -1,8 +1,10 @@
 package de.codecentric.recommendationService;
 
+import de.codecentric.recommendationService.api.Recommendation;
 import de.codecentric.recommendationService.impostor.Impostor;
 import de.codecentric.recommendationService.impostor.ImpostorConfiguration;
 import de.codecentric.recommendationService.service.Service;
+import de.codecentric.recommendationService.service.ServiceException;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -10,6 +12,9 @@ import org.junit.ClassRule;
 import org.junit.Test;
 
 import java.io.IOException;
+
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 
 /**
@@ -37,7 +42,7 @@ public class TestCompleteParameterChecking {
     @BeforeClass
     public static void initialize() throws IOException {
         analysisService = TestHelper.createImpostor(ANALYSIS_SERVICE_PORT,
-                ImpostorConfiguration.DownstreamNormal);
+                ImpostorConfiguration.DownstreamBrokenResponse);
         recommendationService = TestHelper.createService(RECOMMENDATION_SERVICE_PORT,
                 RECOMMENDATION_SERVICE_ADMIN_PORT);
     }
@@ -48,7 +53,46 @@ public class TestCompleteParameterChecking {
     }
 
     @Test
-    public void testRecurringLatency() {
-        // Todo Next test to be implemented
+    public void shouldRejectEmptyParameters() {
+        try {
+            Recommendation recommendation = recommendationService.getRecommendation(null, null);
+            fail("This call should result in an exception");
+        } catch (ServiceException e) {
+            assertTrue("Status from service call should be 400", e.getMessage().contains("400"));
+        }
+    }
+
+    @Test
+    public void shouldRejectMissingProductParameter() {
+        try {
+            Recommendation recommendation = recommendationService.getRecommendation("user=U001");
+            fail("This call should result in an exception");
+        } catch (ServiceException e) {
+            assertTrue("Status from service call should be 400", e.getMessage().contains("400"));
+        }
+    }
+
+    @Test
+    public void shouldRejectInvalidProduct() {
+        try {
+            Recommendation recommendation = recommendationService.getRecommendation("U001",
+                    "dummy");
+            fail("This call should result in an exception");
+        } catch (ServiceException e) {
+            assertTrue("Status from service call should be 400", e.getMessage().contains("400"));
+        }
+    }
+
+    @Test
+    public void shouldHandleBrokenResponseGracefully() {
+        try {
+            Recommendation recommendation = recommendationService.getRecommendation("U001",
+                    "P999");
+            assertTrue("A broken response should result in an empty recommendation",
+                    recommendation.getProducts().size() == 0);
+        } catch (ServiceException e) {
+            fail("This call should not result in a service exception with message: " + e
+                    .getMessage());
+        }
     }
 }

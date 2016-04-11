@@ -28,7 +28,6 @@ public class Service {
 
     private final String host;
     private final int port;
-    private final int adminPort;
     private final HttpClient client;
     private final URI healthUri;
 
@@ -36,16 +35,35 @@ public class Service {
     public Service(String host, int port, int adminPort) {
         this.host = host;
         this.port = port;
-        this.adminPort = adminPort;
         this.client = HttpClients.createDefault();
-        this.healthUri = createURI(adminPort, HEALTH_PATH);
+        this.healthUri = createURIWithParameter(adminPort, HEALTH_PATH);
     }
 
     public Recommendation getRecommendation(String user, String product) throws ServiceException {
         URI uri;
-        Recommendation recommendation = null;
+        Recommendation recommendation;
 
-        uri = createURI(port, SERVICE_PATH, USER, user, PRODUCT, product);
+        uri = createURIWithParameter(port, SERVICE_PATH, USER, user, PRODUCT, product);
+        ServiceResponse response = get(uri);
+        if (response.getStatus() != HttpStatus.SC_OK) {
+            throw new ServiceException("Retrieving recommendation from service failed with " +
+                    "status " + response.getStatus() + ". URI was: " + uri.toString());
+        }
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            recommendation = mapper.readValue(response.getBody(), Recommendation.class);
+        } catch (IOException e) {
+            throw new ServiceException("Parsing response entity \"" + response.getBody() + "\" " +
+                    "failed (" + e.getClass().getName() + ", " + e.getMessage() + ")", e);
+        }
+        return recommendation;
+    }
+
+    public Recommendation getRecommendation(String query) throws ServiceException {
+        URI uri;
+        Recommendation recommendation;
+
+        uri = createURIWithQuery(port, SERVICE_PATH, query);
         ServiceResponse response = get(uri);
         if (response.getStatus() != HttpStatus.SC_OK) {
             throw new ServiceException("Retrieving recommendation from service failed with " +
@@ -86,7 +104,7 @@ public class Service {
         return new ServiceResponse(status, body);
     }
 
-    private URI createURI(int port, String path, String... kv) {
+    private URI createURIWithParameter(int port, String path, String... kv) {
         URI uri;
         try {
             URIBuilder builder = new URIBuilder()
@@ -103,6 +121,23 @@ public class Service {
                 i++;
             }
             uri = builder.build();
+        } catch (URISyntaxException e) {
+            throw new IllegalStateException("Creating URI to access service failed (" + e
+                    .getClass().getName() + ", " + e.getMessage() + ")", e);
+        }
+        return uri;
+    }
+
+    private URI createURIWithQuery(int port, String path, String query) {
+        URI uri;
+        try {
+            uri = new URIBuilder()
+                    .setScheme(SCHEME)
+                    .setHost(this.host)
+                    .setPort(port)
+                    .setPath(path)
+                    .setCustomQuery(query)
+                    .build();
         } catch (URISyntaxException e) {
             throw new IllegalStateException("Creating URI to access service failed (" + e
                     .getClass().getName() + ", " + e.getMessage() + ")", e);

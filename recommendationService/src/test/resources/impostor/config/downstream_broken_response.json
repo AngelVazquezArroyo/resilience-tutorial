@@ -1,0 +1,62 @@
+{
+    "mode": "downstream",
+    "failuremode": "none",
+    "protocol": "http",
+    "responses": [
+        {
+            "verb": "GET",
+            "url": "/get-related?product=P00T",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "body": "{ \"products\" : [\"P001\"] }"
+        },
+        {
+            "verb": "GET",
+            "url": "/get-related?product=P001",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "body": "{ \"products\" : [\"P002\"] }"
+        },
+        {
+            "verb": "GET",
+            "url": "/get-related?product=P002",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "body": "{ \"products\" : [\"P003\"] }"
+        },
+        {
+            "verb": "GET",
+            "url": "/get-related?product=P003",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "body": "{ \"products\" : [\"P003\"] }"
+        },
+        {
+            "verb": "GET",
+            "url": "/get-related?product=P999",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "body": "Did not find product P999"
+        }
+    ]
+}
