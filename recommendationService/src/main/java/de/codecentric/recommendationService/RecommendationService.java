@@ -27,7 +27,7 @@ public class RecommendationService extends Application<RecommendationConfigurati
 
     @Override
     public void initialize(Bootstrap<RecommendationConfiguration> bootstrap) {
-        // nothing to do at the moment
+        // Nothing to do
     }
 
     @Override
