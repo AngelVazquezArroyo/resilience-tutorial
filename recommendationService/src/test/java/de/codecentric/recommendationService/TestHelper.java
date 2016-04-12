@@ -24,6 +24,7 @@ class TestHelper {
     private static final String DEFAULT_USER = "john.doe";
     private static final String DEFAULT_PRODUCT = "P001";
     private static final String ANALYSIS_SERVICE_PATH = "/get-related";
+    private static final long HTTP_CLIENT_TIMEOUT = 2000L;
     private static final Level LOG_LEVEL = Level.ERROR;
 
     private static final String IMPOSTOR_PROCESS_CONFIGURATION_PATH =
@@ -52,6 +53,7 @@ class TestHelper {
         c.getAnalysisService().setHost(HOST);
         c.getAnalysisService().setPort(analysisServicePort);
         c.getAnalysisService().setPath(ANALYSIS_SERVICE_PATH);
+        c.getAnalysisService().setTimeout(HTTP_CLIENT_TIMEOUT);
         DefaultServerFactory s = (DefaultServerFactory)c.getServerFactory();
         HttpConnectorFactory a = (HttpConnectorFactory)s.getApplicationConnectors().get(0);
         a.setPort(port);

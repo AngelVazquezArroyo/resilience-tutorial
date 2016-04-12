@@ -6,6 +6,7 @@ import io.dropwizard.client.HttpClientBuilder;
 import io.dropwizard.client.HttpClientConfiguration;
 import io.dropwizard.lifecycle.Managed;
 import io.dropwizard.setup.Environment;
+import io.dropwizard.util.Duration;
 import org.apache.http.client.HttpClient;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -23,6 +24,10 @@ public class AnalysisServiceFactory {
 
     @NotEmpty
     private String path;
+
+    @Min(1)
+    @Max(60000)
+    private long timeout;
 
     @JsonProperty
     public String getHost() {
@@ -45,7 +50,6 @@ public class AnalysisServiceFactory {
     }
 
     @JsonProperty
-
     public String getPath() {
         return path;
     }
@@ -55,8 +59,19 @@ public class AnalysisServiceFactory {
         this.path = path;
     }
 
+    @JsonProperty
+    public long getTimeout() {
+        return timeout;
+    }
+
+    @JsonProperty
+    public void setTimeout(long timeout) {
+        this.timeout = timeout;
+    }
+
     public AnalysisServiceClient build(Environment environment) {
         final HttpClientConfiguration httpConfig = new HttpClientConfiguration();
+        httpConfig.setTimeout(Duration.milliseconds(getTimeout()));
         final HttpClient httpClient = new HttpClientBuilder(environment).using(httpConfig)
                 .build("analysis-http-client");
 
