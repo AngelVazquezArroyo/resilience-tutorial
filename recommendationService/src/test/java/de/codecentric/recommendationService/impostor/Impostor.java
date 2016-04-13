@@ -87,7 +87,7 @@ public class Impostor {
 
     public boolean isHealthy() throws ImpostorException {
         ImpostorResponse response = get(healthUri);
-        return (response.getStatus() != HttpStatus.SC_OK);
+        return (response.getStatus() == HttpStatus.SC_OK);
     }
 
     private ImpostorResponse get(URI uri) {
