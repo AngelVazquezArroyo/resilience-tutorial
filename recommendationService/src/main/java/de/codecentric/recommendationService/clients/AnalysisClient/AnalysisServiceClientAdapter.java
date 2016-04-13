@@ -56,16 +56,42 @@ public class AnalysisServiceClientAdapter implements AnalysisServiceClient {
     @Override
     public Products getCrossUpSellingProducts(String product) {
         String response;
-        Future<String> responseFuture = null;
         AnalysisServiceRequest request = new AnalysisServiceRequest(host, port, path,
                 analysisServiceClient, product);
         ExecutorService executor = Executors.newSingleThreadExecutor();
 
         try {
+            response = accessAnalysisService(executor, request);
+        } catch (TimeoutException e) {
+            try {
+                response = accessAnalysisService(executor, request);
+            } catch (TimeoutException e1) {
+                response = "{}";
+            }
+        }
+
+        Products cuProducts;
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            cuProducts = objectMapper.readValue(response, Products.class);
+            if (cuProducts.getProducts() == null) {
+                cuProducts.setProducts(Collections.<String>emptyList());
+            }
+        } catch (IOException e) {
+            cuProducts = new Products(Collections.<String>emptyList());
+        }
+
+        return cuProducts;
+    }
+
+    private String accessAnalysisService(ExecutorService executor,
+                                         AnalysisServiceRequest request) throws TimeoutException {
+        String response;
+        Future<String> responseFuture = null;
+
+        try {
             responseFuture = executor.submit(request);
             response = responseFuture.get(TIMEOUT, TimeUnit.MILLISECONDS);
-        } catch (TimeoutException e) {
-            response = "{}";
         } catch (InterruptedException | CancellationException e) {
             throw new AnalysisServiceException("Unexpected exception (" + e.getClass()
                     .getName() + ", " + e.getMessage() + ")", e);
@@ -82,15 +108,7 @@ public class AnalysisServiceClientAdapter implements AnalysisServiceClient {
             }
         }
 
-        Products cuProducts;
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            cuProducts = objectMapper.readValue(response, Products.class);
-        } catch (IOException e) {
-            cuProducts = new Products(Collections.<String>emptyList());
-        }
-
-        return cuProducts;
+        return response;
     }
 
     @Override

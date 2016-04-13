@@ -1,5 +1,6 @@
 package de.codecentric.recommendationService;
 
+import de.codecentric.recommendationService.api.Recommendation;
 import de.codecentric.recommendationService.impostor.Impostor;
 import de.codecentric.recommendationService.impostor.ImpostorConfiguration;
 import de.codecentric.recommendationService.service.Service;
@@ -11,6 +12,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 
@@ -20,8 +22,8 @@ import static org.junit.Assert.assertTrue;
  *
  * @author afitz
  */
-public class TestTimeout {
-    private static final int BASE_PORT = 8520;
+public class TestRetry {
+    private static final int BASE_PORT = 8530;
 
     private static final int ANALYSIS_SERVICE_PORT = BASE_PORT;
     private static final int RECOMMENDATION_SERVICE_PORT = BASE_PORT + 1;
@@ -41,7 +43,8 @@ public class TestTimeout {
     @BeforeClass
     public static void initialize() throws IOException {
         analysisService = TestHelper.createImpostor(ANALYSIS_SERVICE_PORT,
-                ImpostorConfiguration.DownstreamTimeout);
+                ImpostorConfiguration.DownstreamRetry);
+//                ImpostorConfiguration.DownstreamNormal);
         recommendationService = TestHelper.createService(RECOMMENDATION_SERVICE_PORT,
                 RECOMMENDATION_SERVICE_ADMIN_PORT);
     }
@@ -52,17 +55,20 @@ public class TestTimeout {
     }
 
     @Test
-    public void shouldHandleTimeout() {
+    public void shouldHandleTimeoutWithRetry() {
         // Do a warm-up request and discard results as it will take a lot longer than expected
         // due to connection setup and initializations in the services and communication channels
         // involved.
         recommendationService.getRecommendation("U001", "P001");
 
         long s = System.currentTimeMillis();
-        recommendationService.getRecommendation("U001", "P001");
+        Recommendation r = recommendationService.getRecommendation("U001", "P001");
         long e = System.currentTimeMillis();
         long d = e - s;
         assertTrue("Time to fulfill request exceeded acceptable time. Time needed was " + d +
                 "ms", d <= ACCEPTABLE_TIME_MILLIS);
+        assertTrue("Result should not be empty", r.getProducts().size() > 0);
+        assertEquals("Result should contain product \"P002\". Found \"" + r.getProducts().get(0) +
+                "\" instead", "P002", r.getProducts().get(0));
     }
 }

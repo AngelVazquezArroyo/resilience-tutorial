@@ -57,6 +57,9 @@ public class AnalysisServiceClientAdapter implements AnalysisServiceClient {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             cuProducts = objectMapper.readValue(response, Products.class);
+            if (cuProducts.getProducts() == null) {
+                cuProducts.setProducts(Collections.<String>emptyList());
+            }
         } catch (IOException e) {
             throw new AnalysisServiceException("Unexpected problem while parsing JSON response " +
                     "from analysis service", e);

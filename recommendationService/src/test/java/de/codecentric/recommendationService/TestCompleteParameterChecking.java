@@ -42,7 +42,7 @@ public class TestCompleteParameterChecking {
     @BeforeClass
     public static void initialize() throws IOException {
         analysisService = TestHelper.createImpostor(ANALYSIS_SERVICE_PORT,
-                ImpostorConfiguration.DownstreamBrokenResponse);
+                ImpostorConfiguration.DownstreamCompleteParameterChecking);
         recommendationService = TestHelper.createService(RECOMMENDATION_SERVICE_PORT,
                 RECOMMENDATION_SERVICE_ADMIN_PORT);
     }

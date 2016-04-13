@@ -16,6 +16,14 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Concrete implementation of a product analysis client using a HTTP based analysis service.
@@ -23,6 +31,8 @@ import java.util.Collections;
  * @author afitz
  */
 public class AnalysisServiceClientAdapter implements AnalysisServiceClient {
+    private static final long TIMEOUT = 200L;
+
     private String host = null;
     private int port = 0;
     private String path;
@@ -46,12 +56,30 @@ public class AnalysisServiceClientAdapter implements AnalysisServiceClient {
     @Override
     public Products getCrossUpSellingProducts(String product) {
         String response;
+        Future<String> responseFuture = null;
+        AnalysisServiceRequest request = new AnalysisServiceRequest(host, port, path,
+                analysisServiceClient, product);
+        ExecutorService executor = Executors.newSingleThreadExecutor();
 
         try {
-            response = accessAnalysisService(product);
-        } catch (IOException e) {
-            throw new AnalysisServiceException("Accessing analysis service failed (" + e.getClass()
+            responseFuture = executor.submit(request);
+            response = responseFuture.get(TIMEOUT, TimeUnit.MILLISECONDS);
+        } catch (TimeoutException e) {
+            response = "{}";
+        } catch (InterruptedException | CancellationException e) {
+            throw new AnalysisServiceException("Unexpected exception (" + e.getClass()
                     .getName() + ", " + e.getMessage() + ")", e);
+        } catch (ExecutionException e) {
+            Throwable c = e.getCause();
+            if (c instanceof WebApplicationException) {
+                throw (WebApplicationException)c;
+            }
+            throw new AnalysisServiceException("Accessing analysis service failed (" + c.getClass()
+                    .getName() + ", " + c.getMessage() + ")", c);
+        } finally {
+            if (responseFuture != null) {
+                responseFuture.cancel(true);
+            }
         }
 
         Products cuProducts;
@@ -68,9 +96,36 @@ public class AnalysisServiceClientAdapter implements AnalysisServiceClient {
         return cuProducts;
     }
 
-    private String accessAnalysisService(String product) throws
-            IOException {
+    @Override
+    public boolean ping() {
+        boolean available = true;
+        try {
+            this.getCrossUpSellingProducts("P00T");
+        } catch (AnalysisServiceException e) {
+            available = false;
+        }
+        return available;
+    }
+}
 
+
+class AnalysisServiceRequest implements Callable<String> {
+    private String host;
+    private int port;
+    private String path;
+    private HttpClient client;
+    private String product;
+
+    AnalysisServiceRequest(String host, int port, String path, HttpClient client, String product) {
+        this.port = port;
+        this.host = host;
+        this.path = path;
+        this.client = client;
+        this.product = product;
+    }
+
+    @Override
+    public String call() throws Exception {
         URI uri;
         try {
             uri = new URIBuilder()
@@ -106,18 +161,7 @@ public class AnalysisServiceClientAdapter implements AnalysisServiceClient {
         };
 
         String responseBody;
-        responseBody = analysisServiceClient.execute(get, responseHandler);
+        responseBody = client.execute(get, responseHandler);
         return responseBody;
-    }
-
-    @Override
-    public boolean ping() {
-        boolean available = true;
-        try {
-            this.getCrossUpSellingProducts("P00T");
-        } catch (AnalysisServiceException e) {
-            available = false;
-        }
-        return available;
     }
 }

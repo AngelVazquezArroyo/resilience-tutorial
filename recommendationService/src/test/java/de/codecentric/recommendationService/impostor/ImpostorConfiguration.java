@@ -11,9 +11,9 @@ import java.nio.file.Paths;
  */
 public enum ImpostorConfiguration {
     DownstreamNormal("downstream_normal"),
-    DownstreamBrokenResponse("downstream_broken_response"),
-    DownstreamOneTimeLatency("downstream_one_time_latency"),
-    DownstreamRecurringLatency("downstream_recurring_latency"),
+    DownstreamCompleteParameterChecking("downstream_complete_parameter_checking"),
+    DownstreamTimeout("downstream_timeout"),
+    DownstreamRetry("downstream_retry"),
 
     UpstreamNormal("upstream_normal"),
     UpstreamPressure("upstream_pressure");
