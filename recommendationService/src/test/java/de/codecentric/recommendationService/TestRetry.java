@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
 
 
 /**
- * Test suite with test cases for the "timeout" section of the resilience
+ * Test suite with test cases for the "retry" section of the resilience
  * tutorial.
  *
  * @author afitz
