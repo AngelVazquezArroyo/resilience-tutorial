@@ -8,6 +8,7 @@ import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -17,10 +18,9 @@ import static org.junit.Assert.assertTrue;
 
 
 /**
- * Test suite with test cases for the "retry" section of the resilience
- * tutorial.
+ * Test suite with test cases for the "retry" section of the resilience tutorial.
  *
- * @author afitz
+ * @author ufr
  */
 public class TestRetry {
     private static final int BASE_PORT = 8530;
@@ -44,7 +44,6 @@ public class TestRetry {
     public static void initialize() throws IOException {
         analysisService = TestHelper.createImpostor(ANALYSIS_SERVICE_PORT,
                 ImpostorConfiguration.DownstreamRetry);
-//                ImpostorConfiguration.DownstreamNormal);
         recommendationService = TestHelper.createService(RECOMMENDATION_SERVICE_PORT,
                 RECOMMENDATION_SERVICE_ADMIN_PORT);
     }
@@ -54,6 +53,7 @@ public class TestRetry {
         analysisService.destroy();
     }
 
+    @Ignore
     @Test
     public void shouldHandleTimeoutWithRetry() {
         // Do a warm-up request and discard results as it will take a lot longer than expected

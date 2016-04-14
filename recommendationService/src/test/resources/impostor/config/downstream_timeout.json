@@ -7,7 +7,7 @@
     "responses": [
         {
             "verb": "GET",
-            "url": "/get-related?product=P00T",
+            "url": "/get-related?product=P000",
             "headers": [
                 {
                     "name": "Content-Type",

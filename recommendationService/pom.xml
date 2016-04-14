@@ -18,10 +18,12 @@
         <dropwizard.version>0.9.2</dropwizard.version>
         <metrics.version>3.1.0</metrics.version>
 
-        <mavenShadePlugin.version>2.4</mavenShadePlugin.version>
-        <mavenCompilerPlugin.version>3.5.1</mavenCompilerPlugin.version>
+        <hystrix.version>1.5.2</hystrix.version>
 
         <slf4j-api.version>1.7.21</slf4j-api.version>
+
+        <mavenShadePlugin.version>2.4</mavenShadePlugin.version>
+        <mavenCompilerPlugin.version>3.5.1</mavenCompilerPlugin.version>
     </properties>
 
 
@@ -81,6 +83,12 @@
             <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-core</artifactId>
             <version>${metrics.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.netflix.hystrix</groupId>
+            <artifactId>hystrix-core</artifactId>
+            <version>${hystrix.version}</version>
         </dependency>
 
         <dependency>
@@ -146,8 +154,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${mavenCompilerPlugin.version}</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>

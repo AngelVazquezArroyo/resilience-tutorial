@@ -28,7 +28,7 @@
             "resource" : "recommendation",
             "params" : [
                 { "name" : "user", "value" : "U003"},
-                { "name" : "product", "value" : "P00T"}
+                { "name" : "product", "value" : "P000"}
             ]
         }
     ]

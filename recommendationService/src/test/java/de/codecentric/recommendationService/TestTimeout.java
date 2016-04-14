@@ -15,10 +15,9 @@ import static org.junit.Assert.assertTrue;
 
 
 /**
- * Test suite with test cases for the "timeout" section of the resilience
- * tutorial.
+ * Test suite with test cases for the "timeout" section of the resilience tutorial.
  *
- * @author afitz
+ * @author ufr
  */
 public class TestTimeout {
     private static final int BASE_PORT = 8520;

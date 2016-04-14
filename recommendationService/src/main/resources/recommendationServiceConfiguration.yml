@@ -2,8 +2,8 @@
 # Recommendation service configuration
 #
 
-# defaultProduct: P001
-# defaultUser: unknown
+defaultProduct: P001
+defaultUser: john.doe
 
 analysisService:
     host: localhost

@@ -21,7 +21,7 @@ import static org.junit.Assert.fail;
  * Test suite with test cases for the "complete parameter checking" section of the resilience
  * tutorial.
  *
- * @author afitz
+ * @author ufr
  */
 public class TestCompleteParameterChecking {
     private static final int BASE_PORT = 8510;
