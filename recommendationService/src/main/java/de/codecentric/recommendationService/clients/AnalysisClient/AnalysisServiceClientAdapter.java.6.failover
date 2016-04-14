@@ -67,7 +67,13 @@ public class AnalysisServiceClientAdapter implements AnalysisServiceClient {
             response = accessAnalysisService(executor, request);
         } catch (TimeoutException e) {
             try {
-                response = accessAnalysisService(executor, request);
+                if (portFailover != 0) {
+                    AnalysisServiceRequest requestFailover = new AnalysisServiceRequest(host,
+                            portFailover, path, analysisServiceClient, product);
+                    response = accessAnalysisService(executor, requestFailover);
+                } else {
+                    response = accessAnalysisService(executor, request);
+                }
             } catch (TimeoutException e1) {
                 throw new AnalysisServiceException("Did not get response from analysis service in" +
                         " time");

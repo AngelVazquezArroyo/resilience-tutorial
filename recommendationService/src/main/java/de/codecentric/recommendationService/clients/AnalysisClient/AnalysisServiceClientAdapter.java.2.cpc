@@ -25,11 +25,14 @@ import java.util.Collections;
 public class AnalysisServiceClientAdapter implements AnalysisServiceClient {
     private String host = null;
     private int port = 0;
+    private int portFailover = 0;
     private String path;
     private HttpClient analysisServiceClient;
 
-    public AnalysisServiceClientAdapter(String host, int port, String path, HttpClient httpClient) {
+    public AnalysisServiceClientAdapter(String host, int port, int portFailover, String path,
+                                        HttpClient httpClient) {
         this.port = port;
+        this.portFailover = portFailover;
         this.host = host;
         this.path = path;
         this.analysisServiceClient = httpClient;

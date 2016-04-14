@@ -74,7 +74,7 @@ public class TestCircuitBreaker {
         assertEquals("All requests should have been processed", REQUESTS, lr.size() + le.size());
         int c = 0;
         for (ServiceException e : le) {
-            if (e.getMessage().contains("504")) {
+            if (e.getMessage().contains("503")) {
                 c++;
             }
         }
