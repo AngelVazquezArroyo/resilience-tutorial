@@ -23,11 +23,6 @@ import static org.junit.Assert.assertTrue;
 /**
  * Test suite with test cases for the "circuit breaker" section of the resilience tutorial.
  *
- * Note:
- * - RECOMMENDATION_SERVICE_PORT and port of parameter "server" in upstream_circuit_breaker.json
- *   must match
- * - REQUESTS and parameter "limit" in upstream_circuit_breaker.json must match
- *
  * @author ufr
  */
 public class TestCircuitBreaker {
