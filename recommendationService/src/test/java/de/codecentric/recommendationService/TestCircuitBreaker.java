@@ -26,7 +26,7 @@ import static org.junit.Assert.assertTrue;
  * @author ufr
  */
 public class TestCircuitBreaker {
-    private static final int BASE_PORT = 8540;
+    private static final int BASE_PORT = 8560;
 
     private static final int ANALYSIS_SERVICE_PORT = BASE_PORT;
     private static final int RECOMMENDATION_SERVICE_PORT = BASE_PORT + 1;
