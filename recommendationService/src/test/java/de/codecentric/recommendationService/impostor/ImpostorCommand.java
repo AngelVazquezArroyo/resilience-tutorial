@@ -12,9 +12,7 @@ import java.nio.file.Paths;
 public enum ImpostorCommand {
     PressureOff("pressure_off"),
     PressureOn("pressure_on"),
-    PressureStatus("pressure_status"),
-    Send1("send_1"),
-    Send2("send_2");
+    PressureStatus("pressure_status");
 
     private static final String DIR = "src/test/resources/impostor/command/";
 

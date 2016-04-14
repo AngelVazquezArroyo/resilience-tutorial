@@ -20,7 +20,7 @@ public enum ImpostorConfiguration {
     DownstreamCircuitBreaker("downstream_circuit_breaker"),
 
     UpstreamNormal("upstream_normal"),
-    UpstreamCircuitBreaker("upstream_circuit_breaker");
+    UpstreamPressure("upstream_pressure");
 
     private static final String DIR = "src/test/resources/impostor/config/";
 
