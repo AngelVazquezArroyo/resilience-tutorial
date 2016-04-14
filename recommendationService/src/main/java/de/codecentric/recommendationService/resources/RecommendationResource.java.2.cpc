@@ -4,7 +4,6 @@ import com.codahale.metrics.annotation.Metered;
 import com.google.common.base.Optional;
 import de.codecentric.recommendationService.api.Recommendation;
 import de.codecentric.recommendationService.clients.AnalysisClient.AnalysisServiceClient;
-import de.codecentric.recommendationService.clients.AnalysisClient.AnalysisServiceException;
 import de.codecentric.recommendationService.core.Products;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
@@ -17,8 +16,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Implementation of the recommendation service HTTP API.
@@ -53,15 +50,7 @@ public class RecommendationResource {
 	@Metered(name = "getRecommendation")
 	public Recommendation getRecommendation(@QueryParam("user") Optional<String> user, @QueryParam("product") Optional<String> product) {
         checkParameters(user, product);
-
-        Products products;
-        try {
-            products = analysisService.getCrossUpSellingProducts(product.get());
-        } catch (AnalysisServiceException e) {
-            List<String> p = new ArrayList<>(1);
-            p.add(defaultProduct);
-            products = new Products(p);
-        }
+        Products products = analysisService.getCrossUpSellingProducts(product.get());
         return new Recommendation(user.get(), products.getProducts());
 	}
 

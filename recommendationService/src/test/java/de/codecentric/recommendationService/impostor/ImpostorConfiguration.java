@@ -14,6 +14,7 @@ public enum ImpostorConfiguration {
     DownstreamCompleteParameterChecking("downstream_complete_parameter_checking"),
     DownstreamTimeout("downstream_timeout"),
     DownstreamRetry("downstream_retry"),
+    DownstreamDegradation("downstream_degradation"),
     DownstreamCircuitBreaker("downstream_circuit_breaker"),
 
     UpstreamNormal("upstream_normal"),
