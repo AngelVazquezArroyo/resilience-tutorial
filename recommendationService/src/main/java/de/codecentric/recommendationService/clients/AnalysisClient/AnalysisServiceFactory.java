@@ -22,6 +22,11 @@ public class AnalysisServiceFactory {
     @Max(65535)
     private int port = 5672;
 
+
+    @Min(0)
+    @Max(65535)
+    private int portFailover = 0;
+
     @NotEmpty
     private String path;
 
@@ -50,6 +55,16 @@ public class AnalysisServiceFactory {
     }
 
     @JsonProperty
+    public int getPortFailover() {
+        return portFailover;
+    }
+
+    @JsonProperty
+    public void setPortFailover(int portFailover) {
+        this.portFailover = portFailover;
+    }
+
+    @JsonProperty
     public String getPath() {
         return path;
     }
@@ -75,7 +90,8 @@ public class AnalysisServiceFactory {
         final HttpClient httpClient = new HttpClientBuilder(environment).using(httpConfig)
                 .build("analysis-http-client");
 
-        AnalysisServiceClient client = new AnalysisServiceClientAdapter(getHost(), getPort(), getPath(), httpClient);
+        AnalysisServiceClient client = new AnalysisServiceClientAdapter(getHost(), getPort(),
+                getPortFailover(), getPath(), httpClient);
 
         environment.lifecycle().manage(new Managed() {
             @Override

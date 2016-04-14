@@ -1,0 +1,51 @@
+{
+    "mode": "downstream",
+    "failuremode": "none",
+    "protocol": "http",
+    "responses": [
+        {
+            "verb": "GET",
+            "url": "/get-related?product=P000",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "body": "{ \"products\" : [\"P003\"] }"
+        },
+        {
+            "verb": "GET",
+            "url": "/get-related?product=P001",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "body": "{ \"products\" : [\"P003\"] }"
+        },
+        {
+            "verb": "GET",
+            "url": "/get-related?product=P002",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "body": "{ \"products\" : [\"P003\"] }"
+        },
+        {
+            "verb": "GET",
+            "url": "/get-related?product=P003",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "body": "{ \"products\" : [\"P003\"] }"
+        }
+    ]
+}

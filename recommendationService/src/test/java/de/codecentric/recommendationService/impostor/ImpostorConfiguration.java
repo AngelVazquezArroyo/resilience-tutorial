@@ -15,6 +15,8 @@ public enum ImpostorConfiguration {
     DownstreamTimeout("downstream_timeout"),
     DownstreamRetry("downstream_retry"),
     DownstreamDegradation("downstream_degradation"),
+    DownstreamFailoverSlow("downstream_failover_slow"),
+    DownstreamFailoverFast("downstream_failover_fast"),
     DownstreamCircuitBreaker("downstream_circuit_breaker"),
 
     UpstreamNormal("upstream_normal"),

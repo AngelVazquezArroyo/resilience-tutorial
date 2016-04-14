@@ -51,19 +51,27 @@ class TestHelper {
 
     public static RecommendationConfiguration createServiceConfiguration(int port, int adminPort,
                                                                          int analysisServicePort) {
+        return createServiceConfiguration(port, adminPort, analysisServicePort, 0);
+    }
+
+    public static RecommendationConfiguration
+    createServiceConfiguration(int port, int adminPort,
+                               int analysisServicePort,
+                               int analysisServiceFailoverPort) {
         RecommendationConfiguration c = new RecommendationConfiguration();
         c.setDefaultUser(DEFAULT_USER);
         c.setDefaultProduct(DEFAULT_PRODUCT);
         c.getAnalysisService().setHost(HOST);
         c.getAnalysisService().setPort(analysisServicePort);
+        c.getAnalysisService().setPortFailover(analysisServiceFailoverPort);
         c.getAnalysisService().setPath(ANALYSIS_SERVICE_PATH);
         c.getAnalysisService().setTimeout(HTTP_CLIENT_TIMEOUT_MS);
-        DefaultServerFactory s = (DefaultServerFactory)c.getServerFactory();
-        HttpConnectorFactory a = (HttpConnectorFactory)s.getApplicationConnectors().get(0);
+        DefaultServerFactory s = (DefaultServerFactory) c.getServerFactory();
+        HttpConnectorFactory a = (HttpConnectorFactory) s.getApplicationConnectors().get(0);
         a.setPort(port);
-        a = (HttpConnectorFactory)s.getAdminConnectors().get(0);
+        a = (HttpConnectorFactory) s.getAdminConnectors().get(0);
         a.setPort(adminPort);
-        DefaultLoggingFactory l = (DefaultLoggingFactory)c.getLoggingFactory();
+        DefaultLoggingFactory l = (DefaultLoggingFactory) c.getLoggingFactory();
         l.setLevel(LOG_LEVEL);
         return c;
     }
