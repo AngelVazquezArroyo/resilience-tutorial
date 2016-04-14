@@ -4,6 +4,7 @@ import de.codecentric.recommendationService.api.Recommendation;
 import de.codecentric.recommendationService.impostor.Impostor;
 import de.codecentric.recommendationService.impostor.ImpostorConfiguration;
 import de.codecentric.recommendationService.service.Service;
+import de.codecentric.recommendationService.service.ServiceException;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -11,24 +12,32 @@ import org.junit.ClassRule;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 
 /**
- * Test suite with test cases for the "retry" section of the resilience tutorial.
+ * Test suite with test cases for the "circuit breaker" section of the resilience tutorial.
+ *
+ * Note:
+ * - RECOMMENDATION_SERVICE_PORT and port of parameter "server" in upstream_circuit_breaker.json
+ *   must match
+ * - REQUESTS and parameter "limit" in upstream_circuit_breaker.json must match
  *
  * @author ufr
  */
-public class TestRetry {
-    private static final int BASE_PORT = 8530;
+public class TestCircuitBreaker {
+    private static final int BASE_PORT = 8540;
 
     private static final int ANALYSIS_SERVICE_PORT = BASE_PORT;
     private static final int RECOMMENDATION_SERVICE_PORT = BASE_PORT + 1;
     private static final int RECOMMENDATION_SERVICE_ADMIN_PORT = BASE_PORT + 2;
 
-    private static final long ACCEPTABLE_TIME_MILLIS = 300L;
+    private static final int REQUESTS = 20;
+    private static final long DELAY = 100L;
 
     private static Impostor analysisService;
     private static Service recommendationService;
@@ -42,7 +51,7 @@ public class TestRetry {
     @BeforeClass
     public static void initialize() throws IOException {
         analysisService = TestHelper.createImpostor(ANALYSIS_SERVICE_PORT,
-                ImpostorConfiguration.DownstreamRetry);
+                ImpostorConfiguration.DownstreamCircuitBreaker);
         recommendationService = TestHelper.createService(RECOMMENDATION_SERVICE_PORT,
                 RECOMMENDATION_SERVICE_ADMIN_PORT);
     }
@@ -53,20 +62,34 @@ public class TestRetry {
     }
 
     @Test
-    public void shouldHandleTimeoutWithRetry() {
-        // Do a warm-up request and discard results as it will take a lot longer than expected
-        // due to connection setup and initializations in the services and communication channels
-        // involved.
-        recommendationService.getRecommendation("U001", "P001");
+    public void shouldTripCircuitBreaker() {
+        List<Recommendation> lr = new ArrayList<>(REQUESTS);
+        List<ServiceException> le = new ArrayList<>(REQUESTS);
+        for (int i = 0; i < REQUESTS; i++) {
+            try {
+                Recommendation r = recommendationService.getRecommendation("U001", "P002");
+                lr.add(r);
+            } catch (ServiceException e) {
+                le.add(e);
+            }
+            pause(DELAY);
+        }
+        assertEquals("All requests should have been processed", REQUESTS, lr.size() + le.size());
+        int c = 0;
+        for (ServiceException e : le) {
+            if (e.getMessage().contains("504")) {
+                c++;
+            }
+        }
+        assertTrue("The circuit breaker should have tripped", c > 0);
+        assertEquals("Nothing strange should have happened", le.size(), c);
+    }
 
-        long s = System.currentTimeMillis();
-        Recommendation r = recommendationService.getRecommendation("U001", "P001");
-        long e = System.currentTimeMillis();
-        long d = e - s;
-        assertTrue("Time to fulfill request exceeded acceptable time. Time needed was " + d +
-                "ms", d <= ACCEPTABLE_TIME_MILLIS);
-        assertTrue("Result should not be empty", r.getProducts().size() > 0);
-        assertEquals("Result should contain product \"P002\". Found \"" + r.getProducts().get(0) +
-                "\" instead", "P002", r.getProducts().get(0));
+    private static void pause(long i) {
+        try {
+            Thread.sleep(i);
+        } catch (InterruptedException e) {
+            // Ignore
+        }
     }
 }

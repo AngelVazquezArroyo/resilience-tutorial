@@ -14,9 +14,10 @@ public enum ImpostorConfiguration {
     DownstreamCompleteParameterChecking("downstream_complete_parameter_checking"),
     DownstreamTimeout("downstream_timeout"),
     DownstreamRetry("downstream_retry"),
+    DownstreamCircuitBreaker("downstream_circuit_breaker"),
 
     UpstreamNormal("upstream_normal"),
-    UpstreamPressure("upstream_pressure");
+    UpstreamCircuitBreaker("upstream_circuit_breaker");
 
     private static final String DIR = "src/test/resources/impostor/config/";
 
