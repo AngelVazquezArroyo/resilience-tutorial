@@ -1,5 +1,0 @@
----
-# defaults file for java
-
-java_version: 8
-java_install_jce_policy: false

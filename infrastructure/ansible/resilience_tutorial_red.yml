@@ -1,9 +1,0 @@
----
-# Ansible playbook to set up the resilience tutorial R.E.D.
-
-- name: Set up the Runtime Environment for Developers (RED) for the resilience tutorial
-  hosts: all
-  roles:
-    - docker
-    - java
-    - nomad

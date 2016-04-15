@@ -1,4 +1,0 @@
----
-# defaults file for docker
-
-docker_distro_version: "trusty"

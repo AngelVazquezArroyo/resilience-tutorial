@@ -1,4 +1,0 @@
----
-# vars file for java
-
-java_path: /usr/lib/jvm/java-{{ java_version }}-oracle/jre/bin/java

@@ -1,6 +1,0 @@
----
-# defaults file for nomad
-
-nomad_version: "0.2.3"
-nomad_archive_dir: "/vagrant/archives"
-nomad_install_dir: "/usr/bin"
