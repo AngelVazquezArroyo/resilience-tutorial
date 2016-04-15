@@ -57,7 +57,6 @@ public class TestCircuitBreaker {
         analysisService.destroy();
     }
 
-    @Ignore
     @Test
     public void shouldTripCircuitBreaker() {
         List<Recommendation> lr = new ArrayList<>(REQUESTS);
