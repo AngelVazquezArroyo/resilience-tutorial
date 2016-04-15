@@ -16,14 +16,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Concrete implementation of a product analysis client using a HTTP based analysis service.
@@ -31,8 +23,6 @@ import java.util.concurrent.TimeoutException;
  * @author afitz
  */
 public class AnalysisServiceClientAdapter implements AnalysisServiceClient {
-    private static final long TIMEOUT = 200L;
-
     private String host = null;
     private int port = 0;
     private int portFailover = 0;
@@ -59,25 +49,12 @@ public class AnalysisServiceClientAdapter implements AnalysisServiceClient {
     @Override
     public Products getCrossUpSellingProducts(String product) {
         String response;
-        AnalysisServiceRequest request = new AnalysisServiceRequest(host, port, path,
-                analysisServiceClient, product);
-        ExecutorService executor = Executors.newSingleThreadExecutor();
 
         try {
-            response = accessAnalysisService(executor, request);
-        } catch (TimeoutException e) {
-            try {
-                if (portFailover != 0) {
-                    AnalysisServiceRequest requestFailover = new AnalysisServiceRequest(host,
-                            portFailover, path, analysisServiceClient, product);
-                    response = accessAnalysisService(executor, requestFailover);
-                } else {
-                    response = accessAnalysisService(executor, request);
-                }
-            } catch (TimeoutException e1) {
-                throw new AnalysisServiceException("Did not get response from analysis service in" +
-                        " time");
-            }
+            response = accessAnalysisService(product);
+        } catch (IOException e) {
+            throw new AnalysisServiceException("Accessing analysis service failed (" + e.getClass()
+                    .getName() + ", " + e.getMessage() + ")", e);
         }
 
         Products cuProducts;
@@ -88,69 +65,16 @@ public class AnalysisServiceClientAdapter implements AnalysisServiceClient {
                 cuProducts.setProducts(Collections.<String>emptyList());
             }
         } catch (IOException e) {
-            cuProducts = new Products(Collections.<String>emptyList());
+            throw new AnalysisServiceException("Unexpected problem while parsing JSON response " +
+                    "from analysis service", e);
         }
 
         return cuProducts;
     }
 
-    private String accessAnalysisService(ExecutorService executor,
-                                         AnalysisServiceRequest request) throws TimeoutException {
-        String response;
-        Future<String> responseFuture = null;
+    private String accessAnalysisService(String product) throws
+            IOException {
 
-        try {
-            responseFuture = executor.submit(request);
-            response = responseFuture.get(TIMEOUT, TimeUnit.MILLISECONDS);
-        } catch (InterruptedException | CancellationException e) {
-            throw new AnalysisServiceException("Unexpected exception (" + e.getClass()
-                    .getName() + ", " + e.getMessage() + ")", e);
-        } catch (ExecutionException e) {
-            Throwable c = e.getCause();
-            if (c instanceof WebApplicationException) {
-                throw (WebApplicationException)c;
-            }
-            throw new AnalysisServiceException("Accessing analysis service failed (" + c.getClass()
-                    .getName() + ", " + c.getMessage() + ")", c);
-        } finally {
-            if (responseFuture != null) {
-                responseFuture.cancel(true);
-            }
-        }
-
-        return response;
-    }
-
-    @Override
-    public boolean ping() {
-        boolean available = true;
-        try {
-            this.getCrossUpSellingProducts("P00T");
-        } catch (AnalysisServiceException e) {
-            available = false;
-        }
-        return available;
-    }
-}
-
-
-class AnalysisServiceRequest implements Callable<String> {
-    private String host;
-    private int port;
-    private String path;
-    private HttpClient client;
-    private String product;
-
-    AnalysisServiceRequest(String host, int port, String path, HttpClient client, String product) {
-        this.port = port;
-        this.host = host;
-        this.path = path;
-        this.client = client;
-        this.product = product;
-    }
-
-    @Override
-    public String call() throws Exception {
         URI uri;
         try {
             uri = new URIBuilder()
@@ -186,7 +110,18 @@ class AnalysisServiceRequest implements Callable<String> {
         };
 
         String responseBody;
-        responseBody = client.execute(get, responseHandler);
+        responseBody = analysisServiceClient.execute(get, responseHandler);
         return responseBody;
+    }
+
+    @Override
+    public boolean ping() {
+        boolean available = true;
+        try {
+            this.getCrossUpSellingProducts("P00T");
+        } catch (AnalysisServiceException e) {
+            available = false;
+        }
+        return available;
     }
 }

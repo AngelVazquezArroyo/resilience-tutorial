@@ -1,4 +1,4 @@
-Exercise 5 - Circuit breaker
+Exercise 7 - Circuit breaker
 ============================
 
 Introduction
