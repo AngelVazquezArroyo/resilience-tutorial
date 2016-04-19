@@ -8,7 +8,7 @@ defaultUser: john.doe
 analysisService:
     host: localhost
     port: 8102
-    path: /recommendation-db
+    path: /get-related
 
 server:
   applicationConnectors:
@@ -19,6 +19,6 @@ server:
       port: 8201
 
 logging:
-  level: DEBUG
+  level: ERROR
   loggers:
-    de.codecentric.awesome.recommendation: DEBUG
+    de.codecentric.awesome.recommendation: ERROR
