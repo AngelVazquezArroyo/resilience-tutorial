@@ -74,6 +74,7 @@ public class TestCompleteParameterChecking {
 
     @Test
     public void shouldRejectInvalidProduct() {
+        // Product format should be Pnnn (n ist a number between 0 and 9)
         try {
             Recommendation recommendation = recommendationService.getRecommendation("U001",
                     "dummy");
