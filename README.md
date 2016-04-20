@@ -1,15 +1,31 @@
-## Resilience Tutorial
+# Resilience Tutorial
 
 This is the GitHub repository supporting a resilience tutorial that provides a step-by-step introduction to several basic resilience patterns.
 
 NOTE: _Currently, the tutorial is not (yet) intended to be used as self-training without a trainer._
 
-The exercises themselves including the required documentation are located in the corresponding `exercise_<number>_<description>` folders.
+All exercises themselves are located in the corresponding `exercise_<number>_<description>` folders, including the required documentation, sample solutions (./sample_solutions/*) and tests (./tests/*).
 
-The folder infrastructure contains everything needed to set up the required infrastructure on a tutorial participant's computer.
+## Outline of the workshop
 
-Prerequisites:
-* to be defined ...
+Our mission is to help the Awesome Inc. to increase the availability of their new awesome [recommendation service](./recommendationService/README.html). For more information take a look on the [case study of Awesome Inc.](./case_study/case_study.html).
+
+After some more introductory words, the trainers will guide you through the process. Along the way, various resilience patterns are explained and will be implemented hands-on:
+
+* [Bulkheads](./exercise_01_bulkheads/README.html)
+* Complete Parameter Checking
+* Timeout
+* Retry
+* Fallback
+* Failover
+* Circuit Breaker
+
+## Prerequisites
+
+* Java 1.8 or higher
+* Apache Maven 3+
+* Internet connection
+* Your preferred IDE
 
 ## Getting The Tutorial Material
 
@@ -17,25 +33,3 @@ Prerequisites:
 git clone https://github.com/ufried/resilience-tutorial.git
 cd resilience-tutorial
 ```
-
-## Working With The Training Material
-In order to work with the tutorial material, you need to serve all files via an HTTP server. This can be any HTTP server which is capable of serving static assets. If you happen to have Python installed (which is installed by default on OS X and Linux), you can execute the following command to start an HTTP server in the current directory.
-
-```
-# with Python 2.x
-python -m SimpleHTTPServer
-
-# with Python 3.x
-python -m http.server
-```
-
-## Testing
-
-First start impostor engines:
-
-* Upstream impostor
-  $GOPATH/bin/impostor localhost:8100
-
-* Downstream impostor
-  $GOPATH/bin/impostor localhost:8102
-
