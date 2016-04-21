@@ -54,7 +54,7 @@ http://localhost:8201/healthcheck
 ```
 
 The Recommendation Service send a request to another service - the Analysis Service. At the
-moment we don't have an implementation nor a runtime unit. So we have to cheat our Recommendation Service and use an impostor ([here you can find more information about it](https://github.com/ufried/impostor)). Open a terminal/console, got to the project folder and execute the following commands:
+moment we don't have an implementation nor a runtime unit. So we have to cheat our Recommendation Service and use an impostor ([more information can be found here](https://github.com/ufried/impostor)). Open a terminal/console, got to the project folder and execute the following commands:
 
 ```
 cd impostor/"{darwin_amd64 | linux_amd64 |	windows_amd64}"
