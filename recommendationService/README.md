@@ -1,5 +1,5 @@
 # Getting started
-The goal of this tutorial is to implement several resilience patterns. For this purpose use a 
+The goal of this tutorial is to implement several resilience patterns. For this purpose use a
 subset of the design exercise, these Recommendation Service and an underlying analysis service. To focus on coding, we decide to implement the Recommendation Service as a [Dropwizard web application](http://www.dropwizard.io/0.9.2/docs/manual/index.html). We choose a REST-based communication style as we assumed that most of you are using that on a more regular basis than message-based or event-based communication.
 
 In dependence of the recommendation by the DropWizard Project our service look like this:
@@ -27,12 +27,12 @@ cd recommendationService
 perform the maven build process
 
 ```
-mvn clean install
+mvn clean test
 ```
 
 The build process contains some basic test, to ensure the basic functionality of the Recommendation Service.
 
-Now that you’ve built a JAR file, it’s time to run it. Go to the project directory and execute 
+Now that you’ve built a JAR file, it’s time to run it. Go to the project directory and execute
 (or use your IDE and don't forget the set the parameters in the configuration):
 
 ```
@@ -53,7 +53,7 @@ http://localhost:8201/healthcheck
 {"AnalysisService":{"healthy":false,"message":"Analysis service not accessible"},"deadlocks":{"healthy":true}}
 ``
 
-The Recommendation Service send a request to another service - the Analysis Service. At the 
+The Recommendation Service send a request to another service - the Analysis Service. At the
 moment we don't have an implementation nor a runtime unit. So we have to cheat our Recommendation Service and use an impostor ([here you can find more information about it](https://github.com/ufried/impostor)). Open a terminal/console, got to the project folder and execute the following commands:
 
 ````
@@ -79,7 +79,7 @@ http://localhost:8101/recommendation?user=U001&product=P000
 
 Now shut down all service gracefully by pressing ^C.
 
-> NOTE: _You don't need to start and stop the Recommendation Service manually from now. The test 
+> NOTE: _You don't need to start and stop the Recommendation Service manually from now. The test
 accepts that for you. Start, configure and stop the impostor does the particular test, too._
 
 # Some general agreements for the next steps
