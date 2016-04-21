@@ -13,8 +13,8 @@ In dependence of the recommendation by the DropWizard Project our service look l
     * **AnalysisServiceHealthCheck**: check if the AnalysisService is available.
     * **RequestHealthCheck**: check if the number of requests is in the "normal" range.
   * **resources.RecommendationResource**: the exposed resource (RESTful API) by the Recommendation Service. This Class is the main place where you should implement.
-  * **MyApplication**: The main entry point into the Recommendation Service.
-* **MyApplicationConfiguration**: provides a number of built-in configuration parameters for the Recommendation Service.
+  * **RecommendationService**: The main entry point of the Recommendation Service.
+* **RecommendationConfiguration**: provides a number of built-in configuration parameters of the Recommendation Service.
 
 # start the engine(s)
 
@@ -51,12 +51,12 @@ And the administration request shows the cause:
 ```
 http://localhost:8201/healthcheck
 {"AnalysisService":{"healthy":false,"message":"Analysis service not accessible"},"deadlocks":{"healthy":true}}
-``
+```
 
 The Recommendation Service send a request to another service - the Analysis Service. At the
 moment we don't have an implementation nor a runtime unit. So we have to cheat our Recommendation Service and use an impostor ([here you can find more information about it](https://github.com/ufried/impostor)). Open a terminal/console, got to the project folder and execute the following commands:
 
-````
+```
 cd impostor/"{darwin_amd64 | linux_amd64 |	windows_amd64}"
 impostor localhost:8102
 ```

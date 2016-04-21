@@ -8,11 +8,11 @@ All exercises themselves are located in the corresponding `exercise_<number>_<de
 
 ## Outline of the workshop
 
-Our mission is to help the Awesome Inc. to increase the availability of their new awesome [recommendation service](./recommendationService/README.html). For more information take a look on the [case study of Awesome Inc.](./case_study/case_study.html).
+Our mission is to help the Awesome Inc. to increase the availability of their new awesome recommendation service. For more information take a look on the [case study of Awesome Inc.](./case_study/case_study.html).
 
 After some more introductory words, the trainers will guide you through the process. Along the way, various resilience patterns are explained and will be implemented hands-on:
 
-* [Bulkheads](./exercise_01_bulkheads/README.html)
+* Bulkheads
 * Complete Parameter Checking
 * Timeout
 * Retry
