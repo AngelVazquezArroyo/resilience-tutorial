@@ -9,6 +9,7 @@ analysisService:
     host: localhost
     port: 8102
     path: /get-related
+    timeout: 500
 
 server:
   applicationConnectors:
